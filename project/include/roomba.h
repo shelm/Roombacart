@@ -163,11 +163,14 @@ typedef struct {
 #define SENSORS_CLIFF_FRONT_RIGHT_SIGNAL 0x1E
 #define SENSORS_CLIFF_RIGHT_SIGNAL       0x1F
 
+#define SENSORS_SONG	0x25
 
 #define FULL_INTENSITY 0xff
 #define NO_INTENSITY   0x00
 #define COLOR_GREEN    0x00
 #define COLOR_RED      0xff
+
+
 /******************************************************* Function prototypes */
 
 /*! initializes the rumba

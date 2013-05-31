@@ -11,6 +11,7 @@
 #include <tools.h>
 #include <uart.h>
 
+#include <sound.h>
 #include <asm/io.h>
 #include <harmony.h>
 
@@ -62,6 +63,22 @@ int main(int argc, char **argv)
 
     init_cliff_signal();
 	init_infrared();
+	
+	transmit_song(indiana_jones_theme, 16, 0);
+	my_msleep(15);
+	transmit_song(indiana_jones_theme_part_2, 16, 1);
+	my_msleep(15);
+	transmit_song(indiana_jones_theme_part_3, 14, 2);
+	play_song(0);	
+	while(check_for_playing_song()){
+		my_msleep(15);
+	}
+	play_song(1);
+	while(check_for_playing_song()){
+		my_msleep(15);
+	}
+	play_song(2);
+	
     button_wait(1);
 
     while(true){
