@@ -139,6 +139,8 @@ typedef struct {
 #define SENSORS_BUMPS_WHEEL_DROPS         0x07
 #define SENSORS_VIRTUAL_WALL              0x0D
 #define SENSORS_INFRARED_CHARACTER_OMNI   0x11
+#define SENSORS_INFRARED_CHARACTER_LEFT   0x34
+#define SENSORS_INFRARED_CHARACTER_RIGHT  0x35
 #define SENSORS_DISTANCE                  0x13
 #define SENSORS_ANGLE                     0x14
 #define SENSORS_TEMPERATURE               0x18
@@ -175,6 +177,10 @@ void init_roomba(void);
 /*! initializes the cliff sensors
 */
 void init_cliff_sensors(void);
+
+/*! initializes the infrared
+*/
+void init_infrared(void);
 
 /*! initializes the cliff signal sensors
 */
@@ -256,6 +262,11 @@ extern const roomba_sensor_type_t cliff_front_left_signal_sensor;
 extern const roomba_sensor_type_t cliff_front_right_signal_sensor;
 extern const roomba_sensor_type_t cliff_right_signal_sensor;
 
+extern const roomba_sensor_type_t infrared_omni_sensor;
+extern const roomba_sensor_type_t infrared_right_sensor;
+extern const roomba_sensor_type_t infrared_left_sensor;
+
+
 //length of sensor_arrays
 extern const int8_t sensor_number;
 
@@ -273,6 +284,10 @@ extern roomba_sensor_t sensor_array_cliff_left_signal[];
 extern roomba_sensor_t sensor_array_cliff_front_left_signal[];
 extern roomba_sensor_t sensor_array_cliff_right_signal[];
 extern roomba_sensor_t sensor_array_cliff_front_right_signal[];
+
+extern roomba_sensor_t sensor_array_infrared_omni[];
+extern roomba_sensor_t sensor_array_infrared_right[];
+extern roomba_sensor_t sensor_array_infrared_left[];
 
 extern int16_t velocity;
 

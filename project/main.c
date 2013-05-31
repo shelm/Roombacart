@@ -12,6 +12,7 @@
 #include <uart.h>
 
 #include <asm/io.h>
+#include <harmony.h>
 
 /******************************************************************* Defines */
 
@@ -33,6 +34,14 @@ char greeting[4] = {'I', 'H', 'I', 'H'};
 
 /******************************************************************** Macros */
 
+#define CLIFF_LEFT_SIG roomba_return_current_value(sensor_array_cliff_left_signal, 0)
+#define CLIFF_FRONT_LEFT_SIG roomba_return_current_value(sensor_array_cliff_front_left_signal, 0)
+#define CLIFF_RIGHT_SIG roomba_return_current_value(sensor_array_cliff_right_signal, 0)
+#define CLIFF_FRONT_RIGHT_SIG roomba_return_current_value(sensor_array_cliff_front_right_signal, 0)
+
+#define INFRARED_OMNI sensor_array_infrared_omni[0].value//roomba_return_current_value(sensor_array_infrared_omni, 0)
+#define INFRARED_RIGHT  sensor_array_infrared_right[0].value//roomba_return_current_value(sensor_array_infrared_right, 0)
+#define INFRARED_LEFT  sensor_array_infrared_left[0].value//roomba_return_current_value(sensor_array_infrared_left, 0)
 
 /********************************************************** Global functions */
 
@@ -52,7 +61,7 @@ int main(int argc, char **argv)
     roomba_set_letters_string(greeting, 4);
 
     init_cliff_signal();
-
+	init_infrared();
     button_wait(1);
 
     while(true){
@@ -62,14 +71,36 @@ int main(int argc, char **argv)
             break;
         }
 
-        int32_t cliff_left_signal = roomba_return_current_value(sensor_array_cliff_left_signal, 0);
-        int32_t cliff_front_left_signal = roomba_return_current_value(sensor_array_cliff_front_left_signal, 0);
-        int32_t cliff_right_signal = roomba_return_current_value(sensor_array_cliff_front_right_signal, 0);
-        int32_t cliff_front_right_signal = roomba_return_current_value(sensor_array_cliff_front_right_signal, 0);
+		roomba_return_current_value(sensor_array_infrared_omni, 0);
+		roomba_return_current_value(sensor_array_infrared_right, 0);
+		roomba_return_current_value(sensor_array_infrared_left, 0);
+		
+		if(INFRARED_OMNI == HARMONY_SIGNAL_PAUSE || INFRARED_RIGHT == HARMONY_SIGNAL_PAUSE || INFRARED_LEFT == HARMONY_SIGNAL_PAUSE) {
+			roomba_set_led_on(BTN_CLEAN, 100, 100);
+		}
+		
+		while(INFRARED_OMNI == HARMONY_SIGNAL_TURNLEFT || INFRARED_RIGHT == HARMONY_SIGNAL_TURNLEFT || INFRARED_LEFT == HARMONY_SIGNAL_TURNLEFT) {
+			roomba_drive(velocity, 300);
+			roomba_return_current_value(sensor_array_infrared_omni, 0);
+			roomba_return_current_value(sensor_array_infrared_right, 0);
+			roomba_return_current_value(sensor_array_infrared_left, 0);
+			my_msleep(50);
+		}
+		
+		while(INFRARED_OMNI == HARMONY_SIGNAL_TURNRIGHT || INFRARED_RIGHT == HARMONY_SIGNAL_TURNRIGHT || INFRARED_LEFT == HARMONY_SIGNAL_TURNRIGHT) {
+			roomba_drive(velocity, -300);
+			roomba_return_current_value(sensor_array_infrared_omni, 0);
+			roomba_return_current_value(sensor_array_infrared_right, 0);
+			roomba_return_current_value(sensor_array_infrared_left, 0);
+			my_msleep(50);
+		}
+		if(INFRARED_OMNI == HARMONY_SIGNAL_SPOT || INFRARED_RIGHT == HARMONY_SIGNAL_SPOT || INFRARED_LEFT == HARMONY_SIGNAL_SPOT) {
+			velocity = (velocity == 400 ?  200 : 400);
+		}
 
-        if(cliff_front_left_signal > cliff_front_right_signal + 500){
+        if(CLIFF_FRONT_LEFT_SIG > CLIFF_FRONT_RIGHT_SIG + 500){
             roomba_drive(velocity, 200);
-        } else if(cliff_front_left_signal + 500 < cliff_front_right_signal){
+        } else if(CLIFF_FRONT_LEFT_SIG + 500 < CLIFF_FRONT_RIGHT_SIG){
             roomba_drive(velocity, -200);
         } else {
             roomba_drive(velocity, radius);

@@ -86,6 +86,28 @@ const roomba_sensor_type_t cliff_right_signal_sensor =
     false
 };
 
+const roomba_sensor_type_t infrared_omni_sensor =
+{
+    SENSORS_INFRARED_CHARACTER_OMNI,
+    0x01,
+    false
+};
+
+
+const roomba_sensor_type_t infrared_right_sensor =
+{
+    SENSORS_INFRARED_CHARACTER_RIGHT,
+    0x01,
+    false
+};
+
+const roomba_sensor_type_t infrared_left_sensor =
+{
+    SENSORS_INFRARED_CHARACTER_LEFT,
+    0x01,
+    false
+};
+
 const int8_t sensor_number = 1;
 
 const int16_t radius = 32767;                      //  mm
@@ -102,7 +124,11 @@ roomba_sensor_t sensor_array_cliff_front_left_signal[1];
 roomba_sensor_t sensor_array_cliff_right_signal[1];
 roomba_sensor_t sensor_array_cliff_front_right_signal[1];
 
-int16_t velocity = 400;            // mm/s
+roomba_sensor_t sensor_array_infrared_omni[1];
+roomba_sensor_t sensor_array_infrared_right[1];
+roomba_sensor_t sensor_array_infrared_left[1];
+
+int16_t velocity = 200;            // mm/s
 
 //char array for output
 char str[5];
@@ -145,6 +171,13 @@ void init_cliff_signal()
 	roomba_init_sensor(sensor_array_cliff_front_left_signal, &cliff_front_left_signal_sensor);
 	roomba_init_sensor(sensor_array_cliff_right_signal, &cliff_right_signal_sensor);
 	roomba_init_sensor(sensor_array_cliff_front_right_signal, &cliff_front_right_signal_sensor);
+}
+
+void init_infrared() 
+{
+	roomba_init_sensor(sensor_array_infrared_omni, &infrared_omni_sensor);
+	roomba_init_sensor(sensor_array_infrared_right, &infrared_right_sensor);
+	roomba_init_sensor(sensor_array_infrared_left, &infrared_left_sensor);
 }
 
 void roomba_set_led_on(uint8_t led_bits, uint8_t clean_power_color, uint8_t clean_power_intensity)
@@ -230,6 +263,7 @@ int32_t roomba_return_current_value(roomba_sensor_t *sensor_array, int32_t measu
     measured_value += sensor_array[0].value;
     return measured_value;
 }
+
 
 void roomba_set_letters_string(const char* str, int8_t length)
 {
