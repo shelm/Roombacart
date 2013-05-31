@@ -330,18 +330,10 @@ int32_t roomba_turn_angle(int32_t angle_to_turn, int16_t velocity, int16_t radiu
     return  (((roombas_turned_angle << 3) / faktor) >> 3);
 }
 
-//durch andere Funktion + Makros ersetzern
-bool_t roomba_is_button_enabled(uint32_t button)
-{
-
-    uart_write_byte(CMD_SENSORS);
-    uart_write_byte(SENSORS_BUTTONS);
-    my_msleep(40);
-
-    uint32_t enabled_buttons = uart_read_byte();
-
-    return (button & enabled_buttons);
-
+uint8_t read_button() {
+	uart_write_byte(CMD_SENSORS);
+	uart_write_byte(BUT_PACK_ID);
+	return uart_read_byte();
 }
 
 
