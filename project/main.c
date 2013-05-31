@@ -51,11 +51,34 @@ int main(int argc, char **argv)
     IOWR32(A_PIO_LBLUE, PIO_DATA, ledb_vals[0]);
     roomba_set_letters_string(greeting, 4);
 
-    init_cliff_sensors();
     init_cliff_signal();
-    //initialize the existing sensors (for example, bump_sensor) with value 0
-    //for example
-    //roomba_init_sensor(sensor_array_to_drive, &distance_sensor);
+
+    button_wait(1);
+
+    while(true){
+
+        if(button_pressed(0)){
+            roomba_stop();
+            break;
+        }
+
+        int32_t cliff_left_signal = roomba_return_current_value(sensor_array_cliff_left_signal, 0);
+        int32_t cliff_front_left_signal = roomba_return_current_value(sensor_array_cliff_front_left_signal, 0);
+        int32_t cliff_right_signal = roomba_return_current_value(sensor_array_cliff_front_right_signal, 0);
+        int32_t cliff_front_right_signal = roomba_return_current_value(sensor_array_cliff_front_right_signal, 0);
+
+        if(cliff_front_left_signal > cliff_front_right_signal + 500){
+            roomba_drive(velocity, 200);
+        } else if(cliff_front_left_signal + 500 < cliff_front_right_signal){
+            roomba_drive(velocity, -200);
+        } else {
+            roomba_drive(velocity, radius);
+        }
+
+
+        my_msleep(50);
+
+    }
 
     return 0;
 }

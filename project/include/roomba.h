@@ -201,6 +201,10 @@ void roomba_read_sensor(roomba_sensor_t *sensor);
 */
 void roomba_read_sensors(roomba_sensor_t *sensor_array, int8_t sensor_number);
 
+/*! returns the value of the given sensor (sensor array)
+*/
+int32_t roomba_return_current_value(roomba_sensor_t *sensor_array, int32_t measured_value);
+
 /*! shows a specific sensor value;
     input value length is length of resultstring (for example for string "113" is length = 3)
 */

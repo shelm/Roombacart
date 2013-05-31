@@ -65,14 +65,14 @@ const roomba_sensor_type_t cliff_left_signal_sensor =
     false
 };
 
-const roomba_sensor_type_t cliff_front_front_left_signal_sensor =
+const roomba_sensor_type_t cliff_front_left_signal_sensor =
 {
     SENSORS_CLIFF_FRONT_LEFT_SIGNAL,
     0x02,
     false
 };
 
-const roomba_sensor_type_t cliff_front_front_right_signal_sensor =
+const roomba_sensor_type_t cliff_front_right_signal_sensor =
 {
     SENSORS_CLIFF_FRONT_RIGHT_SIGNAL,
     0x02,
@@ -102,7 +102,7 @@ roomba_sensor_t sensor_array_cliff_front_left_signal[1];
 roomba_sensor_t sensor_array_cliff_right_signal[1];
 roomba_sensor_t sensor_array_cliff_front_right_signal[1];
 
-int16_t velocity = 200;            // mm/s
+int16_t velocity = 400;            // mm/s
 
 //char array for output
 char str[5];
@@ -133,18 +133,18 @@ void init_roomba()
 
 void init_cliff_sensors()
 {
-	roomba_init_sensor(sensor_array_cliff_left, &cliff_left_sensor);
-	roomba_init_sensor(sensor_array_cliff_front_left, &cliff_front_left_sensor);
-	roomba_init_sensor(sensor_array_cliff_right, &cliff_right_sensor);
-	roomba_init_sensor(sensor_array_cliff_front_right, &cliff_front_right_sensor);
+//	roomba_init_sensor(sensor_array_cliff_left, &cliff_left_sensor);
+//	roomba_init_sensor(sensor_array_cliff_front_left, &cliff_front_left_sensor);
+//	roomba_init_sensor(sensor_array_cliff_right, &cliff_right_sensor);
+//	roomba_init_sensor(sensor_array_cliff_front_right, &cliff_front_right_sensor);
 }
 
 void init_cliff_signal()
 {
-	roomba_init_sensor(sensor_array_cliff_left_signal, &cliff_left_sensor_signal);
-	roomba_init_sensor(sensor_array_cliff_front_left_signal, &cliff_front_left_sensor_signal;
-	roomba_init_sensor(sensor_array_cliff_right_signal, &cliff_right_sensor_signal);
-	roomba_init_sensor(sensor_array_cliff_front_right_signal, &cliff_front_right_sensor_signal);
+	roomba_init_sensor(sensor_array_cliff_left_signal, &cliff_left_signal_sensor);
+	roomba_init_sensor(sensor_array_cliff_front_left_signal, &cliff_front_left_signal_sensor);
+	roomba_init_sensor(sensor_array_cliff_right_signal, &cliff_right_signal_sensor);
+	roomba_init_sensor(sensor_array_cliff_front_right_signal, &cliff_front_right_signal_sensor);
 }
 
 void roomba_set_led_on(uint8_t led_bits, uint8_t clean_power_color, uint8_t clean_power_intensity)
@@ -221,10 +221,10 @@ void roomba_read_sensors(roomba_sensor_t *sensor_array, int8_t sensor_number)
     }
 }
 
-int32_t roomba_return_current_value(roomba_sensor_t *sensor_array, int8_t sensor_number, int32_t measured_value)
+int32_t roomba_return_current_value(roomba_sensor_t *sensor_array, int32_t measured_value)
 {
-    roomba_request_sensors(sensor_array, sensor_number);
-    roomba_read_sensors(sensor_array, sensor_number);
+    roomba_request_sensors(sensor_array, 1);
+    roomba_read_sensors(sensor_array, 1);
 
     //check value;
     measured_value += sensor_array[0].value;
@@ -324,31 +324,32 @@ void roomba_stop()
 //Umschreiben, damit man auf die ausseren Sachen reagieren koennte
 int32_t roomba_turn_angle(int32_t angle_to_turn, int16_t velocity, int16_t radius, int32_t faktor)
 {
-    int32_t roombas_angle = ((faktor * (angle_to_turn << 3)) >> 3);
-    int32_t roombas_turned_angle = 0;
-
-    roomba_drive(velocity, radius);
-
-    do
-    {
-        my_msleep(500);
-
-        roomba_request_sensors(sensor_array_to_turn, sensor_number);
-        roomba_read_sensors(sensor_array_to_turn, sensor_number);
-
-        roombas_turned_angle += sensor_array_to_turn[0].value;
-
-        my_msleep(50);
-
-    }
-    while(ABS_T(roombas_turned_angle) < ABS_T(roombas_angle));
-
-    return  (((roombas_turned_angle << 3) / faktor) >> 3);
+//    int32_t roombas_angle = ((faktor * (angle_to_turn << 3)) >> 3);
+//    int32_t roombas_turned_angle = 0;
+//
+//    roomba_drive(velocity, radius);
+//
+//    do
+//    {
+//        my_msleep(500);
+//
+//        roomba_request_sensors(sensor_array_to_turn, sensor_number);
+//        roomba_read_sensors(sensor_array_to_turn, sensor_number);
+//
+//        roombas_turned_angle += sensor_array_to_turn[0].value;
+//
+//        my_msleep(50);
+//
+//    }
+//    while(ABS_T(roombas_turned_angle) < ABS_T(roombas_angle));
+//
+//    return  (((roombas_turned_angle << 3) / faktor) >> 3);
+return 0;
 }
 
 uint8_t read_button() {
 	uart_write_byte(CMD_SENSORS);
-	uart_write_byte(BUT_PACK_ID);
+	uart_write_byte(SENSORS_BUTTONS);
 	return uart_read_byte();
 }
 
