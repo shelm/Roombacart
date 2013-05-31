@@ -171,6 +171,14 @@ typedef struct {
 */
 void init_roomba(void);
 
+/*! initializes the cliff sensors
+*/
+void init_cliff_sensors(void);
+
+/*! initializes the cliff signal sensors
+*/
+void init_cliff_signal(void);
+
 /*! sets a specific led on;
     assignes clean power led clean_power_color and clean_power_intensity
 */

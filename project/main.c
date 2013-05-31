@@ -51,6 +51,8 @@ int main(int argc, char **argv)
     IOWR32(A_PIO_LBLUE, PIO_DATA, ledb_vals[0]);
     roomba_set_letters_string(greeting, 4);
 
+    init_cliff_sensors();
+    init_cliff_signal();
     //initialize the existing sensors (for example, bump_sensor) with value 0
     //for example
     //roomba_init_sensor(sensor_array_to_drive, &distance_sensor);

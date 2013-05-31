@@ -131,22 +131,6 @@ void init_roomba()
     my_msleep(ROOMBA_DELAY_MODECHANGE_MS);
 }
 
-void init_cliff_sensors()
-{
-	roomba_init_sensor(sensor_array_cliff_left, &cliff_left_sensor);
-	roomba_init_sensor(sensor_array_cliff_front_left, &cliff_front_left_sensor);
-	roomba_init_sensor(sensor_array_cliff_right, &cliff_right_sensor);
-	roomba_init_sensor(sensor_array_cliff_front_right, &cliff_front_right_sensor);
-}
-
-void init_cliff_signal()
-{
-	roomba_init_sensor(sensor_array_cliff_left_signal, &cliff_left_sensor_signal);
-	roomba_init_sensor(sensor_array_cliff_front_left_signal, &cliff_front_left_sensor_signal;
-	roomba_init_sensor(sensor_array_cliff_right_signal, &cliff_right_sensor_signal);
-	roomba_init_sensor(sensor_array_cliff_front_right_signal, &cliff_front_right_sensor_signal);
-}
-
 void roomba_set_led_on(uint8_t led_bits, uint8_t clean_power_color, uint8_t clean_power_intensity)
 {
     uart_write_byte(CMD_LEDS);
