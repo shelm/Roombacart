@@ -167,6 +167,7 @@ typedef struct {
 #define COLOR_GREEN    0x00
 #define COLOR_RED      0xff
 /******************************************************* Function prototypes */
+
 /*! initializes the rumba
 */
 void init_roomba(void);
@@ -222,20 +223,17 @@ void roomba_stop();
 */
 int32_t roomba_turn_angle(int32_t angle_to_turn, int16_t velocity, int16_t radius, int32_t faktor);
 
-
-//umschreiben
-/*! says whether a specific button is pressed;
-    return value:
-	true - button is pressed
-	false - button isn't pressed
-*/
-bool_t roomba_is_button_enabled(uint32_t button);
+/**
+ * reads the buttonpackage from the roomba an returns the value
+ * */
+uint8_t read_button();
 
 /*! function converts the resulting number in the decimal string (char array)
     and saves it into result;
 	return value is length of resultstring (for example for string "113" is length = 3)
 */
 int8_t itos(int number, char* result);
+
 /************************************************************** Global const */
 
 /*! initialized sensors with values:
@@ -283,8 +281,13 @@ extern char str[5];
 
 #endif /* !_ROOMBA_H */
 
+/******************************************************************** Macros */
 
-//void init_roomba(int);
-//void send_commands();
-
-//void roomba_main();
+/**
+* Checks if a button on the simulator is pressed or not
+**/
+#define SIM_BUTTON_PRESSED(button) (read_button() == button)
+/**
+ * Waits for Button input
+**/
+#define SIM_BUTTON_WAIT(button) while(!SIM_BUTTON_PRESSED(button))my_msleep(50);
