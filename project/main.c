@@ -33,6 +33,16 @@
 
 char greeting[4] = {'I', 'H', 'I', 'H'};
 
+/*
+ *  false if left sensor left line first
+ *  true if right sensor left line first
+ */
+bool_t direction;
+
+bool_t offroad = false;
+
+int count = 0;
+
 /******************************************************************** Macros */
 
 #define CLIFF_LEFT_SIG roomba_return_current_value(sensor_array_cliff_left_signal, 0)
@@ -63,22 +73,22 @@ int main(int argc, char **argv)
 
     init_cliff_signal();
 	init_infrared();
-	
+
 	transmit_song(indiana_jones_theme, 16, 0);
 	my_msleep(15);
 	transmit_song(indiana_jones_theme_part_2, 16, 1);
 	my_msleep(15);
 	transmit_song(indiana_jones_theme_part_3, 14, 2);
-	play_song(0);	
+	play_song(0);
 	while(check_for_playing_song()){
 		my_msleep(15);
 	}
-	play_song(1);
+//	play_song(1);
 	while(check_for_playing_song()){
 		my_msleep(15);
 	}
-	play_song(2);
-	
+//	play_song(2);
+
     button_wait(1);
 
     while(true){
@@ -91,11 +101,11 @@ int main(int argc, char **argv)
 		roomba_return_current_value(sensor_array_infrared_omni, 0);
 		roomba_return_current_value(sensor_array_infrared_right, 0);
 		roomba_return_current_value(sensor_array_infrared_left, 0);
-		
+
 		if(INFRARED_OMNI == HARMONY_SIGNAL_PAUSE || INFRARED_RIGHT == HARMONY_SIGNAL_PAUSE || INFRARED_LEFT == HARMONY_SIGNAL_PAUSE) {
 			roomba_set_led_on(BTN_CLEAN, 100, 100);
 		}
-		
+
 		while(INFRARED_OMNI == HARMONY_SIGNAL_TURNLEFT || INFRARED_RIGHT == HARMONY_SIGNAL_TURNLEFT || INFRARED_LEFT == HARMONY_SIGNAL_TURNLEFT) {
 			roomba_drive(velocity, 300);
 			roomba_return_current_value(sensor_array_infrared_omni, 0);
@@ -103,7 +113,7 @@ int main(int argc, char **argv)
 			roomba_return_current_value(sensor_array_infrared_left, 0);
 			my_msleep(50);
 		}
-		
+
 		while(INFRARED_OMNI == HARMONY_SIGNAL_TURNRIGHT || INFRARED_RIGHT == HARMONY_SIGNAL_TURNRIGHT || INFRARED_LEFT == HARMONY_SIGNAL_TURNRIGHT) {
 			roomba_drive(velocity, -300);
 			roomba_return_current_value(sensor_array_infrared_omni, 0);
@@ -115,13 +125,50 @@ int main(int argc, char **argv)
 			velocity = (velocity == 400 ?  200 : 400);
 		}
 
-        if(CLIFF_FRONT_LEFT_SIG > CLIFF_FRONT_RIGHT_SIG + 500){
-            roomba_drive(velocity, 200);
-        } else if(CLIFF_FRONT_LEFT_SIG + 500 < CLIFF_FRONT_RIGHT_SIG){
-            roomba_drive(velocity, -200);
-        } else {
+
+        if(CLIFF_FRONT_LEFT_SIG > 1200 && CLIFF_FRONT_RIGHT_SIG < 1200){
+            direction = true;
+            roomba_drive(velocity, 1000);
+
+        } else if(CLIFF_FRONT_LEFT_SIG < 1200 && CLIFF_FRONT_RIGHT_SIG > 1200){
+            direction = false;
+            roomba_drive(velocity, -1000);
+        }
+
+
+		if (CLIFF_FRONT_LEFT_SIG < 1200 && CLIFF_FRONT_RIGHT_SIG < 1200) {
+            if (direction) {
+                roomba_drive(velocity, 200);
+            } else {
+                roomba_drive(velocity, -200);
+            }
+            offroad = true;
+		} else if (CLIFF_FRONT_LEFT_SIG > 1200 && CLIFF_FRONT_RIGHT_SIG > 1200) {
+		    if(offroad){
+                if (direction) {
+                    roomba_drive(velocity, -800);
+                } else {
+                    roomba_drive(velocity, 800);
+                }
+                if(count > 10){
+                    offroad = false;
+                    count = 0;
+                } else {
+                    count++;
+                }
+		    }
+        } else if (CLIFF_FRONT_LEFT_SIG > 1200 || CLIFF_FRONT_RIGHT_SIG > 1200) {
             roomba_drive(velocity, radius);
         }
+
+
+//        if(CLIFF_FRONT_LEFT_SIG > CLIFF_FRONT_RIGHT_SIG + 500){
+//            roomba_drive(velocity, 200);
+//        } else if(CLIFF_FRONT_LEFT_SIG + 500 < CLIFF_FRONT_RIGHT_SIG){
+//            roomba_drive(velocity, -200);
+//        } else {
+//            roomba_drive(velocity, radius);
+//        }
 
 
         my_msleep(50);

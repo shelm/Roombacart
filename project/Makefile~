@@ -172,16 +172,16 @@ new: clean all
 
 .PHONY: upload
 upload: $(TARGET).elf
-	sh $(N2DOWNLOAD) $(TARGET).elf
+	$(N2DOWNLOAD) $(TARGET).elf
 
 .PHONY: run
 run: upload
-	sh $(N2DOWNLOAD) -g
+	$(N2DOWNLOAD) -g
 
 .PHONY: cont
 cont:
-	sh $(N2DOWNLOAD) -g
+	$(N2DOWNLOAD) -g
 
 .PHONY: stop
 stop:
-	sh $(N2DOWNLOAD) --stop
+	$(N2DOWNLOAD) --stop
