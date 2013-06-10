@@ -1,46 +1,41 @@
 /**
- * $Id: timer.c 672 2013-04-12 10:30:44Z klugeflo $
+ * $Id: timer.c 639 2012-12-06 14:36:15Z klugeflo $
  */
-
-#if 0
 
 /******************************************************************************
 
 File: timer.c
 
-Project: Roomba Embedded Systems Training
+Project: RTOS Training OSEK Implementation
 
 Description: Handling of tick timer
 
 Author: Florian Kluge <kluge@informatik.uni-augsburg.de>
-        Universit‰t Augsburg
+        Universit√§t Augsburg
 
-Created: 21.02.2011
+Created: 30.11.2010
+
+Last changed: 06.06.2013
 
 *******************************************************************************
 
 Modification history:
 ---------------------
-21.02.2011 (FAK) Created from RTOS Training
+06.06.2013 (MG) Edited for ES training
 
 */
 
 
 /****************************************************************** Includes */
 
-#include <timer.h>
-
-#include <stddef.h>
-#include <errno.h>
-#include <spr-defs.h>
-#include <or32intrinsics.h>
-
+#include "timer.h"
 
 /******************************************************************* Defines */
 
 
 /******************************************************* Function prototypes */
 
+void _tt_disable(void);
 
 /************************************************************** Global const */
 
@@ -53,53 +48,58 @@ Modification history:
 
 /*********************************************************** Local variables */
 
-static void (*my_callback)(void) = NULL;
 
 /******************************************************************** Macros */
 
 
 /********************************************************** Global functions */
 
-uint32_t register_timer_cb(void (*cb_fn)(void)) {
-  uint32_t err = 0;
-  if (cb_fn == NULL) {
-    err = EINVAL;
-  }
-  else {
-    my_callback = cb_fn;
-  }
-  return err;
+
+status_t tt_periodic(uint32_t period) {
+    status_t err = 0;
+
+    if (period == 0) {
+        _tt_disable();
+    } else {
+    	IOWR32(A_TIMER, TIMER_CONTROL, TIMER_CONTROL_ITO | TIMER_CONTROL_CONT | TIMER_CONTROL_STOP);
+    	IOWR32(A_TIMER, TIMER_STATUS, 0);
+    	
+	IOWR32(A_TIMER, TIMER_PERIODL, period & 0xffff);
+	IOWR32(A_TIMER, TIMER_PERIODH, period >> 16);
+
+	IOWR32(A_TIMER, TIMER_CONTROL, TIMER_CONTROL_ITO | TIMER_CONTROL_CONT | TIMER_CONTROL_START);
+    }
+
+    return err;
+}
+
+status_t tt_single(uint32_t period) {
+    status_t err = 0;
+
+    if (period == 0) {
+        _tt_disable();
+    } else {
+	IOWR32(A_TIMER, TIMER_PERIODL, period & 0xffff);
+	IOWR32(A_TIMER, TIMER_PERIODH, period >> 16);
+	IOWR32(A_TIMER, TIMER_CONTROL, TIMER_CONTROL_ITO | TIMER_CONTROL_START);
+    }
+
+    return err;
 }
 
 
-uint32_t enable_timer(void) {
-  uint32_t err = 0;
-  if (my_callback == NULL) {
-    err = ENOENT;
-  }
-  else {
-    __mtspr(SPR_SR, __mfspr(SPR_SR) | SPR_SR_TEE);
-  }
-  return err;
+void tt_stop() {
+	_tt_disable();
 }
 
+void tt_reset() {
 
-void disable_timer(void) {
-  __mtspr(SPR_SR, __mfspr(SPR_SR) & ~SPR_SR_TEE);
-}
-
-
-
-/******************************************************* Handler for XCP vec */
-
-void do_timer(void) {
-  if (my_callback != NULL) {
-    my_callback();
-  }
+	IOWR32(A_TIMER, TIMER_STATUS, 0);
 }
 
 
 /*********************************************************** Local functions */
 
-
-#endif /* 0 */
+void _tt_disable(void) {
+	IOWR32(A_TIMER, TIMER_CONTROL, TIMER_CONTROL_STOP);
+}

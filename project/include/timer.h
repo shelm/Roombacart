@@ -1,83 +1,40 @@
-/**
- * $Id: timer.h 672 2013-04-12 10:30:44Z klugeflo $
- */
+#ifndef DRIVER_TIMER_H
+#define DRIVER_TIMER_H 1
 
-/******************************************************************************
-
-File: timer.h
-
-Project: Roomba Embedded Systems Training
-
-Description: Handling of tick timer
-
-Author: Florian Kluge <kluge@informatik.uni-augsburg.de>
-        Universität Augsburg
-
-Created: 21.02.2011
-
-*******************************************************************************
-
-Modification history:
----------------------
-21.02.2011 (FAK) Created from RTOS Training
-
-*/
-
-#ifndef _TIMER_H
-#define _TIMER_H 1
-
-
-/****************************************************************** Includes */
-
+#include <board.h>
 #include <stdint.h>
+#include <irq.h>
+#include <pio.h>
+#include <asm/io.h>
 
 #ifdef __cplusplus
 extern "C" {
 #endif
-/******************************************************************* Defines */
+
+/* Defines for Timer controlling */
+#define TIMER_STATUS		0
+#define TIMER_CONTROL		4
+#define TIMER_PERIODL		8
+#define TIMER_PERIODH		12
+
+#define NIOS2_TIMER_STATUS_TO	(1<<0)
+#define NIOS2_TIMER_STATUS_RUN	(1<<1)
+
+#define TIMER_CONTROL_ITO	(1<<0)
+#define TIMER_CONTROL_CONT	(1<<1)
+#define TIMER_CONTROL_START	(1<<2)
+#define TIMER_CONTROL_STOP	(1<<3)
 
 
-/****************************************************************** Typedefs */
-
-
-/************************************************************** Global const */
-
-
-/********************************************************** Global variables */
-
-
-/************************************************ Global function prototypes */
-
-/*!
-  Register callback function for timer exceptions
-  \param cb_fn callback
-  \return - 0 if no error
-          - EINVAL if cb_fn is invalid, i.e. NULL
-*/
-  uint32_t register_timer_cb(void (*cb_fn)(void));
-
-  /*!
-    Enable timer exception
-    \return - 0 if no error
-            - ENOENT if no handler was registered
-  */
-  uint32_t enable_timer(void);
-
-  /*!
-    Disable timer exception
-  */
-  void disable_timer(void);
-
-
-/*************************************************** Global inline functions */
-
-
-/******************************************************************** Macros */
-
+status_t tt_periodic(uint32_t);
+status_t tt_single(uint32_t);
+void tt_stop(void);
+/* Call tt_reset in callback handler to reset the timer */
+void tt_reset(void);
 
 
 #ifdef __cplusplus
 }
 #endif
 
-#endif /* !_TIMER_H */
+#endif /* DRIVER_TIMER_H */

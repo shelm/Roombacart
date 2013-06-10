@@ -63,6 +63,13 @@ roomba_note_t indiana_jones_theme_part_3[] = {
 	{NOTE_G+tone_heigth, 80},
 };
 
+roomba_note_t item_detected_sound[] = {
+    {NOTE_G, 16},
+    {NOTE_A, 16},
+    {NOTE_B, 16},
+    {NOTE_C, 16},
+};
+
 /********************************************************** Global variables */
 
 

@@ -32,7 +32,7 @@ typedef struct  {
 extern roomba_note_t indiana_jones_theme[];
 extern roomba_note_t indiana_jones_theme_part_2[];
 extern roomba_note_t indiana_jones_theme_part_3[];
-
+extern roomba_note_t item_detected_sound[];
 /********************************************************** Global variables */
 
 

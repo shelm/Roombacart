@@ -48,7 +48,7 @@ LIB = lib/lib$(L_LIB).a
 # test program
 TARGET = main
 TARGETSRC = $(TARGET).c
-TARGETOBJ = $(TARGETSRC:%.c=%.o)
+TARGETOBJ = $(TARGETSRC:%.c=%.o) src/exception.o
 MAPFILE = $(TARGET).map
 
 

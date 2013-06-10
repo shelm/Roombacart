@@ -5,9 +5,13 @@
 #include <output.h>
 #include <asm/nios2intrinsics.h>
 #include <asm/ptrace.h>
+#include <irq.h>
 
 void handle_ge(uint32_t cause, sc_stackframe_t *sf) {
     switch (cause) {
+    	case 0: // nios2 timer interrupt
+		do_irq();
+	        break;
         case 2: // Internal Interrupt
         case 3: // Trap
                 // both handled in exception.S

@@ -8,7 +8,9 @@ extern "C" {
 #endif
 
 #include "board.h"
+#include <irq.h>
 #include "tools.h"
+
 /******************************************************************* Typedefs */
 #define ABS_T(number) ((number) >= 0? (number) : -(number))
 
@@ -27,6 +29,13 @@ typedef struct {
     const roomba_sensor_type_t *type;
     int32_t volatile value;
 } roomba_sensor_t;
+
+/*! enum for all available items
+*/
+enum item_t{
+    empty,
+    speed
+};
 
 /******************************************************************* Defines */
 
@@ -179,7 +188,7 @@ void init_roomba(void);
 
 /*! initializes the cliff sensors
 */
-void init_cliff_sensors(void);
+//void init_cliff_sensors(void);
 
 /*! initializes the infrared
 */
@@ -199,20 +208,15 @@ void roomba_set_led_on(uint8_t led_bits, uint8_t clean_power_color, uint8_t clea
 void roomba_init_sensor(roomba_sensor_t *sensor, const roomba_sensor_type_t* type);
 
 void roomba_request_sensor(roomba_sensor_t *sensor);
-void roomba_request_sensors(roomba_sensor_t *sensor_array, int8_t sensor_number);
 
 /*! reads the value of the sensor
 */
-void roomba_read_sensor(roomba_sensor_t *sensor);
+void roomba_read_sensor(roomba_sensor_t *sensor, bool_t accumulate_value);
 
 /*! reads the values of the specific number of the sensors (sensor_number)
     input value number defined, how much sensors there are in the sensor array
 */
-void roomba_read_sensors(roomba_sensor_t *sensor_array, int8_t sensor_number);
-
-/*! returns the value of the given sensor (sensor array)
-*/
-int32_t roomba_return_current_value(roomba_sensor_t *sensor_array, int32_t measured_value);
+int32_t roomba_update_sensor(roomba_sensor_t *sensor, bool_t accumulate_value);
 
 /*! shows a specific sensor value;
     input value length is length of resultstring (for example for string "113" is length = 3)
@@ -247,6 +251,26 @@ uint8_t read_button();
 */
 int8_t itos(int number, char* result);
 
+/*! detect whether the roomba drives over an item or not
+*/
+bool_t roomba_check_for_item(int32_t cliff_left_signal_val, int32_t cliff_right_signal_val);
+
+/*! tells the roomba what to do if an item has been detected
+*/
+void roomba_pick_up_item();
+
+/*! generates a random item
+*/
+enum item_t roomba_generate_rand_item();
+
+/*! uses the current item
+*/
+void roomba_use_item();
+
+/*! ends the current effect of the last item used
+*/
+uint32_t roomba_item_effect_ends();
+
 /************************************************************** Global const */
 
 /*! initialized sensors with values:
@@ -254,11 +278,6 @@ int8_t itos(int number, char* result);
 	bytes_number (one ore two),
 	is_signed (true, if the value can be negative, false, if cant)
 */
-//extern const roomba_sensor_type_t bump_sensor;
-extern const roomba_sensor_type_t cliff_left_sensor;
-extern const roomba_sensor_type_t cliff_front_left_sensor;
-extern const roomba_sensor_type_t cliff_right_sensor;
-extern const roomba_sensor_type_t cliff_front_right_sensor;
 
 extern const roomba_sensor_type_t cliff_left_signal_sensor;
 extern const roomba_sensor_type_t cliff_front_left_signal_sensor;
@@ -269,7 +288,6 @@ extern const roomba_sensor_type_t infrared_omni_sensor;
 extern const roomba_sensor_type_t infrared_right_sensor;
 extern const roomba_sensor_type_t infrared_left_sensor;
 
-
 //length of sensor_arrays
 extern const int8_t sensor_number;
 
@@ -277,25 +295,22 @@ extern const int16_t radius;
 extern const int16_t radius_counter_clockwise;
 
 /********************************************************** Global variables */
-// create sensor array
-extern roomba_sensor_t sensor_array_cliff_left[];
-extern roomba_sensor_t sensor_array_cliff_front_left[];
-extern roomba_sensor_t sensor_array_cliff_right[];
-extern roomba_sensor_t sensor_array_cliff_front_right[];
+extern roomba_sensor_t cliff_left_signal;
+extern roomba_sensor_t cliff_front_left_signal;
+extern roomba_sensor_t cliff_right_signal;
+extern roomba_sensor_t cliff_front_right_signal;
 
-extern roomba_sensor_t sensor_array_cliff_left_signal[];
-extern roomba_sensor_t sensor_array_cliff_front_left_signal[];
-extern roomba_sensor_t sensor_array_cliff_right_signal[];
-extern roomba_sensor_t sensor_array_cliff_front_right_signal[];
+extern roomba_sensor_t infrared_omni;
+extern roomba_sensor_t infrared_right;
+extern roomba_sensor_t infrared_left;
 
-extern roomba_sensor_t sensor_array_infrared_omni[];
-extern roomba_sensor_t sensor_array_infrared_right[];
-extern roomba_sensor_t sensor_array_infrared_left[];
-
-extern int16_t velocity;
+extern volatile int16_t velocity;
 
 //char array for output
 extern char str[5];
+
+extern volatile enum item_t current_item;
+extern volatile enum item_t last_item_used;
 
 #ifdef __cplusplus
 }

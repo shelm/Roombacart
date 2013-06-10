@@ -21,8 +21,12 @@
 #include <s7ctl.h>
 #include <stddef.h>
 
+#include <timer.h> // needed for timer
+#include <irq.h>   // needed for timer
 
 /******************************************************************* Defines */
+
+#define ONE_SECOND_TIMER 75000000
 
 /******************************************************* Function prototypes */
 
@@ -30,33 +34,6 @@
 
 /*! initializing of the five sensors from typ roomba_sensor_type_t with the constant values
 */
-const roomba_sensor_type_t cliff_left_sensor =
-{
-    SENSORS_CLIFF_LEFT,
-    0x01,
-    false
-};
-
-const roomba_sensor_type_t cliff_left_front_sensor =
-{
-    SENSORS_CLIFF_FRONT_LEFT,
-    0x01,
-    false
-};
-
-const roomba_sensor_type_t cliff_right_front_sensor =
-{
-    SENSORS_CLIFF_FRONT_RIGHT,
-    0x01,
-    false
-};
-
-const roomba_sensor_type_t cliff_right_sensor =
-{
-    SENSORS_CLIFF_RIGHT,
-    0x01,
-    false
-};
 
 const roomba_sensor_type_t cliff_left_signal_sensor =
 {
@@ -113,25 +90,25 @@ const int8_t sensor_number = 1;
 const int16_t radius = 32767;                      //  mm
 const int16_t radius_counter_clockwise = 1;        //  mm
 
+volatile enum item_t current_item = empty;
+volatile enum item_t last_item_used = empty;
 /********************************************************** Global variables */
-roomba_sensor_t sensor_array_cliff_left[1];
-roomba_sensor_t sensor_array_cliff_front_left[1];
-roomba_sensor_t sensor_array_cliff_front_right[1];
-roomba_sensor_t sensor_array_cliff_right[1];
 
-roomba_sensor_t sensor_array_cliff_left_signal[1];
-roomba_sensor_t sensor_array_cliff_front_left_signal[1];
-roomba_sensor_t sensor_array_cliff_right_signal[1];
-roomba_sensor_t sensor_array_cliff_front_right_signal[1];
+roomba_sensor_t cliff_left_signal;
+roomba_sensor_t cliff_front_left_signal;
+roomba_sensor_t cliff_right_signal;
+roomba_sensor_t cliff_front_right_signal;
 
-roomba_sensor_t sensor_array_infrared_omni[1];
-roomba_sensor_t sensor_array_infrared_right[1];
-roomba_sensor_t sensor_array_infrared_left[1];
+roomba_sensor_t infrared_omni;
+roomba_sensor_t infrared_right;
+roomba_sensor_t infrared_left;
 
-int16_t velocity = 200;            // mm/s
+volatile int16_t velocity = 200;            // mm/s
 
 //char array for output
 char str[5];
+
+
 /*************************************************************** Local const */
 
 const int32_t NUM_DISPLAYS = 4;
@@ -149,7 +126,6 @@ const int32_t NUM_DISPLAYS = 4;
 
 void init_roomba()
 {
-
     uart_write_byte(CMD_START);
     my_msleep(ROOMBA_DELAY_MODECHANGE_MS);
 
@@ -157,27 +133,19 @@ void init_roomba()
     my_msleep(ROOMBA_DELAY_MODECHANGE_MS);
 }
 
-void init_cliff_sensors()
-{
-//	roomba_init_sensor(sensor_array_cliff_left, &cliff_left_sensor);
-//	roomba_init_sensor(sensor_array_cliff_front_left, &cliff_front_left_sensor);
-//	roomba_init_sensor(sensor_array_cliff_right, &cliff_right_sensor);
-//	roomba_init_sensor(sensor_array_cliff_front_right, &cliff_front_right_sensor);
-}
-
 void init_cliff_signal()
 {
-	roomba_init_sensor(sensor_array_cliff_left_signal, &cliff_left_signal_sensor);
-	roomba_init_sensor(sensor_array_cliff_front_left_signal, &cliff_front_left_signal_sensor);
-	roomba_init_sensor(sensor_array_cliff_right_signal, &cliff_right_signal_sensor);
-	roomba_init_sensor(sensor_array_cliff_front_right_signal, &cliff_front_right_signal_sensor);
+	roomba_init_sensor(&cliff_left_signal, &cliff_left_signal_sensor);
+	roomba_init_sensor(&cliff_front_left_signal, &cliff_front_left_signal_sensor);
+	roomba_init_sensor(&cliff_right_signal, &cliff_right_signal_sensor);
+	roomba_init_sensor(&cliff_front_right_signal, &cliff_front_right_signal_sensor);
 }
 
-void init_infrared() 
+void init_infrared()
 {
-	roomba_init_sensor(sensor_array_infrared_omni, &infrared_omni_sensor);
-	roomba_init_sensor(sensor_array_infrared_right, &infrared_right_sensor);
-	roomba_init_sensor(sensor_array_infrared_left, &infrared_left_sensor);
+	roomba_init_sensor(&infrared_omni, &infrared_omni_sensor);
+	roomba_init_sensor(&infrared_right, &infrared_right_sensor);
+	roomba_init_sensor(&infrared_left, &infrared_left_sensor);
 }
 
 void roomba_set_led_on(uint8_t led_bits, uint8_t clean_power_color, uint8_t clean_power_intensity)
@@ -190,80 +158,61 @@ void roomba_set_led_on(uint8_t led_bits, uint8_t clean_power_color, uint8_t clea
 
 void roomba_init_sensor(roomba_sensor_t *sensor, const roomba_sensor_type_t* type)
 {
-
     sensor->type = type; // the same as (*sensor).type = type;
     sensor->value = 0;
 }
 
 void roomba_request_sensor(roomba_sensor_t *sensor)
 {
-    uart_write_byte(sensor->type->package_id);
-}
-
-void roomba_request_sensors(roomba_sensor_t *sensor_array, int8_t sensor_number)
-{
     uart_write_byte(CMD_QUERY_LIST);
-    uart_write_byte(sensor_number);
-
-    int8_t i;
-    for(i = 0; i < sensor_number; i++)
-    {
-        roomba_request_sensor(sensor_array + i);
-    }
+    uart_write_byte(1);
+	uart_write_byte(sensor->type->package_id);
 }
 
-void roomba_read_sensor(roomba_sensor_t *sensor)
+void roomba_read_sensor(roomba_sensor_t *sensor, bool_t accumulate_value)
 {
+    int32_t current_value;
 
     if (sensor->type->bytes_number == 1)
     {
         if (sensor->type->is_signed)
         {
-
-            sensor->value = uart_read_byte();  // uart_read_byte() returns int32_t (signed)
+            current_value = uart_read_byte();  // uart_read_byte() returns int32_t (signed)
         }
         else
         {
-
-            sensor->value = uart_read_byte() & 0xFF; // usigned value
+            current_value = uart_read_byte() & 0xFF; // usigned value
         }
     }
     else   // sensor->type->bytes_number == 2
     {
-
-        IOWR32(A_PIO_LBLUE, PIO_DATA, ledb_vals[2]);
-
         if (sensor->type->is_signed)
         {
-
-            sensor->value = (uart_read_byte() << 8) | (uart_read_byte() & 0xFF); // sign of the highest byte remains
+            current_value = (uart_read_byte() << 8) | (uart_read_byte() & 0xFF); // sign of the highest byte remains
         }
         else
         {
-            sensor->value = ((uart_read_byte() & 0xFF) << 8) | (uart_read_byte() & 0xFF);
+            current_value = ((uart_read_byte() & 0xFF) << 8) | (uart_read_byte() & 0xFF);
         }
     }
+
+	if(accumulate_value)
+	{
+	    sensor->value += current_value;
+	}
+	else
+	{
+	   sensor->value = current_value;
+	}
 }
 
-void roomba_read_sensors(roomba_sensor_t *sensor_array, int8_t sensor_number)
+int32_t roomba_update_sensor(roomba_sensor_t *sensor, bool_t accumulate_value)
 {
-    int8_t i;
-    for(i = 0; i < sensor_number; i++)
-    {
-        roomba_read_sensor(sensor_array + i);
-    }
+  roomba_request_sensor(sensor);
+  roomba_read_sensor(sensor, accumulate_value);
+
+  return sensor->value;
 }
-
-int32_t roomba_return_current_value(roomba_sensor_t *sensor_array, int32_t measured_value)
-{
-    roomba_request_sensors(sensor_array, 1);
-    roomba_read_sensors(sensor_array, 1);
-
-    //check value;
-    measured_value += sensor_array[0].value;
-    return measured_value;
-}
-
 
 void roomba_set_letters_string(const char* str, int8_t length)
 {
@@ -350,9 +299,7 @@ void roomba_drive(int16_t velocity, int16_t radius)
 
 void roomba_stop()
 {
-
     roomba_drive(0, 0);
-
 }
 
 //Umschreiben, damit man auf die ausseren Sachen reagieren koennte
@@ -387,4 +334,49 @@ uint8_t read_button() {
 	return uart_read_byte();
 }
 
+bool_t roomba_check_for_item(int32_t cliff_left_signal_val, int32_t cliff_right_signal_val) {
+    show_number_on_display(cliff_left_signal_val, str);
+    if(cliff_left_signal_val > 2900 || cliff_right_signal_val > 2900)
+        return true;
+    return false;
+}
 
+void roomba_pick_up_item() {
+    play_song(3);
+    current_item = roomba_generate_rand_item();
+}
+
+enum item_t roomba_generate_rand_item() {
+    return speed;
+}
+
+void roomba_use_item() {
+    switch(current_item) {
+        case speed:
+            velocity = 400;
+            irq_request(IRQ_TIMER_N , roomba_item_effect_ends);
+            tt_periodic(ONE_SECOND_TIMER*5);
+            irq_enable(IRQ_TIMER_N );
+            break;
+        default:
+            break;
+    }
+    last_item_used = current_item;
+    current_item = empty;
+    roomba_set_led_on(LED_DIRT_DETECT_BLUE, 0,0);
+}
+
+uint32_t roomba_item_effect_ends() {
+    roomba_set_led_on(LED_DIRT_DETECT_BLUE^LED_DIRT_DETECT_BLUE, 0,0);
+    switch(last_item_used) {
+        case speed:
+            velocity = 200;
+            break;
+        default:
+            break;
+    }
+    last_item_used = empty;
+    tt_reset();
+    irq_disable(IRQ_TIMER_N);
+	return 0;
+}
