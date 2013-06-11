@@ -6,20 +6,34 @@ lib/libnios2rte-db_4ce10.a(alt_main.o)
                               lib/crt0.o (alt_main)
 lib/libnios2rte-db_4ce10.a(button.o)
                               main.o (button_pressed)
+lib/libnios2rte-db_4ce10.a(general_exception.o)
+                              src/exception.o (handle_ge)
+lib/libnios2rte-db_4ce10.a(gprintf.o)
+                              lib/libnios2rte-db_4ce10.a(general_exception.o) (gprintf)
+lib/libnios2rte-db_4ce10.a(irq.o)
+                              src/exception.o (do_irq)
 lib/libnios2rte-db_4ce10.a(led.o)
                               main.o (ledb_vals)
 lib/libnios2rte-db_4ce10.a(roomba.o)
                               main.o (radius)
 lib/libnios2rte-db_4ce10.a(sound.o)
                               main.o (indiana_jones_theme)
+lib/libnios2rte-db_4ce10.a(timer.o)
+                              lib/libnios2rte-db_4ce10.a(roomba.o) (tt_periodic)
 lib/libnios2rte-db_4ce10.a(tools.o)
                               main.o (my_sleep)
 lib/libnios2rte-db_4ce10.a(uart.o)
-                              lib/libnios2rte-db_4ce10.a(roomba.o) (uart_write_byte)
+                              lib/libnios2rte-db_4ce10.a(general_exception.o) (uart_putchar)
+/opt/altera12.0/nios2eds/bin/gnu/H-i686-pc-linux-gnu/bin/../lib/gcc/nios2-elf/4.1.2/libgcc.a(_udivdi3.o)
+                              lib/libnios2rte-db_4ce10.a(gprintf.o) (__udivdi3)
+/opt/altera12.0/nios2eds/bin/gnu/H-i686-pc-linux-gnu/bin/../lib/gcc/nios2-elf/4.1.2/libgcc.a(_umoddi3.o)
+                              lib/libnios2rte-db_4ce10.a(gprintf.o) (__umoddi3)
 /opt/altera12.0/nios2eds/bin/gnu/H-i686-pc-linux-gnu/bin/../lib/gcc/nios2-elf/4.1.2/libgcc.a(lib2-divmod.o)
                               lib/libnios2rte-db_4ce10.a(roomba.o) (__divsi3)
 /opt/altera12.0/nios2eds/bin/gnu/H-i686-pc-linux-gnu/bin/../lib/gcc/nios2-elf/4.1.2/libgcc.a(lib2-mul.o)
-                              lib/libnios2rte-db_4ce10.a(roomba.o) (__mulsi3)
+                              lib/libnios2rte-db_4ce10.a(gprintf.o) (__mulsi3)
+/opt/altera12.0/nios2eds/bin/gnu/H-i686-pc-linux-gnu/bin/../lib/gcc/nios2-elf/4.1.2/libgcc.a(_clz.o)
+                              /opt/altera12.0/nios2eds/bin/gnu/H-i686-pc-linux-gnu/bin/../lib/gcc/nios2-elf/4.1.2/libgcc.a(_udivdi3.o) (__clz_tab)
 /opt/altera12.0/nios2eds/bin/gnu/H-i686-pc-linux-gnu/bin/../lib/gcc/nios2-elf/4.1.2/../../../../nios2-elf/lib/libc.a(lib_a-exit.o)
                               lib/libnios2rte-db_4ce10.a(alt_main.o) (exit)
 /opt/altera12.0/nios2eds/bin/gnu/H-i686-pc-linux-gnu/bin/../lib/gcc/nios2-elf/4.1.2/../../../../nios2-elf/lib/libc.a(lib_a-impure.o)
@@ -36,30 +50,17 @@ lib/libnios2rte-db_4ce10.a(uart.o)
 Allocating common symbols
 Common symbol       size              file
 
-sensor_array_cliff_front_right_signal
-                    0x8               lib/libnios2rte-db_4ce10.a(roomba.o)
-sensor_array_cliff_front_right
-                    0x8               lib/libnios2rte-db_4ce10.a(roomba.o)
 errno               0x4               /opt/altera12.0/nios2eds/bin/gnu/H-i686-pc-linux-gnu/bin/../lib/gcc/nios2-elf/4.1.2/../../../../nios2-elf/lib/libc.a(lib_a-int_errno.o)
-sensor_array_infrared_omni
+cliff_right_signal  0x8               lib/libnios2rte-db_4ce10.a(roomba.o)
+cliff_front_left_signal
                     0x8               lib/libnios2rte-db_4ce10.a(roomba.o)
+infrared_left       0x8               lib/libnios2rte-db_4ce10.a(roomba.o)
+infrared_omni       0x8               lib/libnios2rte-db_4ce10.a(roomba.o)
 direction           0x4               main.o
-sensor_array_cliff_left_signal
-                    0x8               lib/libnios2rte-db_4ce10.a(roomba.o)
-sensor_array_cliff_front_left_signal
-                    0x8               lib/libnios2rte-db_4ce10.a(roomba.o)
-sensor_array_cliff_left
-                    0x8               lib/libnios2rte-db_4ce10.a(roomba.o)
-sensor_array_infrared_left
-                    0x8               lib/libnios2rte-db_4ce10.a(roomba.o)
-sensor_array_cliff_right_signal
-                    0x8               lib/libnios2rte-db_4ce10.a(roomba.o)
-sensor_array_cliff_right
-                    0x8               lib/libnios2rte-db_4ce10.a(roomba.o)
+infrared_right      0x8               lib/libnios2rte-db_4ce10.a(roomba.o)
+cliff_left_signal   0x8               lib/libnios2rte-db_4ce10.a(roomba.o)
 str                 0x5               lib/libnios2rte-db_4ce10.a(roomba.o)
-sensor_array_cliff_front_left
-                    0x8               lib/libnios2rte-db_4ce10.a(roomba.o)
-sensor_array_infrared_right
+cliff_front_right_signal
                     0x8               lib/libnios2rte-db_4ce10.a(roomba.o)
 
 Memory Configuration
@@ -74,6 +75,7 @@ Linker script and memory map
 
 LOAD lib/crt0.o
 LOAD main.o
+LOAD src/exception.o
 LOAD lib/libnios2rte-db_4ce10.a
 LOAD /opt/altera12.0/nios2eds/bin/gnu/H-i686-pc-linux-gnu/bin/../lib/gcc/nios2-elf/4.1.2/../../../../nios2-elf/lib/libstdc++.a
 LOAD /opt/altera12.0/nios2eds/bin/gnu/H-i686-pc-linux-gnu/bin/../lib/gcc/nios2-elf/4.1.2/../../../../nios2-elf/lib/libm.a
@@ -93,11 +95,14 @@ LOAD /opt/altera12.0/nios2eds/bin/gnu/H-i686-pc-linux-gnu/bin/../lib/gcc/nios2-e
  .entry         0x01000000        0x0 lib/crt0.o
                 0x01000000                __reset
 
-.exceptions     0x01000020        0x0
+.exceptions     0x01000020      0x144
                 0x01000020                PROVIDE (__ram_exceptions_start, ABSOLUTE (.))
                 0x01000020                . = ALIGN (0x20)
  *(.irq)
  *(.exceptions.entry.label)
+ .exceptions.entry.label
+                0x01000020        0x0 src/exception.o
+                0x01000020                alt_exception
  *(.exceptions.entry.user)
  *(.exceptions.entry)
  *(.exceptions.irqtest.user)
@@ -117,11 +122,12 @@ LOAD /opt/altera12.0/nios2eds/bin/gnu/H-i686-pc-linux-gnu/bin/../lib/gcc/nios2-e
  *(.exceptions.exit.user)
  *(.exceptions.exit)
  *(.exceptions)
-                0x01000020                PROVIDE (__ram_exceptions_end, ABSOLUTE (.))
+ .exceptions    0x01000020      0x144 src/exception.o
+                0x01000164                PROVIDE (__ram_exceptions_end, ABSOLUTE (.))
                 0x01000020                PROVIDE (__flash_exceptions_start, LOADADDR (.exceptions))
 
-.text           0x01000020     0x1874
-                0x01000020                PROVIDE (stext, ABSOLUTE (.))
+.text           0x01000164     0x43b8
+                0x01000164                PROVIDE (stext, ABSOLUTE (.))
  *(.interp)
  *(.hash)
  *(.dynsym)
@@ -165,251 +171,312 @@ LOAD /opt/altera12.0/nios2eds/bin/gnu/H-i686-pc-linux-gnu/bin/../lib/gcc/nios2-e
  *(.init)
  *(.plt)
  *(.text .stub .text.* .gnu.linkonce.t.*)
- .text          0x01000020       0x3c lib/crt0.o
-                0x01000020                _start
-                0x0100005c                _switch_context
- .text          0x0100005c      0x5bc main.o
-                0x0100005c                main
- .text          0x01000618       0xe4 lib/libnios2rte-db_4ce10.a(alt_load.o)
-                0x01000618                alt_load
- .text          0x010006fc       0x34 lib/libnios2rte-db_4ce10.a(alt_main.o)
-                0x010006fc                alt_main
- .text          0x01000730      0x12c lib/libnios2rte-db_4ce10.a(button.o)
-                0x01000730                button_pressed
-                0x010007a4                button_wait
- .text          0x0100085c       0x2c lib/libnios2rte-db_4ce10.a(led.o)
-                0x0100085c                led_init
- .text          0x01000888      0x798 lib/libnios2rte-db_4ce10.a(roomba.o)
-                0x01000888                init_roomba
-                0x010008cc                init_cliff_sensors
-                0x010008e8                init_cliff_signal
-                0x0100093c                init_infrared
-                0x01000984                roomba_set_led_on
-                0x010009f8                roomba_init_sensor
-                0x01000a30                roomba_request_sensor
-                0x01000a74                roomba_request_sensors
-                0x01000ae8                roomba_read_sensor
-                0x01000bd8                roomba_read_sensors
-                0x01000c3c                roomba_return_current_value
-                0x01000c98                roomba_set_letters_string
-                0x01000d4c                itos
-                0x01000e7c                show_number_on_display
-                0x01000f08                roomba_drive
-                0x01000f84                roomba_stop
-                0x01000fb4                roomba_turn_angle
-                0x01000fe4                read_button
- .text          0x01001020      0x150 lib/libnios2rte-db_4ce10.a(sound.o)
-                0x01001020                transmit_song
-                0x010010f0                play_song
-                0x01001134                check_for_playing_song
- .text          0x01001170      0x184 lib/libnios2rte-db_4ce10.a(tools.o)
-                0x01001170                my_sleep
-                0x01001234                invert_byte_order32
-                0x010012a8                invert_byte_order16
- .text          0x010012f4      0x1e4 lib/libnios2rte-db_4ce10.a(uart.o)
-                0x010012f4                uart_init
-                0x01001310                uart_putchar
-                0x01001378                uart_puts
-                0x01001428                uart_write_byte
-                0x01001478                uart_read_byte
- .text          0x010014d8      0x14c /opt/altera12.0/nios2eds/bin/gnu/H-i686-pc-linux-gnu/bin/../lib/gcc/nios2-elf/4.1.2/libgcc.a(lib2-divmod.o)
-                0x01001554                __divsi3
-                0x010015b4                __modsi3
-                0x01001614                __udivsi3
-                0x0100161c                __umodsi3
- .text          0x01001624       0x38 /opt/altera12.0/nios2eds/bin/gnu/H-i686-pc-linux-gnu/bin/../lib/gcc/nios2-elf/4.1.2/libgcc.a(lib2-mul.o)
-                0x01001624                __mulsi3
- .text          0x0100165c       0x38 /opt/altera12.0/nios2eds/bin/gnu/H-i686-pc-linux-gnu/bin/../lib/gcc/nios2-elf/4.1.2/../../../../nios2-elf/lib/libc.a(lib_a-exit.o)
-                0x0100165c                exit
- .text          0x01001694        0x0 /opt/altera12.0/nios2eds/bin/gnu/H-i686-pc-linux-gnu/bin/../lib/gcc/nios2-elf/4.1.2/../../../../nios2-elf/lib/libc.a(lib_a-impure.o)
- .text          0x01001694      0x1b4 /opt/altera12.0/nios2eds/bin/gnu/H-i686-pc-linux-gnu/bin/../lib/gcc/nios2-elf/4.1.2/../../../../nios2-elf/lib/libc.a(lib_a-__call_atexit.o)
-                0x01001698                __call_exitprocs
- .text          0x01001848       0x18 /opt/altera12.0/nios2eds/bin/gnu/H-i686-pc-linux-gnu/bin/../lib/gcc/nios2-elf/4.1.2/../../../../nios2-elf/lib/libnosys.a(nosys_close.o)
-                0x01001848                close
- .text          0x01001860       0x30 /opt/altera12.0/nios2eds/bin/gnu/H-i686-pc-linux-gnu/bin/../lib/gcc/nios2-elf/4.1.2/../../../../nios2-elf/lib/libnosys.a(nosys_exit.o)
-                0x01001860                __fake_fini
-                0x01001860                _fini
-                0x01001864                _exit
- .text          0x01001890        0x0 /opt/altera12.0/nios2eds/bin/gnu/H-i686-pc-linux-gnu/bin/../lib/gcc/nios2-elf/4.1.2/../../../../nios2-elf/lib/libc.a(lib_a-int_errno.o)
+ .text          0x01000164       0x3c lib/crt0.o
+                0x01000164                _start
+                0x010001a0                _switch_context
+ .text          0x010001a0      0xb78 main.o
+                0x010001a0                main
+                0x01000908                update_remote_control_sensors
+                0x0100095c                update_cliff_sensors
+                0x010009c0                drive_offroad
+                0x01000a54                drive_lane
+                0x01000ac0                drive_curve_left
+                0x01000b1c                drive_curve_right
+                0x01000b78                drive_back_to_lane
+                0x01000c10                correct_curse_to_left
+                0x01000c94                correct_curse_to_right
+ .text          0x01000d18        0x0 src/exception.o
+ .text          0x01000d18       0xe4 lib/libnios2rte-db_4ce10.a(alt_load.o)
+                0x01000d18                alt_load
+ .text          0x01000dfc       0x34 lib/libnios2rte-db_4ce10.a(alt_main.o)
+                0x01000dfc                alt_main
+ .text          0x01000e30      0x12c lib/libnios2rte-db_4ce10.a(button.o)
+                0x01000e30                button_pressed
+                0x01000ea4                button_wait
+ .text          0x01000f5c       0xbc lib/libnios2rte-db_4ce10.a(general_exception.o)
+                0x01000f5c                handle_ge
+ .text          0x01001018     0x1100 lib/libnios2rte-db_4ce10.a(gprintf.o)
+                0x01001018                gputs
+                0x01001050                gprintf
+ .text          0x01002118      0x594 lib/libnios2rte-db_4ce10.a(irq.o)
+                0x01002118                init_irq
+                0x01002170                enable_all_interrupts
+                0x010021b0                disable_all_interrupts
+                0x010021ec                irq_enable
+                0x01002290                irq_disable
+                0x010022f4                irq_request
+                0x01002370                irq_free
+                0x0100243c                irq_enabled
+                0x0100246c                do_irq
+ .text          0x010026ac       0x2c lib/libnios2rte-db_4ce10.a(led.o)
+                0x010026ac                led_init
+ .text          0x010026d8      0x840 lib/libnios2rte-db_4ce10.a(roomba.o)
+                0x010026d8                init_roomba
+                0x0100271c                init_cliff_signal
+                0x01002770                init_infrared
+                0x010027b8                roomba_set_led_on
+                0x0100282c                roomba_init_sensor
+                0x01002864                roomba_request_sensor
+                0x010028b8                roomba_read_sensor
+                0x010029b4                roomba_update_sensor
+                0x010029fc                roomba_set_letters_string
+                0x01002ab0                itos
+                0x01002be0                show_number_on_display
+                0x01002c6c                roomba_drive
+                0x01002ce8                roomba_stop
+                0x01002d18                roomba_turn_angle
+                0x01002d48                read_button
+                0x01002d84                roomba_check_for_item
+                0x01002de8                roomba_pick_up_item
+                0x01002e1c                roomba_generate_rand_item
+                0x01002e3c                roomba_use_item
+                0x01002eb8                roomba_item_effect_ends
+ .text          0x01002f18      0x150 lib/libnios2rte-db_4ce10.a(sound.o)
+                0x01002f18                transmit_song
+                0x01002fe8                play_song
+                0x0100302c                check_for_playing_song
+ .text          0x01003068      0x198 lib/libnios2rte-db_4ce10.a(timer.o)
+                0x01003068                tt_periodic
+                0x01003104                tt_single
+                0x01003180                tt_stop
+                0x010031a8                tt_reset
+                0x010031d4                _tt_disable
+ .text          0x01003200      0x184 lib/libnios2rte-db_4ce10.a(tools.o)
+                0x01003200                my_sleep
+                0x010032c4                invert_byte_order32
+                0x01003338                invert_byte_order16
+ .text          0x01003384      0x1e4 lib/libnios2rte-db_4ce10.a(uart.o)
+                0x01003384                uart_init
+                0x010033a0                uart_putchar
+                0x01003408                uart_puts
+                0x010034b8                uart_write_byte
+                0x01003508                uart_read_byte
+ .text          0x01003568      0x5dc /opt/altera12.0/nios2eds/bin/gnu/H-i686-pc-linux-gnu/bin/../lib/gcc/nios2-elf/4.1.2/libgcc.a(_udivdi3.o)
+                0x01003568                __udivdi3
+ .text          0x01003b44      0x5b0 /opt/altera12.0/nios2eds/bin/gnu/H-i686-pc-linux-gnu/bin/../lib/gcc/nios2-elf/4.1.2/libgcc.a(_umoddi3.o)
+                0x01003b44                __umoddi3
+ .text          0x010040f4      0x14c /opt/altera12.0/nios2eds/bin/gnu/H-i686-pc-linux-gnu/bin/../lib/gcc/nios2-elf/4.1.2/libgcc.a(lib2-divmod.o)
+                0x01004170                __divsi3
+                0x010041d0                __modsi3
+                0x01004230                __udivsi3
+                0x01004238                __umodsi3
+ .text          0x01004240       0x38 /opt/altera12.0/nios2eds/bin/gnu/H-i686-pc-linux-gnu/bin/../lib/gcc/nios2-elf/4.1.2/libgcc.a(lib2-mul.o)
+                0x01004240                __mulsi3
+ .text          0x01004278        0x0 /opt/altera12.0/nios2eds/bin/gnu/H-i686-pc-linux-gnu/bin/../lib/gcc/nios2-elf/4.1.2/libgcc.a(_clz.o)
+ .text          0x01004278       0x38 /opt/altera12.0/nios2eds/bin/gnu/H-i686-pc-linux-gnu/bin/../lib/gcc/nios2-elf/4.1.2/../../../../nios2-elf/lib/libc.a(lib_a-exit.o)
+                0x01004278                exit
+ .text          0x010042b0        0x0 /opt/altera12.0/nios2eds/bin/gnu/H-i686-pc-linux-gnu/bin/../lib/gcc/nios2-elf/4.1.2/../../../../nios2-elf/lib/libc.a(lib_a-impure.o)
+ .text          0x010042b0      0x1b4 /opt/altera12.0/nios2eds/bin/gnu/H-i686-pc-linux-gnu/bin/../lib/gcc/nios2-elf/4.1.2/../../../../nios2-elf/lib/libc.a(lib_a-__call_atexit.o)
+                0x010042b4                __call_exitprocs
+ .text          0x01004464       0x18 /opt/altera12.0/nios2eds/bin/gnu/H-i686-pc-linux-gnu/bin/../lib/gcc/nios2-elf/4.1.2/../../../../nios2-elf/lib/libnosys.a(nosys_close.o)
+                0x01004464                close
+ .text          0x0100447c       0x30 /opt/altera12.0/nios2eds/bin/gnu/H-i686-pc-linux-gnu/bin/../lib/gcc/nios2-elf/4.1.2/../../../../nios2-elf/lib/libnosys.a(nosys_exit.o)
+                0x0100447c                __fake_fini
+                0x0100447c                _fini
+                0x01004480                _exit
+ .text          0x010044ac        0x0 /opt/altera12.0/nios2eds/bin/gnu/H-i686-pc-linux-gnu/bin/../lib/gcc/nios2-elf/4.1.2/../../../../nios2-elf/lib/libc.a(lib_a-int_errno.o)
  *(.gnu.warning.*)
  *(.fini)
-                0x01001890                PROVIDE (__etext, ABSOLUTE (.))
-                0x01001890                PROVIDE (_etext, ABSOLUTE (.))
-                0x01001890                PROVIDE (etext, ABSOLUTE (.))
+                0x010044ac                PROVIDE (__etext, ABSOLUTE (.))
+                0x010044ac                PROVIDE (_etext, ABSOLUTE (.))
+                0x010044ac                PROVIDE (etext, ABSOLUTE (.))
  *(.eh_frame_hdr)
-                0x01001890                . = ALIGN (0x4)
-                0x01001890                PROVIDE (__preinit_array_start, ABSOLUTE (.))
+                0x010044ac                . = ALIGN (0x4)
+                0x010044ac                PROVIDE (__preinit_array_start, ABSOLUTE (.))
  *(.preinit_array)
-                0x01001890                PROVIDE (__preinit_array_end, ABSOLUTE (.))
-                0x01001890                PROVIDE (__init_array_start, ABSOLUTE (.))
+                0x010044ac                PROVIDE (__preinit_array_end, ABSOLUTE (.))
+                0x010044ac                PROVIDE (__init_array_start, ABSOLUTE (.))
  *(.init_array)
-                0x01001890                PROVIDE (__init_array_end, ABSOLUTE (.))
-                0x01001890                PROVIDE (__fini_array_start, ABSOLUTE (.))
+                0x010044ac                PROVIDE (__init_array_end, ABSOLUTE (.))
+                0x010044ac                PROVIDE (__fini_array_start, ABSOLUTE (.))
  *(.fini_array)
-                0x01001890                PROVIDE (__fini_array_end, ABSOLUTE (.))
+                0x010044ac                PROVIDE (__fini_array_end, ABSOLUTE (.))
  *(.eh_frame)
+ .eh_frame      0x010044ac       0x40 /opt/altera12.0/nios2eds/bin/gnu/H-i686-pc-linux-gnu/bin/../lib/gcc/nios2-elf/4.1.2/libgcc.a(_udivdi3.o)
+ .eh_frame      0x010044ec       0x2c /opt/altera12.0/nios2eds/bin/gnu/H-i686-pc-linux-gnu/bin/../lib/gcc/nios2-elf/4.1.2/libgcc.a(_umoddi3.o)
+                                 0x40 (size before relaxing)
  *(.gcc_except_table)
  *(.dynamic)
-                0x01001890                PROVIDE (__CTOR_LIST__, ABSOLUTE (.))
+                0x01004518                PROVIDE (__CTOR_LIST__, ABSOLUTE (.))
  *(.ctors)
  *(SORT(.ctors.*))
- .ctors.65535   0x01001890        0x4 /opt/altera12.0/nios2eds/bin/gnu/H-i686-pc-linux-gnu/bin/../lib/gcc/nios2-elf/4.1.2/../../../../nios2-elf/lib/libc.a(lib_a-__call_atexit.o)
-                0x01001894                PROVIDE (__CTOR_END__, ABSOLUTE (.))
-                0x01001894                PROVIDE (__DTOR_LIST__, ABSOLUTE (.))
+ .ctors.65535   0x01004518        0x4 /opt/altera12.0/nios2eds/bin/gnu/H-i686-pc-linux-gnu/bin/../lib/gcc/nios2-elf/4.1.2/../../../../nios2-elf/lib/libc.a(lib_a-__call_atexit.o)
+                0x0100451c                PROVIDE (__CTOR_END__, ABSOLUTE (.))
+                0x0100451c                PROVIDE (__DTOR_LIST__, ABSOLUTE (.))
  *(.dtors)
  *(SORT(.dtors.*))
-                0x01001894                PROVIDE (__DTOR_END__, ABSOLUTE (.))
+                0x0100451c                PROVIDE (__DTOR_END__, ABSOLUTE (.))
  *(.jcr)
-                0x01001894                . = ALIGN (0x4)
+                0x0100451c                . = ALIGN (0x4)
 
-.rodata         0x01001894       0x1c
-                0x01001894                PROVIDE (__ram_rodata_start, ABSOLUTE (.))
-                0x01001894                . = ALIGN (0x4)
+.rodata         0x0100451c      0x150
+                0x0100451c                PROVIDE (__ram_rodata_start, ABSOLUTE (.))
+                0x0100451c                . = ALIGN (0x4)
  *(.rodata .rodata.* .gnu.linkonce.r.*)
- .rodata        0x01001894       0x18 lib/libnios2rte-db_4ce10.a(led.o)
-                0x01001894                ledb_vals
+ .rodata        0x0100451c       0x28 lib/libnios2rte-db_4ce10.a(general_exception.o)
+ .rodata        0x01004544        0xc lib/libnios2rte-db_4ce10.a(gprintf.o)
+ .rodata        0x01004550       0x18 lib/libnios2rte-db_4ce10.a(led.o)
+                0x01004550                ledb_vals
+ .rodata        0x01004568      0x100 /opt/altera12.0/nios2eds/bin/gnu/H-i686-pc-linux-gnu/bin/../lib/gcc/nios2-elf/4.1.2/libgcc.a(_clz.o)
+                0x01004568                __clz_tab
  .rodata.str1.4
-                0x010018ac        0x4 /opt/altera12.0/nios2eds/bin/gnu/H-i686-pc-linux-gnu/bin/../lib/gcc/nios2-elf/4.1.2/../../../../nios2-elf/lib/libc.a(lib_a-impure.o)
+                0x01004668        0x4 /opt/altera12.0/nios2eds/bin/gnu/H-i686-pc-linux-gnu/bin/../lib/gcc/nios2-elf/4.1.2/../../../../nios2-elf/lib/libc.a(lib_a-impure.o)
  *(.rodata1)
-                0x010018b0                . = ALIGN (0x4)
-                0x010018b0                PROVIDE (__ram_rodata_end, ABSOLUTE (.))
-                0x01001894                PROVIDE (__flash_rodata_start, LOADADDR (.rodata))
+                0x0100466c                . = ALIGN (0x4)
+                0x0100466c                PROVIDE (__ram_rodata_end, ABSOLUTE (.))
+                0x0100451c                PROVIDE (__flash_rodata_start, LOADADDR (.rodata))
 
-.rwdata         0x010018b0      0x4d0 load address 0x01001d80
-                0x010018b0                PROVIDE (__ram_rwdata_start, ABSOLUTE (.))
-                0x010018b0                . = ALIGN (0x4)
+.rwdata         0x0100466c      0x4c0 load address 0x01004b2c
+                0x0100466c                PROVIDE (__ram_rwdata_start, ABSOLUTE (.))
+                0x0100466c                . = ALIGN (0x4)
  *(.got.plt)
  *(.got)
  *(.data1)
  *(.data .data.* .gnu.linkonce.d.*)
- .data          0x010018b0        0x0 lib/crt0.o
- .data          0x010018b0        0x0 main.o
- .data          0x010018b0        0x0 lib/libnios2rte-db_4ce10.a(alt_load.o)
- .data          0x010018b0        0x0 lib/libnios2rte-db_4ce10.a(alt_main.o)
- .data          0x010018b0        0x0 lib/libnios2rte-db_4ce10.a(button.o)
- .data          0x010018b0        0x0 lib/libnios2rte-db_4ce10.a(led.o)
- .data          0x010018b0        0x0 lib/libnios2rte-db_4ce10.a(roomba.o)
- .data          0x010018b0       0x5c lib/libnios2rte-db_4ce10.a(sound.o)
-                0x010018b0                indiana_jones_theme
-                0x010018d0                indiana_jones_theme_part_2
-                0x010018f0                indiana_jones_theme_part_3
- .data          0x0100190c        0x0 lib/libnios2rte-db_4ce10.a(tools.o)
- .data          0x0100190c        0x0 lib/libnios2rte-db_4ce10.a(uart.o)
- .data          0x0100190c        0x0 /opt/altera12.0/nios2eds/bin/gnu/H-i686-pc-linux-gnu/bin/../lib/gcc/nios2-elf/4.1.2/libgcc.a(lib2-divmod.o)
- .data          0x0100190c        0x0 /opt/altera12.0/nios2eds/bin/gnu/H-i686-pc-linux-gnu/bin/../lib/gcc/nios2-elf/4.1.2/libgcc.a(lib2-mul.o)
- .data          0x0100190c        0x0 /opt/altera12.0/nios2eds/bin/gnu/H-i686-pc-linux-gnu/bin/../lib/gcc/nios2-elf/4.1.2/../../../../nios2-elf/lib/libc.a(lib_a-exit.o)
- .data          0x0100190c      0x400 /opt/altera12.0/nios2eds/bin/gnu/H-i686-pc-linux-gnu/bin/../lib/gcc/nios2-elf/4.1.2/../../../../nios2-elf/lib/libc.a(lib_a-impure.o)
- .data          0x01001d0c        0x0 /opt/altera12.0/nios2eds/bin/gnu/H-i686-pc-linux-gnu/bin/../lib/gcc/nios2-elf/4.1.2/../../../../nios2-elf/lib/libc.a(lib_a-__call_atexit.o)
- .data          0x01001d0c        0x0 /opt/altera12.0/nios2eds/bin/gnu/H-i686-pc-linux-gnu/bin/../lib/gcc/nios2-elf/4.1.2/../../../../nios2-elf/lib/libnosys.a(nosys_close.o)
- .data          0x01001d0c        0x0 /opt/altera12.0/nios2eds/bin/gnu/H-i686-pc-linux-gnu/bin/../lib/gcc/nios2-elf/4.1.2/../../../../nios2-elf/lib/libnosys.a(nosys_exit.o)
- .data          0x01001d0c        0x0 /opt/altera12.0/nios2eds/bin/gnu/H-i686-pc-linux-gnu/bin/../lib/gcc/nios2-elf/4.1.2/../../../../nios2-elf/lib/libc.a(lib_a-int_errno.o)
-                0x01009d0c                _gp = ABSOLUTE ((. + 0x8000))
-                0x01009d0c                PROVIDE (gp, _gp)
+ .data          0x0100466c        0x0 lib/crt0.o
+ .data          0x0100466c        0x0 main.o
+ .data          0x0100466c        0x0 src/exception.o
+ .data          0x0100466c        0x0 lib/libnios2rte-db_4ce10.a(alt_load.o)
+ .data          0x0100466c        0x0 lib/libnios2rte-db_4ce10.a(alt_main.o)
+ .data          0x0100466c        0x0 lib/libnios2rte-db_4ce10.a(button.o)
+ .data          0x0100466c        0x0 lib/libnios2rte-db_4ce10.a(general_exception.o)
+ .data          0x0100466c        0x0 lib/libnios2rte-db_4ce10.a(gprintf.o)
+ .data          0x0100466c        0x0 lib/libnios2rte-db_4ce10.a(irq.o)
+ .data          0x0100466c        0x0 lib/libnios2rte-db_4ce10.a(led.o)
+ .data          0x0100466c        0x0 lib/libnios2rte-db_4ce10.a(roomba.o)
+ .data          0x0100466c       0x5c lib/libnios2rte-db_4ce10.a(sound.o)
+                0x0100466c                indiana_jones_theme
+                0x0100468c                indiana_jones_theme_part_2
+                0x010046ac                indiana_jones_theme_part_3
+ .data          0x010046c8        0x0 lib/libnios2rte-db_4ce10.a(timer.o)
+ .data          0x010046c8        0x0 lib/libnios2rte-db_4ce10.a(tools.o)
+ .data          0x010046c8        0x0 lib/libnios2rte-db_4ce10.a(uart.o)
+ .data          0x010046c8        0x0 /opt/altera12.0/nios2eds/bin/gnu/H-i686-pc-linux-gnu/bin/../lib/gcc/nios2-elf/4.1.2/libgcc.a(_udivdi3.o)
+ .data          0x010046c8        0x0 /opt/altera12.0/nios2eds/bin/gnu/H-i686-pc-linux-gnu/bin/../lib/gcc/nios2-elf/4.1.2/libgcc.a(_umoddi3.o)
+ .data          0x010046c8        0x0 /opt/altera12.0/nios2eds/bin/gnu/H-i686-pc-linux-gnu/bin/../lib/gcc/nios2-elf/4.1.2/libgcc.a(lib2-divmod.o)
+ .data          0x010046c8        0x0 /opt/altera12.0/nios2eds/bin/gnu/H-i686-pc-linux-gnu/bin/../lib/gcc/nios2-elf/4.1.2/libgcc.a(lib2-mul.o)
+ .data          0x010046c8        0x0 /opt/altera12.0/nios2eds/bin/gnu/H-i686-pc-linux-gnu/bin/../lib/gcc/nios2-elf/4.1.2/libgcc.a(_clz.o)
+ .data          0x010046c8        0x0 /opt/altera12.0/nios2eds/bin/gnu/H-i686-pc-linux-gnu/bin/../lib/gcc/nios2-elf/4.1.2/../../../../nios2-elf/lib/libc.a(lib_a-exit.o)
+ .data          0x010046c8      0x400 /opt/altera12.0/nios2eds/bin/gnu/H-i686-pc-linux-gnu/bin/../lib/gcc/nios2-elf/4.1.2/../../../../nios2-elf/lib/libc.a(lib_a-impure.o)
+ .data          0x01004ac8        0x0 /opt/altera12.0/nios2eds/bin/gnu/H-i686-pc-linux-gnu/bin/../lib/gcc/nios2-elf/4.1.2/../../../../nios2-elf/lib/libc.a(lib_a-__call_atexit.o)
+ .data          0x01004ac8        0x0 /opt/altera12.0/nios2eds/bin/gnu/H-i686-pc-linux-gnu/bin/../lib/gcc/nios2-elf/4.1.2/../../../../nios2-elf/lib/libnosys.a(nosys_close.o)
+ .data          0x01004ac8        0x0 /opt/altera12.0/nios2eds/bin/gnu/H-i686-pc-linux-gnu/bin/../lib/gcc/nios2-elf/4.1.2/../../../../nios2-elf/lib/libnosys.a(nosys_exit.o)
+ .data          0x01004ac8        0x0 /opt/altera12.0/nios2eds/bin/gnu/H-i686-pc-linux-gnu/bin/../lib/gcc/nios2-elf/4.1.2/../../../../nios2-elf/lib/libc.a(lib_a-int_errno.o)
+                0x0100cac8                _gp = ABSOLUTE ((. + 0x8000))
+                0x0100cac8                PROVIDE (gp, _gp)
  *(.rwdata .rwdata.*)
  *(.sdata .sdata.* .gnu.linkonce.s.*)
- .sdata         0x01001d0c        0x4 main.o
-                0x01001d0c                greeting
- .sdata         0x01001d10        0x2 lib/libnios2rte-db_4ce10.a(button.o)
-                0x01001d10                button_vals
- *fill*         0x01001d12        0x2 00
- .sdata         0x01001d14       0x64 lib/libnios2rte-db_4ce10.a(roomba.o)
-                0x01001d14                cliff_left_sensor
-                0x01001d1c                cliff_left_front_sensor
-                0x01001d24                cliff_right_front_sensor
-                0x01001d2c                cliff_right_sensor
-                0x01001d34                cliff_left_signal_sensor
-                0x01001d3c                cliff_front_left_signal_sensor
-                0x01001d44                cliff_front_right_signal_sensor
-                0x01001d4c                cliff_right_signal_sensor
-                0x01001d54                infrared_omni_sensor
-                0x01001d5c                infrared_right_sensor
-                0x01001d64                infrared_left_sensor
-                0x01001d6c                sensor_number
-                0x01001d6e                radius
-                0x01001d70                radius_counter_clockwise
-                0x01001d72                velocity
-                0x01001d74                NUM_DISPLAYS
- .sdata         0x01001d78        0x8 /opt/altera12.0/nios2eds/bin/gnu/H-i686-pc-linux-gnu/bin/../lib/gcc/nios2-elf/4.1.2/../../../../nios2-elf/lib/libc.a(lib_a-impure.o)
-                0x01001d78                _impure_ptr
-                0x01001d7c                _global_impure_ptr
+ .sdata         0x01004ac8        0x4 main.o
+                0x01004ac8                greeting
+ .sdata         0x01004acc        0x2 lib/libnios2rte-db_4ce10.a(button.o)
+                0x01004acc                button_vals
+ *fill*         0x01004ace        0x2 00
+ .sdata         0x01004ad0        0x4 lib/libnios2rte-db_4ce10.a(irq.o)
+                0x01004ad0                irq_state
+ .sdata         0x01004ad4       0x48 lib/libnios2rte-db_4ce10.a(roomba.o)
+                0x01004ad4                cliff_left_signal_sensor
+                0x01004adc                cliff_front_left_signal_sensor
+                0x01004ae4                cliff_front_right_signal_sensor
+                0x01004aec                cliff_right_signal_sensor
+                0x01004af4                infrared_omni_sensor
+                0x01004afc                infrared_right_sensor
+                0x01004b04                infrared_left_sensor
+                0x01004b0c                radius
+                0x01004b0e                radius_counter_clockwise
+                0x01004b10                current_state
+                0x01004b14                velocity
+                0x01004b18                NUM_DISPLAYS
+ .sdata         0x01004b1c        0x8 lib/libnios2rte-db_4ce10.a(sound.o)
+                0x01004b1c                item_detected_sound
+ .sdata         0x01004b24        0x8 /opt/altera12.0/nios2eds/bin/gnu/H-i686-pc-linux-gnu/bin/../lib/gcc/nios2-elf/4.1.2/../../../../nios2-elf/lib/libc.a(lib_a-impure.o)
+                0x01004b24                _impure_ptr
+                0x01004b28                _global_impure_ptr
  *(.sdata2 .sdata2.* .gnu.linkonce.s2.*)
-                0x01001d80                . = ALIGN (0x4)
-                0x01001d80                _edata = ABSOLUTE (.)
-                0x01001d80                PROVIDE (edata, ABSOLUTE (.))
-                0x01001d80                PROVIDE (__ram_rwdata_end, ABSOLUTE (.))
-                0x01001d80                PROVIDE (__flash_rwdata_start, LOADADDR (.rwdata))
+                0x01004b2c                . = ALIGN (0x4)
+                0x01004b2c                _edata = ABSOLUTE (.)
+                0x01004b2c                PROVIDE (edata, ABSOLUTE (.))
+                0x01004b2c                PROVIDE (__ram_rwdata_end, ABSOLUTE (.))
+                0x01004b2c                PROVIDE (__flash_rwdata_start, LOADADDR (.rwdata))
 
-.bss            0x01002250     0x107c
-                0x01002250                __bss_start = ABSOLUTE (.)
-                0x01002250                PROVIDE (__sbss_start, ABSOLUTE (.))
-                0x01002250                PROVIDE (___sbss_start, ABSOLUTE (.))
+.bss            0x01004fec     0x10bc
+                0x01004fec                __bss_start = ABSOLUTE (.)
+                0x01004fec                PROVIDE (__sbss_start, ABSOLUTE (.))
+                0x01004fec                PROVIDE (___sbss_start, ABSOLUTE (.))
  *(.dynsbss)
  *(.sbss .sbss.* .gnu.linkonce.sb.*)
- .sbss          0x01002250        0x8 main.o
-                0x01002250                offroad
-                0x01002254                count
- .sbss          0x01002258        0x4 main.o
-                0x01002258                direction
- .sbss          0x0100225c        0xc lib/libnios2rte-db_4ce10.a(alt_main.o)
-                0x0100225c                alt_argc
-                0x01002260                alt_argv
-                0x01002264                alt_envp
- .sbss          0x01002268       0x60 lib/libnios2rte-db_4ce10.a(roomba.o)
-                0x01002268                sensor_array_cliff_front_right_signal
-                0x01002270                sensor_array_cliff_front_right
-                0x01002278                sensor_array_infrared_omni
-                0x01002280                sensor_array_cliff_left_signal
-                0x01002288                sensor_array_cliff_front_left_signal
-                0x01002290                sensor_array_cliff_left
-                0x01002298                sensor_array_infrared_left
-                0x010022a0                sensor_array_cliff_right_signal
-                0x010022a8                sensor_array_cliff_right
-                0x010022b0                str
-                0x010022b8                sensor_array_cliff_front_left
-                0x010022c0                sensor_array_infrared_right
- .sbss          0x010022c8        0x4 /opt/altera12.0/nios2eds/bin/gnu/H-i686-pc-linux-gnu/bin/../lib/gcc/nios2-elf/4.1.2/../../../../nios2-elf/lib/libc.a(lib_a-int_errno.o)
-                0x010022c8                errno
+ .sbss          0x01004fec       0x10 main.o
+                0x01004fec                curve_detected
+                0x01004ff0                item_detected_mode
+                0x01004ff4                offroad_counter
+                0x01004ff8                course_correction_counter
+ .sbss          0x01004ffc        0x4 main.o
+                0x01004ffc                direction
+ .sbss          0x01005000        0xc lib/libnios2rte-db_4ce10.a(alt_main.o)
+                0x01005000                alt_argc
+                0x01005004                alt_argv
+                0x01005008                alt_envp
+ .sbss          0x0100500c       0x48 lib/libnios2rte-db_4ce10.a(roomba.o)
+                0x0100500c                current_item
+                0x01005010                last_item_used
+                0x01005014                cliff_right_signal
+                0x0100501c                cliff_front_left_signal
+                0x01005024                infrared_left
+                0x0100502c                infrared_omni
+                0x01005034                infrared_right
+                0x0100503c                cliff_left_signal
+                0x01005044                str
+                0x0100504c                cliff_front_right_signal
+ .sbss          0x01005054        0x4 /opt/altera12.0/nios2eds/bin/gnu/H-i686-pc-linux-gnu/bin/../lib/gcc/nios2-elf/4.1.2/../../../../nios2-elf/lib/libc.a(lib_a-int_errno.o)
+                0x01005054                errno
  *(.sbss2 .sbss2.* .gnu.linkonce.sb2.*)
  *(.scommon)
-                0x010022cc                PROVIDE (__sbss_end, ABSOLUTE (.))
-                0x010022cc                PROVIDE (___sbss_end, ABSOLUTE (.))
+                0x01005058                PROVIDE (__sbss_end, ABSOLUTE (.))
+                0x01005058                PROVIDE (___sbss_end, ABSOLUTE (.))
  *(.dynbss)
  *(.bss .bss.* .gnu.linkonce.b.*)
- .bss           0x010022cc        0x0 lib/crt0.o
- .bss           0x010022cc        0x0 main.o
- .bss           0x010022cc        0x0 lib/libnios2rte-db_4ce10.a(alt_load.o)
- .bss           0x010022cc        0x0 lib/libnios2rte-db_4ce10.a(alt_main.o)
- .bss           0x010022cc        0x0 lib/libnios2rte-db_4ce10.a(button.o)
- .bss           0x010022cc        0x0 lib/libnios2rte-db_4ce10.a(led.o)
- .bss           0x010022cc        0x0 lib/libnios2rte-db_4ce10.a(roomba.o)
- .bss           0x010022cc        0x0 lib/libnios2rte-db_4ce10.a(sound.o)
- .bss           0x010022cc        0x0 lib/libnios2rte-db_4ce10.a(tools.o)
- .bss           0x010022cc        0x0 lib/libnios2rte-db_4ce10.a(uart.o)
- .bss           0x010022cc        0x0 /opt/altera12.0/nios2eds/bin/gnu/H-i686-pc-linux-gnu/bin/../lib/gcc/nios2-elf/4.1.2/libgcc.a(lib2-divmod.o)
- .bss           0x010022cc        0x0 /opt/altera12.0/nios2eds/bin/gnu/H-i686-pc-linux-gnu/bin/../lib/gcc/nios2-elf/4.1.2/libgcc.a(lib2-mul.o)
- .bss           0x010022cc        0x0 /opt/altera12.0/nios2eds/bin/gnu/H-i686-pc-linux-gnu/bin/../lib/gcc/nios2-elf/4.1.2/../../../../nios2-elf/lib/libc.a(lib_a-exit.o)
- .bss           0x010022cc        0x0 /opt/altera12.0/nios2eds/bin/gnu/H-i686-pc-linux-gnu/bin/../lib/gcc/nios2-elf/4.1.2/../../../../nios2-elf/lib/libc.a(lib_a-impure.o)
- .bss           0x010022cc        0x0 /opt/altera12.0/nios2eds/bin/gnu/H-i686-pc-linux-gnu/bin/../lib/gcc/nios2-elf/4.1.2/../../../../nios2-elf/lib/libc.a(lib_a-__call_atexit.o)
- .bss           0x010022cc        0x0 /opt/altera12.0/nios2eds/bin/gnu/H-i686-pc-linux-gnu/bin/../lib/gcc/nios2-elf/4.1.2/../../../../nios2-elf/lib/libnosys.a(nosys_close.o)
- .bss           0x010022cc        0x0 /opt/altera12.0/nios2eds/bin/gnu/H-i686-pc-linux-gnu/bin/../lib/gcc/nios2-elf/4.1.2/../../../../nios2-elf/lib/libnosys.a(nosys_exit.o)
- .bss           0x010022cc        0x0 /opt/altera12.0/nios2eds/bin/gnu/H-i686-pc-linux-gnu/bin/../lib/gcc/nios2-elf/4.1.2/../../../../nios2-elf/lib/libc.a(lib_a-int_errno.o)
+ .bss           0x01005058        0x0 lib/crt0.o
+ .bss           0x01005058        0x0 main.o
+ .bss           0x01005058        0x0 src/exception.o
+ .bss           0x01005058        0x0 lib/libnios2rte-db_4ce10.a(alt_load.o)
+ .bss           0x01005058        0x0 lib/libnios2rte-db_4ce10.a(alt_main.o)
+ .bss           0x01005058        0x0 lib/libnios2rte-db_4ce10.a(button.o)
+ .bss           0x01005058        0x0 lib/libnios2rte-db_4ce10.a(general_exception.o)
+ .bss           0x01005058        0x0 lib/libnios2rte-db_4ce10.a(gprintf.o)
+ .bss           0x01005058       0x50 lib/libnios2rte-db_4ce10.a(irq.o)
+ .bss           0x010050a8        0x0 lib/libnios2rte-db_4ce10.a(led.o)
+ .bss           0x010050a8        0x0 lib/libnios2rte-db_4ce10.a(roomba.o)
+ .bss           0x010050a8        0x0 lib/libnios2rte-db_4ce10.a(sound.o)
+ .bss           0x010050a8        0x0 lib/libnios2rte-db_4ce10.a(timer.o)
+ .bss           0x010050a8        0x0 lib/libnios2rte-db_4ce10.a(tools.o)
+ .bss           0x010050a8        0x0 lib/libnios2rte-db_4ce10.a(uart.o)
+ .bss           0x010050a8        0x0 /opt/altera12.0/nios2eds/bin/gnu/H-i686-pc-linux-gnu/bin/../lib/gcc/nios2-elf/4.1.2/libgcc.a(_udivdi3.o)
+ .bss           0x010050a8        0x0 /opt/altera12.0/nios2eds/bin/gnu/H-i686-pc-linux-gnu/bin/../lib/gcc/nios2-elf/4.1.2/libgcc.a(_umoddi3.o)
+ .bss           0x010050a8        0x0 /opt/altera12.0/nios2eds/bin/gnu/H-i686-pc-linux-gnu/bin/../lib/gcc/nios2-elf/4.1.2/libgcc.a(lib2-divmod.o)
+ .bss           0x010050a8        0x0 /opt/altera12.0/nios2eds/bin/gnu/H-i686-pc-linux-gnu/bin/../lib/gcc/nios2-elf/4.1.2/libgcc.a(lib2-mul.o)
+ .bss           0x010050a8        0x0 /opt/altera12.0/nios2eds/bin/gnu/H-i686-pc-linux-gnu/bin/../lib/gcc/nios2-elf/4.1.2/libgcc.a(_clz.o)
+ .bss           0x010050a8        0x0 /opt/altera12.0/nios2eds/bin/gnu/H-i686-pc-linux-gnu/bin/../lib/gcc/nios2-elf/4.1.2/../../../../nios2-elf/lib/libc.a(lib_a-exit.o)
+ .bss           0x010050a8        0x0 /opt/altera12.0/nios2eds/bin/gnu/H-i686-pc-linux-gnu/bin/../lib/gcc/nios2-elf/4.1.2/../../../../nios2-elf/lib/libc.a(lib_a-impure.o)
+ .bss           0x010050a8        0x0 /opt/altera12.0/nios2eds/bin/gnu/H-i686-pc-linux-gnu/bin/../lib/gcc/nios2-elf/4.1.2/../../../../nios2-elf/lib/libc.a(lib_a-__call_atexit.o)
+ .bss           0x010050a8        0x0 /opt/altera12.0/nios2eds/bin/gnu/H-i686-pc-linux-gnu/bin/../lib/gcc/nios2-elf/4.1.2/../../../../nios2-elf/lib/libnosys.a(nosys_close.o)
+ .bss           0x010050a8        0x0 /opt/altera12.0/nios2eds/bin/gnu/H-i686-pc-linux-gnu/bin/../lib/gcc/nios2-elf/4.1.2/../../../../nios2-elf/lib/libnosys.a(nosys_exit.o)
+ .bss           0x010050a8        0x0 /opt/altera12.0/nios2eds/bin/gnu/H-i686-pc-linux-gnu/bin/../lib/gcc/nios2-elf/4.1.2/../../../../nios2-elf/lib/libc.a(lib_a-int_errno.o)
  *(COMMON)
-                0x010022cc                . = ALIGN (0x4)
-                0x010022cc                __USTACK_TOP = .
-                0x010032cc                . = (__USTACK_TOP + __USTACK_SIZE)
- *fill*         0x010022cc     0x1000 00
-                0x010032cc                __USTACK_BOTTOM = .
-                0x010032cc                __bss_end = ABSOLUTE (.)
-                0x010032cc                __alt_data_end = ALIGN (0x4)
+                0x010050a8                . = ALIGN (0x4)
+                0x010050a8                __USTACK_TOP = .
+                0x010060a8                . = (__USTACK_TOP + __USTACK_SIZE)
+ *fill*         0x010050a8     0x1000 00
+                0x010060a8                __USTACK_BOTTOM = .
+                0x010060a8                __bss_end = ABSOLUTE (.)
+                0x010060a8                __alt_data_end = ALIGN (0x4)
 
-.sdram          0x010032cc        0x0
-                0x010032cc                PROVIDE (_alt_partition_sdram_start, ABSOLUTE (.))
+.sdram          0x010060a8        0x0
+                0x010060a8                PROVIDE (_alt_partition_sdram_start, ABSOLUTE (.))
  *(.sdram. sdram.*)
-                0x010032cc                . = ALIGN (0x4)
-                0x010032cc                PROVIDE (_alt_partition_sdram_end, ABSOLUTE (.))
-                0x010032cc                _end = ABSOLUTE (.)
-                0x010032cc                end = ABSOLUTE (.)
-                0x010032cc                PROVIDE (_alt_partition_sdram_load_addr, LOADADDR (.sdram))
+                0x010060a8                . = ALIGN (0x4)
+                0x010060a8                PROVIDE (_alt_partition_sdram_end, ABSOLUTE (.))
+                0x010060a8                _end = ABSOLUTE (.)
+                0x010060a8                end = ABSOLUTE (.)
+                0x010060a8                PROVIDE (_alt_partition_sdram_load_addr, LOADADDR (.sdram))
 
 .stab
  *(.stab)
@@ -436,13 +503,20 @@ LOAD /opt/altera12.0/nios2eds/bin/gnu/H-i686-pc-linux-gnu/bin/../lib/gcc/nios2-e
  .comment       0x00000000       0x24 lib/libnios2rte-db_4ce10.a(alt_load.o)
  .comment       0x00000000       0x24 lib/libnios2rte-db_4ce10.a(alt_main.o)
  .comment       0x00000000       0x24 lib/libnios2rte-db_4ce10.a(button.o)
+ .comment       0x00000000       0x24 lib/libnios2rte-db_4ce10.a(general_exception.o)
+ .comment       0x00000000       0x24 lib/libnios2rte-db_4ce10.a(gprintf.o)
+ .comment       0x00000000       0x24 lib/libnios2rte-db_4ce10.a(irq.o)
  .comment       0x00000000       0x24 lib/libnios2rte-db_4ce10.a(led.o)
  .comment       0x00000000       0x24 lib/libnios2rte-db_4ce10.a(roomba.o)
  .comment       0x00000000       0x24 lib/libnios2rte-db_4ce10.a(sound.o)
+ .comment       0x00000000       0x24 lib/libnios2rte-db_4ce10.a(timer.o)
  .comment       0x00000000       0x24 lib/libnios2rte-db_4ce10.a(tools.o)
  .comment       0x00000000       0x24 lib/libnios2rte-db_4ce10.a(uart.o)
+ .comment       0x00000000       0x24 /opt/altera12.0/nios2eds/bin/gnu/H-i686-pc-linux-gnu/bin/../lib/gcc/nios2-elf/4.1.2/libgcc.a(_udivdi3.o)
+ .comment       0x00000000       0x24 /opt/altera12.0/nios2eds/bin/gnu/H-i686-pc-linux-gnu/bin/../lib/gcc/nios2-elf/4.1.2/libgcc.a(_umoddi3.o)
  .comment       0x00000000       0x24 /opt/altera12.0/nios2eds/bin/gnu/H-i686-pc-linux-gnu/bin/../lib/gcc/nios2-elf/4.1.2/libgcc.a(lib2-divmod.o)
  .comment       0x00000000       0x24 /opt/altera12.0/nios2eds/bin/gnu/H-i686-pc-linux-gnu/bin/../lib/gcc/nios2-elf/4.1.2/libgcc.a(lib2-mul.o)
+ .comment       0x00000000       0x24 /opt/altera12.0/nios2eds/bin/gnu/H-i686-pc-linux-gnu/bin/../lib/gcc/nios2-elf/4.1.2/libgcc.a(_clz.o)
  .comment       0x00000000       0x24 /opt/altera12.0/nios2eds/bin/gnu/H-i686-pc-linux-gnu/bin/../lib/gcc/nios2-elf/4.1.2/../../../../nios2-elf/lib/libc.a(lib_a-exit.o)
  .comment       0x00000000       0x24 /opt/altera12.0/nios2eds/bin/gnu/H-i686-pc-linux-gnu/bin/../lib/gcc/nios2-elf/4.1.2/../../../../nios2-elf/lib/libc.a(lib_a-impure.o)
  .comment       0x00000000       0x24 /opt/altera12.0/nios2eds/bin/gnu/H-i686-pc-linux-gnu/bin/../lib/gcc/nios2-elf/4.1.2/../../../../nios2-elf/lib/libc.a(lib_a-__call_atexit.o)
@@ -462,7 +536,7 @@ LOAD /opt/altera12.0/nios2eds/bin/gnu/H-i686-pc-linux-gnu/bin/../lib/gcc/nios2-e
 .debug_sfnames
  *(.debug_sfnames)
 
-.debug_aranges  0x00000000      0x1e0
+.debug_aranges  0x00000000      0x2a0
  *(.debug_aranges)
  .debug_aranges
                 0x00000000       0x20 main.o
@@ -473,186 +547,252 @@ LOAD /opt/altera12.0/nios2eds/bin/gnu/H-i686-pc-linux-gnu/bin/../lib/gcc/nios2-e
  .debug_aranges
                 0x00000060       0x20 lib/libnios2rte-db_4ce10.a(button.o)
  .debug_aranges
-                0x00000080       0x20 lib/libnios2rte-db_4ce10.a(led.o)
+                0x00000080       0x20 lib/libnios2rte-db_4ce10.a(general_exception.o)
  .debug_aranges
-                0x000000a0       0x20 lib/libnios2rte-db_4ce10.a(roomba.o)
+                0x000000a0       0x20 lib/libnios2rte-db_4ce10.a(gprintf.o)
  .debug_aranges
-                0x000000c0       0x20 lib/libnios2rte-db_4ce10.a(sound.o)
+                0x000000c0       0x20 lib/libnios2rte-db_4ce10.a(irq.o)
  .debug_aranges
-                0x000000e0       0x20 lib/libnios2rte-db_4ce10.a(tools.o)
+                0x000000e0       0x20 lib/libnios2rte-db_4ce10.a(led.o)
  .debug_aranges
-                0x00000100       0x20 lib/libnios2rte-db_4ce10.a(uart.o)
+                0x00000100       0x20 lib/libnios2rte-db_4ce10.a(roomba.o)
  .debug_aranges
-                0x00000120       0x20 /opt/altera12.0/nios2eds/bin/gnu/H-i686-pc-linux-gnu/bin/../lib/gcc/nios2-elf/4.1.2/libgcc.a(lib2-divmod.o)
+                0x00000120       0x20 lib/libnios2rte-db_4ce10.a(sound.o)
  .debug_aranges
-                0x00000140       0x20 /opt/altera12.0/nios2eds/bin/gnu/H-i686-pc-linux-gnu/bin/../lib/gcc/nios2-elf/4.1.2/libgcc.a(lib2-mul.o)
+                0x00000140       0x20 lib/libnios2rte-db_4ce10.a(timer.o)
  .debug_aranges
-                0x00000160       0x20 /opt/altera12.0/nios2eds/bin/gnu/H-i686-pc-linux-gnu/bin/../lib/gcc/nios2-elf/4.1.2/../../../../nios2-elf/lib/libc.a(lib_a-exit.o)
+                0x00000160       0x20 lib/libnios2rte-db_4ce10.a(tools.o)
  .debug_aranges
-                0x00000180       0x20 /opt/altera12.0/nios2eds/bin/gnu/H-i686-pc-linux-gnu/bin/../lib/gcc/nios2-elf/4.1.2/../../../../nios2-elf/lib/libc.a(lib_a-__call_atexit.o)
+                0x00000180       0x20 lib/libnios2rte-db_4ce10.a(uart.o)
  .debug_aranges
-                0x000001a0       0x20 /opt/altera12.0/nios2eds/bin/gnu/H-i686-pc-linux-gnu/bin/../lib/gcc/nios2-elf/4.1.2/../../../../nios2-elf/lib/libnosys.a(nosys_close.o)
+                0x000001a0       0x20 /opt/altera12.0/nios2eds/bin/gnu/H-i686-pc-linux-gnu/bin/../lib/gcc/nios2-elf/4.1.2/libgcc.a(_udivdi3.o)
  .debug_aranges
-                0x000001c0       0x20 /opt/altera12.0/nios2eds/bin/gnu/H-i686-pc-linux-gnu/bin/../lib/gcc/nios2-elf/4.1.2/../../../../nios2-elf/lib/libnosys.a(nosys_exit.o)
+                0x000001c0       0x20 /opt/altera12.0/nios2eds/bin/gnu/H-i686-pc-linux-gnu/bin/../lib/gcc/nios2-elf/4.1.2/libgcc.a(_umoddi3.o)
+ .debug_aranges
+                0x000001e0       0x20 /opt/altera12.0/nios2eds/bin/gnu/H-i686-pc-linux-gnu/bin/../lib/gcc/nios2-elf/4.1.2/libgcc.a(lib2-divmod.o)
+ .debug_aranges
+                0x00000200       0x20 /opt/altera12.0/nios2eds/bin/gnu/H-i686-pc-linux-gnu/bin/../lib/gcc/nios2-elf/4.1.2/libgcc.a(lib2-mul.o)
+ .debug_aranges
+                0x00000220       0x20 /opt/altera12.0/nios2eds/bin/gnu/H-i686-pc-linux-gnu/bin/../lib/gcc/nios2-elf/4.1.2/../../../../nios2-elf/lib/libc.a(lib_a-exit.o)
+ .debug_aranges
+                0x00000240       0x20 /opt/altera12.0/nios2eds/bin/gnu/H-i686-pc-linux-gnu/bin/../lib/gcc/nios2-elf/4.1.2/../../../../nios2-elf/lib/libc.a(lib_a-__call_atexit.o)
+ .debug_aranges
+                0x00000260       0x20 /opt/altera12.0/nios2eds/bin/gnu/H-i686-pc-linux-gnu/bin/../lib/gcc/nios2-elf/4.1.2/../../../../nios2-elf/lib/libnosys.a(nosys_close.o)
+ .debug_aranges
+                0x00000280       0x20 /opt/altera12.0/nios2eds/bin/gnu/H-i686-pc-linux-gnu/bin/../lib/gcc/nios2-elf/4.1.2/../../../../nios2-elf/lib/libnosys.a(nosys_exit.o)
 
 .debug_pubnames
-                0x00000000      0x866
+                0x00000000      0xa65
  *(.debug_pubnames)
  .debug_pubnames
-                0x00000000       0x4c main.o
+                0x00000000      0x165 main.o
  .debug_pubnames
-                0x0000004c       0x1f lib/libnios2rte-db_4ce10.a(alt_load.o)
+                0x00000165       0x1f lib/libnios2rte-db_4ce10.a(alt_load.o)
  .debug_pubnames
-                0x0000006b       0x46 lib/libnios2rte-db_4ce10.a(alt_main.o)
+                0x00000184       0x46 lib/libnios2rte-db_4ce10.a(alt_main.o)
  .debug_pubnames
-                0x000000b1       0x45 lib/libnios2rte-db_4ce10.a(button.o)
+                0x000001ca       0x45 lib/libnios2rte-db_4ce10.a(button.o)
  .debug_pubnames
-                0x000000f6       0x2d lib/libnios2rte-db_4ce10.a(led.o)
+                0x0000020f       0x20 lib/libnios2rte-db_4ce10.a(general_exception.o)
  .debug_pubnames
-                0x00000123      0x4a5 lib/libnios2rte-db_4ce10.a(roomba.o)
+                0x0000022f       0x28 lib/libnios2rte-db_4ce10.a(gprintf.o)
  .debug_pubnames
-                0x000005c8       0xa3 lib/libnios2rte-db_4ce10.a(sound.o)
+                0x00000257       0xb9 lib/libnios2rte-db_4ce10.a(irq.o)
  .debug_pubnames
-                0x0000066b       0x4f lib/libnios2rte-db_4ce10.a(tools.o)
+                0x00000310       0x2d lib/libnios2rte-db_4ce10.a(led.o)
  .debug_pubnames
-                0x000006ba       0x66 lib/libnios2rte-db_4ce10.a(uart.o)
+                0x0000033d      0x3b9 lib/libnios2rte-db_4ce10.a(roomba.o)
  .debug_pubnames
-                0x00000720       0x48 /opt/altera12.0/nios2eds/bin/gnu/H-i686-pc-linux-gnu/bin/../lib/gcc/nios2-elf/4.1.2/libgcc.a(lib2-divmod.o)
+                0x000006f6       0xbb lib/libnios2rte-db_4ce10.a(sound.o)
  .debug_pubnames
-                0x00000768       0x1f /opt/altera12.0/nios2eds/bin/gnu/H-i686-pc-linux-gnu/bin/../lib/gcc/nios2-elf/4.1.2/libgcc.a(lib2-mul.o)
+                0x000007b1       0x59 lib/libnios2rte-db_4ce10.a(timer.o)
  .debug_pubnames
-                0x00000787       0x1b /opt/altera12.0/nios2eds/bin/gnu/H-i686-pc-linux-gnu/bin/../lib/gcc/nios2-elf/4.1.2/../../../../nios2-elf/lib/libc.a(lib_a-exit.o)
+                0x0000080a       0x4f lib/libnios2rte-db_4ce10.a(tools.o)
  .debug_pubnames
-                0x000007a2       0x39 /opt/altera12.0/nios2eds/bin/gnu/H-i686-pc-linux-gnu/bin/../lib/gcc/nios2-elf/4.1.2/../../../../nios2-elf/lib/libc.a(lib_a-impure.o)
+                0x00000859       0x66 lib/libnios2rte-db_4ce10.a(uart.o)
  .debug_pubnames
-                0x000007db       0x27 /opt/altera12.0/nios2eds/bin/gnu/H-i686-pc-linux-gnu/bin/../lib/gcc/nios2-elf/4.1.2/../../../../nios2-elf/lib/libc.a(lib_a-__call_atexit.o)
+                0x000008bf       0x20 /opt/altera12.0/nios2eds/bin/gnu/H-i686-pc-linux-gnu/bin/../lib/gcc/nios2-elf/4.1.2/libgcc.a(_udivdi3.o)
  .debug_pubnames
-                0x00000802       0x1c /opt/altera12.0/nios2eds/bin/gnu/H-i686-pc-linux-gnu/bin/../lib/gcc/nios2-elf/4.1.2/../../../../nios2-elf/lib/libnosys.a(nosys_close.o)
+                0x000008df       0x20 /opt/altera12.0/nios2eds/bin/gnu/H-i686-pc-linux-gnu/bin/../lib/gcc/nios2-elf/4.1.2/libgcc.a(_umoddi3.o)
  .debug_pubnames
-                0x0000081e       0x2c /opt/altera12.0/nios2eds/bin/gnu/H-i686-pc-linux-gnu/bin/../lib/gcc/nios2-elf/4.1.2/../../../../nios2-elf/lib/libnosys.a(nosys_exit.o)
+                0x000008ff       0x48 /opt/altera12.0/nios2eds/bin/gnu/H-i686-pc-linux-gnu/bin/../lib/gcc/nios2-elf/4.1.2/libgcc.a(lib2-divmod.o)
  .debug_pubnames
-                0x0000084a       0x1c /opt/altera12.0/nios2eds/bin/gnu/H-i686-pc-linux-gnu/bin/../lib/gcc/nios2-elf/4.1.2/../../../../nios2-elf/lib/libc.a(lib_a-int_errno.o)
+                0x00000947       0x1f /opt/altera12.0/nios2eds/bin/gnu/H-i686-pc-linux-gnu/bin/../lib/gcc/nios2-elf/4.1.2/libgcc.a(lib2-mul.o)
+ .debug_pubnames
+                0x00000966       0x20 /opt/altera12.0/nios2eds/bin/gnu/H-i686-pc-linux-gnu/bin/../lib/gcc/nios2-elf/4.1.2/libgcc.a(_clz.o)
+ .debug_pubnames
+                0x00000986       0x1b /opt/altera12.0/nios2eds/bin/gnu/H-i686-pc-linux-gnu/bin/../lib/gcc/nios2-elf/4.1.2/../../../../nios2-elf/lib/libc.a(lib_a-exit.o)
+ .debug_pubnames
+                0x000009a1       0x39 /opt/altera12.0/nios2eds/bin/gnu/H-i686-pc-linux-gnu/bin/../lib/gcc/nios2-elf/4.1.2/../../../../nios2-elf/lib/libc.a(lib_a-impure.o)
+ .debug_pubnames
+                0x000009da       0x27 /opt/altera12.0/nios2eds/bin/gnu/H-i686-pc-linux-gnu/bin/../lib/gcc/nios2-elf/4.1.2/../../../../nios2-elf/lib/libc.a(lib_a-__call_atexit.o)
+ .debug_pubnames
+                0x00000a01       0x1c /opt/altera12.0/nios2eds/bin/gnu/H-i686-pc-linux-gnu/bin/../lib/gcc/nios2-elf/4.1.2/../../../../nios2-elf/lib/libnosys.a(nosys_close.o)
+ .debug_pubnames
+                0x00000a1d       0x2c /opt/altera12.0/nios2eds/bin/gnu/H-i686-pc-linux-gnu/bin/../lib/gcc/nios2-elf/4.1.2/../../../../nios2-elf/lib/libnosys.a(nosys_exit.o)
+ .debug_pubnames
+                0x00000a49       0x1c /opt/altera12.0/nios2eds/bin/gnu/H-i686-pc-linux-gnu/bin/../lib/gcc/nios2-elf/4.1.2/../../../../nios2-elf/lib/libc.a(lib_a-int_errno.o)
 
-.debug_info     0x00000000     0x4143
+.debug_info     0x00000000     0x61f3
  *(.debug_info .gnu.linkonce.wi.*)
- .debug_info    0x00000000      0x4b2 main.o
- .debug_info    0x000004b2      0x270 lib/libnios2rte-db_4ce10.a(alt_load.o)
- .debug_info    0x00000722      0x208 lib/libnios2rte-db_4ce10.a(alt_main.o)
- .debug_info    0x0000092a      0x1fe lib/libnios2rte-db_4ce10.a(button.o)
- .debug_info    0x00000b28      0x157 lib/libnios2rte-db_4ce10.a(led.o)
- .debug_info    0x00000c7f      0xc31 lib/libnios2rte-db_4ce10.a(roomba.o)
- .debug_info    0x000018b0      0x2be lib/libnios2rte-db_4ce10.a(sound.o)
- .debug_info    0x00001b6e      0x208 lib/libnios2rte-db_4ce10.a(tools.o)
- .debug_info    0x00001d76      0x2bc lib/libnios2rte-db_4ce10.a(uart.o)
- .debug_info    0x00002032      0x21c /opt/altera12.0/nios2eds/bin/gnu/H-i686-pc-linux-gnu/bin/../lib/gcc/nios2-elf/4.1.2/libgcc.a(lib2-divmod.o)
- .debug_info    0x0000224e       0xf3 /opt/altera12.0/nios2eds/bin/gnu/H-i686-pc-linux-gnu/bin/../lib/gcc/nios2-elf/4.1.2/libgcc.a(lib2-mul.o)
- .debug_info    0x00002341      0x93f /opt/altera12.0/nios2eds/bin/gnu/H-i686-pc-linux-gnu/bin/../lib/gcc/nios2-elf/4.1.2/../../../../nios2-elf/lib/libc.a(lib_a-exit.o)
- .debug_info    0x00002c80      0x93d /opt/altera12.0/nios2eds/bin/gnu/H-i686-pc-linux-gnu/bin/../lib/gcc/nios2-elf/4.1.2/../../../../nios2-elf/lib/libc.a(lib_a-impure.o)
- .debug_info    0x000035bd      0x9e2 /opt/altera12.0/nios2eds/bin/gnu/H-i686-pc-linux-gnu/bin/../lib/gcc/nios2-elf/4.1.2/../../../../nios2-elf/lib/libc.a(lib_a-__call_atexit.o)
- .debug_info    0x00003f9f       0xb0 /opt/altera12.0/nios2eds/bin/gnu/H-i686-pc-linux-gnu/bin/../lib/gcc/nios2-elf/4.1.2/../../../../nios2-elf/lib/libnosys.a(nosys_close.o)
- .debug_info    0x0000404f       0x68 /opt/altera12.0/nios2eds/bin/gnu/H-i686-pc-linux-gnu/bin/../lib/gcc/nios2-elf/4.1.2/../../../../nios2-elf/lib/libnosys.a(nosys_exit.o)
- .debug_info    0x000040b7       0x8c /opt/altera12.0/nios2eds/bin/gnu/H-i686-pc-linux-gnu/bin/../lib/gcc/nios2-elf/4.1.2/../../../../nios2-elf/lib/libc.a(lib_a-int_errno.o)
+ .debug_info    0x00000000      0x71c main.o
+ .debug_info    0x0000071c      0x268 lib/libnios2rte-db_4ce10.a(alt_load.o)
+ .debug_info    0x00000984      0x200 lib/libnios2rte-db_4ce10.a(alt_main.o)
+ .debug_info    0x00000b84      0x1f6 lib/libnios2rte-db_4ce10.a(button.o)
+ .debug_info    0x00000d7a      0x379 lib/libnios2rte-db_4ce10.a(general_exception.o)
+ .debug_info    0x000010f3      0x4ff lib/libnios2rte-db_4ce10.a(gprintf.o)
+ .debug_info    0x000015f2      0x502 lib/libnios2rte-db_4ce10.a(irq.o)
+ .debug_info    0x00001af4      0x14f lib/libnios2rte-db_4ce10.a(led.o)
+ .debug_info    0x00001c43      0xbbd lib/libnios2rte-db_4ce10.a(roomba.o)
+ .debug_info    0x00002800      0x2e8 lib/libnios2rte-db_4ce10.a(sound.o)
+ .debug_info    0x00002ae8      0x208 lib/libnios2rte-db_4ce10.a(timer.o)
+ .debug_info    0x00002cf0      0x200 lib/libnios2rte-db_4ce10.a(tools.o)
+ .debug_info    0x00002ef0      0x2b4 lib/libnios2rte-db_4ce10.a(uart.o)
+ .debug_info    0x000031a4      0x724 /opt/altera12.0/nios2eds/bin/gnu/H-i686-pc-linux-gnu/bin/../lib/gcc/nios2-elf/4.1.2/libgcc.a(_udivdi3.o)
+ .debug_info    0x000038c8      0x751 /opt/altera12.0/nios2eds/bin/gnu/H-i686-pc-linux-gnu/bin/../lib/gcc/nios2-elf/4.1.2/libgcc.a(_umoddi3.o)
+ .debug_info    0x00004019      0x21c /opt/altera12.0/nios2eds/bin/gnu/H-i686-pc-linux-gnu/bin/../lib/gcc/nios2-elf/4.1.2/libgcc.a(lib2-divmod.o)
+ .debug_info    0x00004235       0xf3 /opt/altera12.0/nios2eds/bin/gnu/H-i686-pc-linux-gnu/bin/../lib/gcc/nios2-elf/4.1.2/libgcc.a(lib2-mul.o)
+ .debug_info    0x00004328       0xc9 /opt/altera12.0/nios2eds/bin/gnu/H-i686-pc-linux-gnu/bin/../lib/gcc/nios2-elf/4.1.2/libgcc.a(_clz.o)
+ .debug_info    0x000043f1      0x93f /opt/altera12.0/nios2eds/bin/gnu/H-i686-pc-linux-gnu/bin/../lib/gcc/nios2-elf/4.1.2/../../../../nios2-elf/lib/libc.a(lib_a-exit.o)
+ .debug_info    0x00004d30      0x93d /opt/altera12.0/nios2eds/bin/gnu/H-i686-pc-linux-gnu/bin/../lib/gcc/nios2-elf/4.1.2/../../../../nios2-elf/lib/libc.a(lib_a-impure.o)
+ .debug_info    0x0000566d      0x9e2 /opt/altera12.0/nios2eds/bin/gnu/H-i686-pc-linux-gnu/bin/../lib/gcc/nios2-elf/4.1.2/../../../../nios2-elf/lib/libc.a(lib_a-__call_atexit.o)
+ .debug_info    0x0000604f       0xb0 /opt/altera12.0/nios2eds/bin/gnu/H-i686-pc-linux-gnu/bin/../lib/gcc/nios2-elf/4.1.2/../../../../nios2-elf/lib/libnosys.a(nosys_close.o)
+ .debug_info    0x000060ff       0x68 /opt/altera12.0/nios2eds/bin/gnu/H-i686-pc-linux-gnu/bin/../lib/gcc/nios2-elf/4.1.2/../../../../nios2-elf/lib/libnosys.a(nosys_exit.o)
+ .debug_info    0x00006167       0x8c /opt/altera12.0/nios2eds/bin/gnu/H-i686-pc-linux-gnu/bin/../lib/gcc/nios2-elf/4.1.2/../../../../nios2-elf/lib/libc.a(lib_a-int_errno.o)
 
-.debug_abbrev   0x00000000      0xe2a
+.debug_abbrev   0x00000000     0x14e9
  *(.debug_abbrev)
- .debug_abbrev  0x00000000       0xf2 main.o
- .debug_abbrev  0x000000f2       0x88 lib/libnios2rte-db_4ce10.a(alt_load.o)
- .debug_abbrev  0x0000017a       0xb7 lib/libnios2rte-db_4ce10.a(alt_main.o)
- .debug_abbrev  0x00000231       0xac lib/libnios2rte-db_4ce10.a(button.o)
- .debug_abbrev  0x000002dd       0x76 lib/libnios2rte-db_4ce10.a(led.o)
- .debug_abbrev  0x00000353      0x1b7 lib/libnios2rte-db_4ce10.a(roomba.o)
- .debug_abbrev  0x0000050a       0xd8 lib/libnios2rte-db_4ce10.a(sound.o)
- .debug_abbrev  0x000005e2       0x91 lib/libnios2rte-db_4ce10.a(tools.o)
- .debug_abbrev  0x00000673       0xc3 lib/libnios2rte-db_4ce10.a(uart.o)
- .debug_abbrev  0x00000736       0xe0 /opt/altera12.0/nios2eds/bin/gnu/H-i686-pc-linux-gnu/bin/../lib/gcc/nios2-elf/4.1.2/libgcc.a(lib2-divmod.o)
- .debug_abbrev  0x00000816       0x7b /opt/altera12.0/nios2eds/bin/gnu/H-i686-pc-linux-gnu/bin/../lib/gcc/nios2-elf/4.1.2/libgcc.a(lib2-mul.o)
- .debug_abbrev  0x00000891      0x16e /opt/altera12.0/nios2eds/bin/gnu/H-i686-pc-linux-gnu/bin/../lib/gcc/nios2-elf/4.1.2/../../../../nios2-elf/lib/libc.a(lib_a-exit.o)
- .debug_abbrev  0x000009ff      0x157 /opt/altera12.0/nios2eds/bin/gnu/H-i686-pc-linux-gnu/bin/../lib/gcc/nios2-elf/4.1.2/../../../../nios2-elf/lib/libc.a(lib_a-impure.o)
- .debug_abbrev  0x00000b56      0x1de /opt/altera12.0/nios2eds/bin/gnu/H-i686-pc-linux-gnu/bin/../lib/gcc/nios2-elf/4.1.2/../../../../nios2-elf/lib/libc.a(lib_a-__call_atexit.o)
- .debug_abbrev  0x00000d34       0x63 /opt/altera12.0/nios2eds/bin/gnu/H-i686-pc-linux-gnu/bin/../lib/gcc/nios2-elf/4.1.2/../../../../nios2-elf/lib/libnosys.a(nosys_close.o)
- .debug_abbrev  0x00000d97       0x58 /opt/altera12.0/nios2eds/bin/gnu/H-i686-pc-linux-gnu/bin/../lib/gcc/nios2-elf/4.1.2/../../../../nios2-elf/lib/libnosys.a(nosys_exit.o)
- .debug_abbrev  0x00000def       0x3b /opt/altera12.0/nios2eds/bin/gnu/H-i686-pc-linux-gnu/bin/../lib/gcc/nios2-elf/4.1.2/../../../../nios2-elf/lib/libc.a(lib_a-int_errno.o)
+ .debug_abbrev  0x00000000      0x116 main.o
+ .debug_abbrev  0x00000116       0x88 lib/libnios2rte-db_4ce10.a(alt_load.o)
+ .debug_abbrev  0x0000019e       0xb7 lib/libnios2rte-db_4ce10.a(alt_main.o)
+ .debug_abbrev  0x00000255       0xac lib/libnios2rte-db_4ce10.a(button.o)
+ .debug_abbrev  0x00000301       0x8f lib/libnios2rte-db_4ce10.a(general_exception.o)
+ .debug_abbrev  0x00000390      0x100 lib/libnios2rte-db_4ce10.a(gprintf.o)
+ .debug_abbrev  0x00000490      0x119 lib/libnios2rte-db_4ce10.a(irq.o)
+ .debug_abbrev  0x000005a9       0x76 lib/libnios2rte-db_4ce10.a(led.o)
+ .debug_abbrev  0x0000061f      0x1d8 lib/libnios2rte-db_4ce10.a(roomba.o)
+ .debug_abbrev  0x000007f7       0xd8 lib/libnios2rte-db_4ce10.a(sound.o)
+ .debug_abbrev  0x000008cf       0x78 lib/libnios2rte-db_4ce10.a(timer.o)
+ .debug_abbrev  0x00000947       0x91 lib/libnios2rte-db_4ce10.a(tools.o)
+ .debug_abbrev  0x000009d8       0xc3 lib/libnios2rte-db_4ce10.a(uart.o)
+ .debug_abbrev  0x00000a9b      0x16b /opt/altera12.0/nios2eds/bin/gnu/H-i686-pc-linux-gnu/bin/../lib/gcc/nios2-elf/4.1.2/libgcc.a(_udivdi3.o)
+ .debug_abbrev  0x00000c06      0x18e /opt/altera12.0/nios2eds/bin/gnu/H-i686-pc-linux-gnu/bin/../lib/gcc/nios2-elf/4.1.2/libgcc.a(_umoddi3.o)
+ .debug_abbrev  0x00000d94       0xe0 /opt/altera12.0/nios2eds/bin/gnu/H-i686-pc-linux-gnu/bin/../lib/gcc/nios2-elf/4.1.2/libgcc.a(lib2-divmod.o)
+ .debug_abbrev  0x00000e74       0x7b /opt/altera12.0/nios2eds/bin/gnu/H-i686-pc-linux-gnu/bin/../lib/gcc/nios2-elf/4.1.2/libgcc.a(lib2-mul.o)
+ .debug_abbrev  0x00000eef       0x61 /opt/altera12.0/nios2eds/bin/gnu/H-i686-pc-linux-gnu/bin/../lib/gcc/nios2-elf/4.1.2/libgcc.a(_clz.o)
+ .debug_abbrev  0x00000f50      0x16e /opt/altera12.0/nios2eds/bin/gnu/H-i686-pc-linux-gnu/bin/../lib/gcc/nios2-elf/4.1.2/../../../../nios2-elf/lib/libc.a(lib_a-exit.o)
+ .debug_abbrev  0x000010be      0x157 /opt/altera12.0/nios2eds/bin/gnu/H-i686-pc-linux-gnu/bin/../lib/gcc/nios2-elf/4.1.2/../../../../nios2-elf/lib/libc.a(lib_a-impure.o)
+ .debug_abbrev  0x00001215      0x1de /opt/altera12.0/nios2eds/bin/gnu/H-i686-pc-linux-gnu/bin/../lib/gcc/nios2-elf/4.1.2/../../../../nios2-elf/lib/libc.a(lib_a-__call_atexit.o)
+ .debug_abbrev  0x000013f3       0x63 /opt/altera12.0/nios2eds/bin/gnu/H-i686-pc-linux-gnu/bin/../lib/gcc/nios2-elf/4.1.2/../../../../nios2-elf/lib/libnosys.a(nosys_close.o)
+ .debug_abbrev  0x00001456       0x58 /opt/altera12.0/nios2eds/bin/gnu/H-i686-pc-linux-gnu/bin/../lib/gcc/nios2-elf/4.1.2/../../../../nios2-elf/lib/libnosys.a(nosys_exit.o)
+ .debug_abbrev  0x000014ae       0x3b /opt/altera12.0/nios2eds/bin/gnu/H-i686-pc-linux-gnu/bin/../lib/gcc/nios2-elf/4.1.2/../../../../nios2-elf/lib/libc.a(lib_a-int_errno.o)
 
-.debug_line     0x00000000     0x2642
+.debug_line     0x00000000     0x4205
  *(.debug_line)
- .debug_line    0x00000000      0x3c3 main.o
- .debug_line    0x000003c3      0x209 lib/libnios2rte-db_4ce10.a(alt_load.o)
- .debug_line    0x000005cc      0x2a4 lib/libnios2rte-db_4ce10.a(alt_main.o)
- .debug_line    0x00000870      0x121 lib/libnios2rte-db_4ce10.a(button.o)
- .debug_line    0x00000991       0xe6 lib/libnios2rte-db_4ce10.a(led.o)
- .debug_line    0x00000a77      0x562 lib/libnios2rte-db_4ce10.a(roomba.o)
- .debug_line    0x00000fd9      0x18a lib/libnios2rte-db_4ce10.a(sound.o)
- .debug_line    0x00001163      0x23d lib/libnios2rte-db_4ce10.a(tools.o)
- .debug_line    0x000013a0      0x232 lib/libnios2rte-db_4ce10.a(uart.o)
- .debug_line    0x000015d2      0x2c3 /opt/altera12.0/nios2eds/bin/gnu/H-i686-pc-linux-gnu/bin/../lib/gcc/nios2-elf/4.1.2/libgcc.a(lib2-divmod.o)
- .debug_line    0x00001895      0x18e /opt/altera12.0/nios2eds/bin/gnu/H-i686-pc-linux-gnu/bin/../lib/gcc/nios2-elf/4.1.2/libgcc.a(lib2-mul.o)
- .debug_line    0x00001a23      0x232 /opt/altera12.0/nios2eds/bin/gnu/H-i686-pc-linux-gnu/bin/../lib/gcc/nios2-elf/4.1.2/../../../../nios2-elf/lib/libc.a(lib_a-exit.o)
- .debug_line    0x00001c55      0x224 /opt/altera12.0/nios2eds/bin/gnu/H-i686-pc-linux-gnu/bin/../lib/gcc/nios2-elf/4.1.2/../../../../nios2-elf/lib/libc.a(lib_a-impure.o)
- .debug_line    0x00001e79      0x361 /opt/altera12.0/nios2eds/bin/gnu/H-i686-pc-linux-gnu/bin/../lib/gcc/nios2-elf/4.1.2/../../../../nios2-elf/lib/libc.a(lib_a-__call_atexit.o)
- .debug_line    0x000021da      0x1db /opt/altera12.0/nios2eds/bin/gnu/H-i686-pc-linux-gnu/bin/../lib/gcc/nios2-elf/4.1.2/../../../../nios2-elf/lib/libnosys.a(nosys_close.o)
- .debug_line    0x000023b5       0xb4 /opt/altera12.0/nios2eds/bin/gnu/H-i686-pc-linux-gnu/bin/../lib/gcc/nios2-elf/4.1.2/../../../../nios2-elf/lib/libnosys.a(nosys_exit.o)
- .debug_line    0x00002469      0x1d9 /opt/altera12.0/nios2eds/bin/gnu/H-i686-pc-linux-gnu/bin/../lib/gcc/nios2-elf/4.1.2/../../../../nios2-elf/lib/libc.a(lib_a-int_errno.o)
+ .debug_line    0x00000000      0x71a main.o
+ .debug_line    0x0000071a      0x209 lib/libnios2rte-db_4ce10.a(alt_load.o)
+ .debug_line    0x00000923      0x2a4 lib/libnios2rte-db_4ce10.a(alt_main.o)
+ .debug_line    0x00000bc7      0x121 lib/libnios2rte-db_4ce10.a(button.o)
+ .debug_line    0x00000ce8      0x1b0 lib/libnios2rte-db_4ce10.a(general_exception.o)
+ .debug_line    0x00000e98      0x69d lib/libnios2rte-db_4ce10.a(gprintf.o)
+ .debug_line    0x00001535      0x455 lib/libnios2rte-db_4ce10.a(irq.o)
+ .debug_line    0x0000198a       0xe6 lib/libnios2rte-db_4ce10.a(led.o)
+ .debug_line    0x00001a70      0x60a lib/libnios2rte-db_4ce10.a(roomba.o)
+ .debug_line    0x0000207a      0x1fb lib/libnios2rte-db_4ce10.a(sound.o)
+ .debug_line    0x00002275      0x23c lib/libnios2rte-db_4ce10.a(timer.o)
+ .debug_line    0x000024b1      0x23d lib/libnios2rte-db_4ce10.a(tools.o)
+ .debug_line    0x000026ee      0x232 lib/libnios2rte-db_4ce10.a(uart.o)
+ .debug_line    0x00002920      0x366 /opt/altera12.0/nios2eds/bin/gnu/H-i686-pc-linux-gnu/bin/../lib/gcc/nios2-elf/4.1.2/libgcc.a(_udivdi3.o)
+ .debug_line    0x00002c86      0x3f1 /opt/altera12.0/nios2eds/bin/gnu/H-i686-pc-linux-gnu/bin/../lib/gcc/nios2-elf/4.1.2/libgcc.a(_umoddi3.o)
+ .debug_line    0x00003077      0x2c3 /opt/altera12.0/nios2eds/bin/gnu/H-i686-pc-linux-gnu/bin/../lib/gcc/nios2-elf/4.1.2/libgcc.a(lib2-divmod.o)
+ .debug_line    0x0000333a      0x18e /opt/altera12.0/nios2eds/bin/gnu/H-i686-pc-linux-gnu/bin/../lib/gcc/nios2-elf/4.1.2/libgcc.a(lib2-mul.o)
+ .debug_line    0x000034c8      0x11e /opt/altera12.0/nios2eds/bin/gnu/H-i686-pc-linux-gnu/bin/../lib/gcc/nios2-elf/4.1.2/libgcc.a(_clz.o)
+ .debug_line    0x000035e6      0x232 /opt/altera12.0/nios2eds/bin/gnu/H-i686-pc-linux-gnu/bin/../lib/gcc/nios2-elf/4.1.2/../../../../nios2-elf/lib/libc.a(lib_a-exit.o)
+ .debug_line    0x00003818      0x224 /opt/altera12.0/nios2eds/bin/gnu/H-i686-pc-linux-gnu/bin/../lib/gcc/nios2-elf/4.1.2/../../../../nios2-elf/lib/libc.a(lib_a-impure.o)
+ .debug_line    0x00003a3c      0x361 /opt/altera12.0/nios2eds/bin/gnu/H-i686-pc-linux-gnu/bin/../lib/gcc/nios2-elf/4.1.2/../../../../nios2-elf/lib/libc.a(lib_a-__call_atexit.o)
+ .debug_line    0x00003d9d      0x1db /opt/altera12.0/nios2eds/bin/gnu/H-i686-pc-linux-gnu/bin/../lib/gcc/nios2-elf/4.1.2/../../../../nios2-elf/lib/libnosys.a(nosys_close.o)
+ .debug_line    0x00003f78       0xb4 /opt/altera12.0/nios2eds/bin/gnu/H-i686-pc-linux-gnu/bin/../lib/gcc/nios2-elf/4.1.2/../../../../nios2-elf/lib/libnosys.a(nosys_exit.o)
+ .debug_line    0x0000402c      0x1d9 /opt/altera12.0/nios2eds/bin/gnu/H-i686-pc-linux-gnu/bin/../lib/gcc/nios2-elf/4.1.2/../../../../nios2-elf/lib/libc.a(lib_a-int_errno.o)
 
-.debug_frame    0x00000000      0x5e4
+.debug_frame    0x00000000      0xa4c
  *(.debug_frame)
- .debug_frame   0x00000000       0x2c main.o
- .debug_frame   0x0000002c       0x48 lib/libnios2rte-db_4ce10.a(alt_load.o)
- .debug_frame   0x00000074       0x2c lib/libnios2rte-db_4ce10.a(alt_main.o)
- .debug_frame   0x000000a0       0x48 lib/libnios2rte-db_4ce10.a(button.o)
- .debug_frame   0x000000e8       0x2c lib/libnios2rte-db_4ce10.a(led.o)
- .debug_frame   0x00000114      0x210 lib/libnios2rte-db_4ce10.a(roomba.o)
- .debug_frame   0x00000324       0x64 lib/libnios2rte-db_4ce10.a(sound.o)
- .debug_frame   0x00000388       0x64 lib/libnios2rte-db_4ce10.a(tools.o)
- .debug_frame   0x000003ec       0x9c lib/libnios2rte-db_4ce10.a(uart.o)
- .debug_frame   0x00000488       0x70 /opt/altera12.0/nios2eds/bin/gnu/H-i686-pc-linux-gnu/bin/../lib/gcc/nios2-elf/4.1.2/libgcc.a(lib2-divmod.o)
- .debug_frame   0x000004f8       0x20 /opt/altera12.0/nios2eds/bin/gnu/H-i686-pc-linux-gnu/bin/../lib/gcc/nios2-elf/4.1.2/libgcc.a(lib2-mul.o)
- .debug_frame   0x00000518       0x28 /opt/altera12.0/nios2eds/bin/gnu/H-i686-pc-linux-gnu/bin/../lib/gcc/nios2-elf/4.1.2/../../../../nios2-elf/lib/libc.a(lib_a-exit.o)
- .debug_frame   0x00000540       0x4c /opt/altera12.0/nios2eds/bin/gnu/H-i686-pc-linux-gnu/bin/../lib/gcc/nios2-elf/4.1.2/../../../../nios2-elf/lib/libc.a(lib_a-__call_atexit.o)
- .debug_frame   0x0000058c       0x20 /opt/altera12.0/nios2eds/bin/gnu/H-i686-pc-linux-gnu/bin/../lib/gcc/nios2-elf/4.1.2/../../../../nios2-elf/lib/libnosys.a(nosys_close.o)
- .debug_frame   0x000005ac       0x38 /opt/altera12.0/nios2eds/bin/gnu/H-i686-pc-linux-gnu/bin/../lib/gcc/nios2-elf/4.1.2/../../../../nios2-elf/lib/libnosys.a(nosys_exit.o)
+ .debug_frame   0x00000000      0x128 main.o
+ .debug_frame   0x00000128       0x48 lib/libnios2rte-db_4ce10.a(alt_load.o)
+ .debug_frame   0x00000170       0x2c lib/libnios2rte-db_4ce10.a(alt_main.o)
+ .debug_frame   0x0000019c       0x48 lib/libnios2rte-db_4ce10.a(button.o)
+ .debug_frame   0x000001e4       0x2c lib/libnios2rte-db_4ce10.a(general_exception.o)
+ .debug_frame   0x00000210       0xb8 lib/libnios2rte-db_4ce10.a(gprintf.o)
+ .debug_frame   0x000002c8      0x144 lib/libnios2rte-db_4ce10.a(irq.o)
+ .debug_frame   0x0000040c       0x2c lib/libnios2rte-db_4ce10.a(led.o)
+ .debug_frame   0x00000438      0x248 lib/libnios2rte-db_4ce10.a(roomba.o)
+ .debug_frame   0x00000680       0x64 lib/libnios2rte-db_4ce10.a(sound.o)
+ .debug_frame   0x000006e4       0x9c lib/libnios2rte-db_4ce10.a(timer.o)
+ .debug_frame   0x00000780       0x64 lib/libnios2rte-db_4ce10.a(tools.o)
+ .debug_frame   0x000007e4       0x9c lib/libnios2rte-db_4ce10.a(uart.o)
+ .debug_frame   0x00000880       0x38 /opt/altera12.0/nios2eds/bin/gnu/H-i686-pc-linux-gnu/bin/../lib/gcc/nios2-elf/4.1.2/libgcc.a(_udivdi3.o)
+ .debug_frame   0x000008b8       0x38 /opt/altera12.0/nios2eds/bin/gnu/H-i686-pc-linux-gnu/bin/../lib/gcc/nios2-elf/4.1.2/libgcc.a(_umoddi3.o)
+ .debug_frame   0x000008f0       0x70 /opt/altera12.0/nios2eds/bin/gnu/H-i686-pc-linux-gnu/bin/../lib/gcc/nios2-elf/4.1.2/libgcc.a(lib2-divmod.o)
+ .debug_frame   0x00000960       0x20 /opt/altera12.0/nios2eds/bin/gnu/H-i686-pc-linux-gnu/bin/../lib/gcc/nios2-elf/4.1.2/libgcc.a(lib2-mul.o)
+ .debug_frame   0x00000980       0x28 /opt/altera12.0/nios2eds/bin/gnu/H-i686-pc-linux-gnu/bin/../lib/gcc/nios2-elf/4.1.2/../../../../nios2-elf/lib/libc.a(lib_a-exit.o)
+ .debug_frame   0x000009a8       0x4c /opt/altera12.0/nios2eds/bin/gnu/H-i686-pc-linux-gnu/bin/../lib/gcc/nios2-elf/4.1.2/../../../../nios2-elf/lib/libc.a(lib_a-__call_atexit.o)
+ .debug_frame   0x000009f4       0x20 /opt/altera12.0/nios2eds/bin/gnu/H-i686-pc-linux-gnu/bin/../lib/gcc/nios2-elf/4.1.2/../../../../nios2-elf/lib/libnosys.a(nosys_close.o)
+ .debug_frame   0x00000a14       0x38 /opt/altera12.0/nios2eds/bin/gnu/H-i686-pc-linux-gnu/bin/../lib/gcc/nios2-elf/4.1.2/../../../../nios2-elf/lib/libnosys.a(nosys_exit.o)
 
-.debug_str      0x00000000      0x96f
+.debug_str      0x00000000      0xa60
  *(.debug_str)
  .debug_str     0x00000000       0x12 main.o
  .debug_str     0x00000012       0x12 lib/libnios2rte-db_4ce10.a(alt_load.o)
  .debug_str     0x00000024       0x12 lib/libnios2rte-db_4ce10.a(alt_main.o)
  .debug_str     0x00000036       0x12 lib/libnios2rte-db_4ce10.a(button.o)
- .debug_str     0x00000048       0x12 lib/libnios2rte-db_4ce10.a(led.o)
- .debug_str     0x0000005a       0x4b lib/libnios2rte-db_4ce10.a(roomba.o)
- .debug_str     0x000000a5       0x1e lib/libnios2rte-db_4ce10.a(sound.o)
- .debug_str     0x000000c3      0x169 /opt/altera12.0/nios2eds/bin/gnu/H-i686-pc-linux-gnu/bin/../lib/gcc/nios2-elf/4.1.2/libgcc.a(lib2-divmod.o)
+ .debug_str     0x00000048       0x2d lib/libnios2rte-db_4ce10.a(gprintf.o)
+ .debug_str     0x00000075       0x12 lib/libnios2rte-db_4ce10.a(irq.o)
+ .debug_str     0x00000087       0x12 lib/libnios2rte-db_4ce10.a(led.o)
+ .debug_str     0x00000099       0x41 lib/libnios2rte-db_4ce10.a(roomba.o)
+ .debug_str     0x000000da       0x1e lib/libnios2rte-db_4ce10.a(sound.o)
+ .debug_str     0x000000f8      0x1a5 /opt/altera12.0/nios2eds/bin/gnu/H-i686-pc-linux-gnu/bin/../lib/gcc/nios2-elf/4.1.2/libgcc.a(_udivdi3.o)
+                                0x1f9 (size before relaxing)
+ .debug_str     0x0000029d        0xa /opt/altera12.0/nios2eds/bin/gnu/H-i686-pc-linux-gnu/bin/../lib/gcc/nios2-elf/4.1.2/libgcc.a(_umoddi3.o)
+                                0x1f9 (size before relaxing)
+ .debug_str     0x000002a7       0x76 /opt/altera12.0/nios2eds/bin/gnu/H-i686-pc-linux-gnu/bin/../lib/gcc/nios2-elf/4.1.2/libgcc.a(lib2-divmod.o)
                                 0x1b6 (size before relaxing)
- .debug_str     0x0000022c       0x37 /opt/altera12.0/nios2eds/bin/gnu/H-i686-pc-linux-gnu/bin/../lib/gcc/nios2-elf/4.1.2/libgcc.a(lib2-mul.o)
+ .debug_str     0x0000031d       0x37 /opt/altera12.0/nios2eds/bin/gnu/H-i686-pc-linux-gnu/bin/../lib/gcc/nios2-elf/4.1.2/libgcc.a(lib2-mul.o)
                                 0x177 (size before relaxing)
- .debug_str     0x00000263      0x463 /opt/altera12.0/nios2eds/bin/gnu/H-i686-pc-linux-gnu/bin/../lib/gcc/nios2-elf/4.1.2/../../../../nios2-elf/lib/libc.a(lib_a-exit.o)
+ .debug_str     0x00000000      0x163 /opt/altera12.0/nios2eds/bin/gnu/H-i686-pc-linux-gnu/bin/../lib/gcc/nios2-elf/4.1.2/libgcc.a(_clz.o)
+ .debug_str     0x00000354      0x463 /opt/altera12.0/nios2eds/bin/gnu/H-i686-pc-linux-gnu/bin/../lib/gcc/nios2-elf/4.1.2/../../../../nios2-elf/lib/libc.a(lib_a-exit.o)
                                 0x50e (size before relaxing)
- .debug_str     0x000006c6       0xd3 /opt/altera12.0/nios2eds/bin/gnu/H-i686-pc-linux-gnu/bin/../lib/gcc/nios2-elf/4.1.2/../../../../nios2-elf/lib/libc.a(lib_a-impure.o)
+ .debug_str     0x000007b7       0xd3 /opt/altera12.0/nios2eds/bin/gnu/H-i686-pc-linux-gnu/bin/../lib/gcc/nios2-elf/4.1.2/../../../../nios2-elf/lib/libc.a(lib_a-impure.o)
                                 0x51c (size before relaxing)
- .debug_str     0x00000799       0x7b /opt/altera12.0/nios2eds/bin/gnu/H-i686-pc-linux-gnu/bin/../lib/gcc/nios2-elf/4.1.2/../../../../nios2-elf/lib/libc.a(lib_a-__call_atexit.o)
+ .debug_str     0x0000088a       0x7b /opt/altera12.0/nios2eds/bin/gnu/H-i686-pc-linux-gnu/bin/../lib/gcc/nios2-elf/4.1.2/../../../../nios2-elf/lib/libc.a(lib_a-__call_atexit.o)
                                 0x550 (size before relaxing)
- .debug_str     0x00000814       0xca /opt/altera12.0/nios2eds/bin/gnu/H-i686-pc-linux-gnu/bin/../lib/gcc/nios2-elf/4.1.2/../../../../nios2-elf/lib/libnosys.a(nosys_close.o)
+ .debug_str     0x00000905       0xca /opt/altera12.0/nios2eds/bin/gnu/H-i686-pc-linux-gnu/bin/../lib/gcc/nios2-elf/4.1.2/../../../../nios2-elf/lib/libnosys.a(nosys_close.o)
                                 0x16b (size before relaxing)
- .debug_str     0x000008de       0x54 /opt/altera12.0/nios2eds/bin/gnu/H-i686-pc-linux-gnu/bin/../lib/gcc/nios2-elf/4.1.2/../../../../nios2-elf/lib/libnosys.a(nosys_exit.o)
+ .debug_str     0x000009cf       0x54 /opt/altera12.0/nios2eds/bin/gnu/H-i686-pc-linux-gnu/bin/../lib/gcc/nios2-elf/4.1.2/../../../../nios2-elf/lib/libnosys.a(nosys_exit.o)
                                  0xea (size before relaxing)
- .debug_str     0x00000932       0x3d /opt/altera12.0/nios2eds/bin/gnu/H-i686-pc-linux-gnu/bin/../lib/gcc/nios2-elf/4.1.2/../../../../nios2-elf/lib/libc.a(lib_a-int_errno.o)
+ .debug_str     0x00000a23       0x3d /opt/altera12.0/nios2eds/bin/gnu/H-i686-pc-linux-gnu/bin/../lib/gcc/nios2-elf/4.1.2/../../../../nios2-elf/lib/libc.a(lib_a-int_errno.o)
                                 0x165 (size before relaxing)
 
-.debug_loc      0x00000000      0xa72
+.debug_loc      0x00000000     0x286c
  *(.debug_loc)
- .debug_loc     0x00000000       0x2b main.o
- .debug_loc     0x0000002b       0x56 lib/libnios2rte-db_4ce10.a(alt_load.o)
- .debug_loc     0x00000081       0x2b lib/libnios2rte-db_4ce10.a(alt_main.o)
- .debug_loc     0x000000ac       0x56 lib/libnios2rte-db_4ce10.a(button.o)
- .debug_loc     0x00000102       0x2b lib/libnios2rte-db_4ce10.a(led.o)
- .debug_loc     0x0000012d      0x306 lib/libnios2rte-db_4ce10.a(roomba.o)
- .debug_loc     0x00000433       0x81 lib/libnios2rte-db_4ce10.a(sound.o)
- .debug_loc     0x000004b4       0x81 lib/libnios2rte-db_4ce10.a(tools.o)
- .debug_loc     0x00000535       0xd7 lib/libnios2rte-db_4ce10.a(uart.o)
- .debug_loc     0x0000060c      0x1d2 /opt/altera12.0/nios2eds/bin/gnu/H-i686-pc-linux-gnu/bin/../lib/gcc/nios2-elf/4.1.2/libgcc.a(lib2-divmod.o)
- .debug_loc     0x000007de       0x4f /opt/altera12.0/nios2eds/bin/gnu/H-i686-pc-linux-gnu/bin/../lib/gcc/nios2-elf/4.1.2/libgcc.a(lib2-mul.o)
- .debug_loc     0x0000082d       0x3d /opt/altera12.0/nios2eds/bin/gnu/H-i686-pc-linux-gnu/bin/../lib/gcc/nios2-elf/4.1.2/../../../../nios2-elf/lib/libc.a(lib_a-exit.o)
- .debug_loc     0x0000086a      0x1cb /opt/altera12.0/nios2eds/bin/gnu/H-i686-pc-linux-gnu/bin/../lib/gcc/nios2-elf/4.1.2/../../../../nios2-elf/lib/libc.a(lib_a-__call_atexit.o)
- .debug_loc     0x00000a35       0x3d /opt/altera12.0/nios2eds/bin/gnu/H-i686-pc-linux-gnu/bin/../lib/gcc/nios2-elf/4.1.2/../../../../nios2-elf/lib/libnosys.a(nosys_exit.o)
+ .debug_loc     0x00000000      0x1ae main.o
+ .debug_loc     0x000001ae       0x56 lib/libnios2rte-db_4ce10.a(alt_load.o)
+ .debug_loc     0x00000204       0x2b lib/libnios2rte-db_4ce10.a(alt_main.o)
+ .debug_loc     0x0000022f       0x56 lib/libnios2rte-db_4ce10.a(button.o)
+ .debug_loc     0x00000285       0x2b lib/libnios2rte-db_4ce10.a(general_exception.o)
+ .debug_loc     0x000002b0      0x103 lib/libnios2rte-db_4ce10.a(gprintf.o)
+ .debug_loc     0x000003b3      0x1d9 lib/libnios2rte-db_4ce10.a(irq.o)
+ .debug_loc     0x0000058c       0x2b lib/libnios2rte-db_4ce10.a(led.o)
+ .debug_loc     0x000005b7      0x35c lib/libnios2rte-db_4ce10.a(roomba.o)
+ .debug_loc     0x00000913       0x81 lib/libnios2rte-db_4ce10.a(sound.o)
+ .debug_loc     0x00000994       0xd7 lib/libnios2rte-db_4ce10.a(timer.o)
+ .debug_loc     0x00000a6b       0x81 lib/libnios2rte-db_4ce10.a(tools.o)
+ .debug_loc     0x00000aec       0xd7 lib/libnios2rte-db_4ce10.a(uart.o)
+ .debug_loc     0x00000bc3      0xc12 /opt/altera12.0/nios2eds/bin/gnu/H-i686-pc-linux-gnu/bin/../lib/gcc/nios2-elf/4.1.2/libgcc.a(_udivdi3.o)
+ .debug_loc     0x000017d5      0xc31 /opt/altera12.0/nios2eds/bin/gnu/H-i686-pc-linux-gnu/bin/../lib/gcc/nios2-elf/4.1.2/libgcc.a(_umoddi3.o)
+ .debug_loc     0x00002406      0x1d2 /opt/altera12.0/nios2eds/bin/gnu/H-i686-pc-linux-gnu/bin/../lib/gcc/nios2-elf/4.1.2/libgcc.a(lib2-divmod.o)
+ .debug_loc     0x000025d8       0x4f /opt/altera12.0/nios2eds/bin/gnu/H-i686-pc-linux-gnu/bin/../lib/gcc/nios2-elf/4.1.2/libgcc.a(lib2-mul.o)
+ .debug_loc     0x00002627       0x3d /opt/altera12.0/nios2eds/bin/gnu/H-i686-pc-linux-gnu/bin/../lib/gcc/nios2-elf/4.1.2/../../../../nios2-elf/lib/libc.a(lib_a-exit.o)
+ .debug_loc     0x00002664      0x1cb /opt/altera12.0/nios2eds/bin/gnu/H-i686-pc-linux-gnu/bin/../lib/gcc/nios2-elf/4.1.2/../../../../nios2-elf/lib/libc.a(lib_a-__call_atexit.o)
+ .debug_loc     0x0000282f       0x3d /opt/altera12.0/nios2eds/bin/gnu/H-i686-pc-linux-gnu/bin/../lib/gcc/nios2-elf/4.1.2/../../../../nios2-elf/lib/libnosys.a(nosys_exit.o)
 
 .debug_macinfo
  *(.debug_macinfo)
@@ -676,5 +816,7 @@ LOAD /opt/altera12.0/nios2eds/bin/gnu/H-i686-pc-linux-gnu/bin/../lib/gcc/nios2-e
                 0x00000000       0x10 lib/crt0.o
 OUTPUT(main.elf elf32-littlenios2)
 
-.debug_ranges   0x00000000       0x18
- .debug_ranges  0x00000000       0x18 /opt/altera12.0/nios2eds/bin/gnu/H-i686-pc-linux-gnu/bin/../lib/gcc/nios2-elf/4.1.2/../../../../nios2-elf/lib/libc.a(lib_a-__call_atexit.o)
+.debug_ranges   0x00000000      0x338
+ .debug_ranges  0x00000000      0x188 /opt/altera12.0/nios2eds/bin/gnu/H-i686-pc-linux-gnu/bin/../lib/gcc/nios2-elf/4.1.2/libgcc.a(_udivdi3.o)
+ .debug_ranges  0x00000188      0x198 /opt/altera12.0/nios2eds/bin/gnu/H-i686-pc-linux-gnu/bin/../lib/gcc/nios2-elf/4.1.2/libgcc.a(_umoddi3.o)
+ .debug_ranges  0x00000320       0x18 /opt/altera12.0/nios2eds/bin/gnu/H-i686-pc-linux-gnu/bin/../lib/gcc/nios2-elf/4.1.2/../../../../nios2-elf/lib/libc.a(lib_a-__call_atexit.o)

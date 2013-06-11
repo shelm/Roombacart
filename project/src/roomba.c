@@ -4,15 +4,12 @@
 
 
 /****************************************************************** Includes */
-
 #include <roomba.h>
 #include <board.h>
 #include <tools.h>
 #include <uart.h>
 #include <string.h>
 #include <asm/io.h>
-
-
 
 #include <button.h>
 #include <ju.h>
@@ -34,7 +31,6 @@
 
 /*! initializing of the five sensors from typ roomba_sensor_type_t with the constant values
 */
-
 const roomba_sensor_type_t cliff_left_signal_sensor =
 {
     SENSORS_CLIFF_LEFT_SIGNAL,
@@ -85,13 +81,14 @@ const roomba_sensor_type_t infrared_left_sensor =
     false
 };
 
-const int8_t sensor_number = 1;
+//const int8_t sensor_number = 1;
 
 const int16_t radius = 32767;                      //  mm
 const int16_t radius_counter_clockwise = 1;        //  mm
 
 volatile enum item_t current_item = empty;
 volatile enum item_t last_item_used = empty;
+volatile enum state_t current_state = -1;
 /********************************************************** Global variables */
 
 roomba_sensor_t cliff_left_signal;
@@ -103,7 +100,8 @@ roomba_sensor_t infrared_omni;
 roomba_sensor_t infrared_right;
 roomba_sensor_t infrared_left;
 
-volatile int16_t velocity = 200;            // mm/s
+volatile int16_t velocity = VELOCITY
+;            // mm/s
 
 //char array for output
 char str[5];
@@ -350,10 +348,13 @@ enum item_t roomba_generate_rand_item() {
     return speed;
 }
 
+// PROBLEMS WITH ITEM USAGE
+// ROOMBA SENSORS RETURN STRANGE VALUES AFTER ITEM TIMES OUT
+// ITEM TIMEOUT DOESNT WORK PROPERLY
 void roomba_use_item() {
     switch(current_item) {
         case speed:
-            velocity = 400;
+            velocity = VELOCITY_BOOST;
             irq_request(IRQ_TIMER_N , roomba_item_effect_ends);
             tt_periodic(ONE_SECOND_TIMER*5);
             irq_enable(IRQ_TIMER_N );
@@ -370,7 +371,7 @@ uint32_t roomba_item_effect_ends() {
     roomba_set_led_on(LED_DIRT_DETECT_BLUE^LED_DIRT_DETECT_BLUE, 0,0);
     switch(last_item_used) {
         case speed:
-            velocity = 200;
+            velocity = VELOCITY;
             break;
         default:
             break;

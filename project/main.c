@@ -15,11 +15,30 @@
 #include <asm/io.h>
 #include <harmony.h>
 
-
 /******************************************************************* Defines */
 
 
 /******************************************************* Function prototypes */
+
+
+void update_remote_control_sensors(void);
+
+void update_cliff_sensors(void);
+
+void drive_offroad(void);
+
+void drive_lane(void);
+
+void drive_curve_left(void);
+
+void drive_curve_right(void);
+
+void drive_back_to_lane(void);
+
+void correct_curse_to_left(void);
+
+void correct_curse_to_right(void);
+
 
 /************************************************************** Global const */
 
@@ -40,11 +59,11 @@ char greeting[4] = {'I', 'H', 'I', 'H'};
  */
 bool_t direction;
 
-bool_t offroad = false;
-
+bool_t curve_detected = false;
 bool_t item_detected_mode = false;
 
-int count = 0;
+int offroad_counter = 0;
+int course_correction_counter = 0;
 
 /******************************************************************** Macros */
 
@@ -62,6 +81,8 @@ int count = 0;
 
 
 /*********************************************************** Local functions */
+
+
 int main(int argc, char **argv)
 {
     button_wait(0);
@@ -89,98 +110,160 @@ int main(int argc, char **argv)
 	while(check_for_playing_song()){
 		my_msleep(15);
 	}
-//	play_song(1);
+	//play_song(1);
 	while(check_for_playing_song()){
 		my_msleep(15);
 	}
-//	play_song(2);
+	//play_song(2);
 
     button_wait(1);
+    drive_lane();
 
     while(true){
-        //disable_all_interrupts();
+
         if(button_pressed(0)){
             roomba_stop();
             break;
         }
-		roomba_update_sensor(&infrared_omni, false);
-		roomba_update_sensor(&infrared_right, false);
-		roomba_update_sensor(&infrared_left, false);
 
-		if(INFRARED_OMNI == HARMONY_SIGNAL_PAUSE || INFRARED_RIGHT == HARMONY_SIGNAL_PAUSE || INFRARED_LEFT == HARMONY_SIGNAL_PAUSE) {
-			roomba_set_led_on(BTN_CLEAN, 100, 100);
-		}
+        update_remote_control_sensors();
 
+
+        // drive to left because user wants to
 		while(INFRARED_OMNI == HARMONY_SIGNAL_TURNLEFT || INFRARED_RIGHT == HARMONY_SIGNAL_TURNLEFT || INFRARED_LEFT == HARMONY_SIGNAL_TURNLEFT) {
 			roomba_drive(velocity, 300);
-			roomba_update_sensor(&infrared_omni, false);
-		    roomba_update_sensor(&infrared_right, false);
-		    roomba_update_sensor(&infrared_left, false);
+            update_remote_control_sensors();
 			my_msleep(50);
 		}
 
+        // drive to right because user wants to
 		while(INFRARED_OMNI == HARMONY_SIGNAL_TURNRIGHT || INFRARED_RIGHT == HARMONY_SIGNAL_TURNRIGHT || INFRARED_LEFT == HARMONY_SIGNAL_TURNRIGHT) {
 			roomba_drive(velocity, -300);
-
-			roomba_update_sensor(&infrared_omni, false);
-		    roomba_update_sensor(&infrared_right, false);
-		    roomba_update_sensor(&infrared_left, false);
+            update_remote_control_sensors();
 			my_msleep(50);
 		}
+
+        // use item
 		if(INFRARED_OMNI == HARMONY_SIGNAL_SPOT || INFRARED_RIGHT == HARMONY_SIGNAL_SPOT || INFRARED_LEFT == HARMONY_SIGNAL_SPOT) {
 			roomba_use_item();
 		}
 
+        // update sensors
+		update_cliff_sensors();
 
-       //drive along the line
-		roomba_update_sensor(&cliff_front_left_signal, false);
-		roomba_update_sensor(&cliff_front_right_signal, false);
-		roomba_update_sensor(&cliff_left_signal, false);
-		roomba_update_sensor(&cliff_right_signal, false);
-
-        if(CLIFF_FRONT_LEFT_SIG > 1200 && CLIFF_FRONT_RIGHT_SIG < 1200){
-            direction = true;
-            roomba_drive(velocity, 1000);
-
-        } else if(CLIFF_FRONT_LEFT_SIG < 1200 && CLIFF_FRONT_RIGHT_SIG > 1200){
-            direction = false;
-            roomba_drive(velocity, -1000);
-        }
-
-
-		if (CLIFF_FRONT_LEFT_SIG < 1200 && CLIFF_FRONT_RIGHT_SIG < 1200) {
-            if (direction) {
-                roomba_drive(velocity, 200);
-            } else {
-                roomba_drive(velocity, -200);
-            }
-            offroad = true;
-		} else if (CLIFF_FRONT_LEFT_SIG > 1200 && CLIFF_FRONT_RIGHT_SIG > 1200) {
-		    if(offroad){
-                if (direction) {
-                    roomba_drive(velocity, -800);
-                } else {
-                    roomba_drive(velocity, 800);
+        switch(current_state){
+            case DRIVE_LANE:
+                if(CLIFF_FRONT_LEFT_SIG < 1200 && CLIFF_FRONT_RIGHT_SIG < 1200){
+                    if(direction){
+                        drive_curve_left();
+                    } else {
+                        drive_curve_right();
+                    }
+                } else if (CLIFF_FRONT_LEFT_SIG < 1200) {
+                    correct_curse_to_right();
+                } else if (CLIFF_FRONT_RIGHT_SIG < 1200) {
+                    correct_curse_to_left();
                 }
-                if(count > 10){
-                    offroad = false;
-                    count = 0;
-                } else {
-                    count++;
+                break;
+            case DRIVE_CURVE_LEFT:
+                if(CLIFF_FRONT_LEFT_SIG > 1200) {
+                    drive_back_to_lane();
+                } else if (CLIFF_LEFT_SIG < 1200) {
+                    if(offroad_counter > 5) {
+                        drive_offroad();
+                        offroad_counter = 0;
+                    } else {
+                        offroad_counter++;
+                    }
                 }
-		    }
-        } else if (CLIFF_FRONT_LEFT_SIG > 1200 || CLIFF_FRONT_RIGHT_SIG > 1200) {
-            roomba_drive(velocity, radius);
+                break;
+            case DRIVE_CURVE_RIGHT:
+                if(CLIFF_FRONT_RIGHT_SIG > 1200) {
+                    drive_back_to_lane();
+                } else if (CLIFF_RIGHT_SIG < 1200) {
+                    if(offroad_counter > 5) {
+                        drive_offroad();
+                        offroad_counter = 0;
+                    } else {
+                        offroad_counter++;
+                    }
+                }
+                break;
+            case DRIVE_BACK_TO_LANE:
+
+                if (CLIFF_FRONT_LEFT_SIG < 1200 && CLIFF_FRONT_RIGHT_SIG > 1200){
+                    direction = false;
+                } else if (CLIFF_FRONT_LEFT_SIG > 1200 && CLIFF_FRONT_RIGHT_SIG < 1200){
+                    direction = true;
+                }
+
+                if(direction){
+                    if(CLIFF_FRONT_LEFT_SIG > 1200 && CLIFF_FRONT_RIGHT_SIG > 1200){
+                        correct_curse_to_right();
+                    } else if (CLIFF_FRONT_LEFT_SIG < 1200 && CLIFF_FRONT_RIGHT_SIG < 1200) {
+                        drive_curve_left();
+                    }
+                } else {
+                    if(CLIFF_FRONT_LEFT_SIG > 1200 && CLIFF_FRONT_RIGHT_SIG > 1200){
+                        correct_curse_to_left();
+                    } else if (CLIFF_FRONT_LEFT_SIG < 1200 && CLIFF_FRONT_RIGHT_SIG < 1200) {
+                        drive_curve_right();
+                    }
+                }
+                break;
+            case CORRECT_CURSE_TO_LEFT:
+                if (CLIFF_FRONT_LEFT_SIG < 1200 && CLIFF_FRONT_RIGHT_SIG > 1200){
+                    direction = false;
+                } else if (CLIFF_FRONT_LEFT_SIG > 1200 && CLIFF_FRONT_RIGHT_SIG < 1200){
+                    direction = true;
+                }
+                if (CLIFF_FRONT_LEFT_SIG < 1200 && CLIFF_FRONT_RIGHT_SIG < 1200){
+                    if(direction == false){
+                        drive_curve_right();
+                    } else {
+                        drive_curve_left();
+                    }
+                }
+                if (course_correction_counter > 5){
+                    drive_lane();
+                    course_correction_counter = 0;
+                } else {
+                    course_correction_counter++;
+                }
+                break;
+            case CORRECT_CURSE_TO_RIGHT:
+                if (CLIFF_FRONT_LEFT_SIG < 1200 && CLIFF_FRONT_RIGHT_SIG > 1200){
+                    direction = false;
+                } else if (CLIFF_FRONT_LEFT_SIG > 1200 && CLIFF_FRONT_RIGHT_SIG < 1200){
+                    direction = true;
+                }
+                if (CLIFF_FRONT_LEFT_SIG < 1200 && CLIFF_FRONT_RIGHT_SIG < 1200){
+                    if(direction == false){
+                        drive_curve_right();
+                    } else {
+                        drive_curve_left();
+                    }
+                }
+                if (course_correction_counter > 5){
+                    drive_lane();
+                    course_correction_counter = 0;
+                } else {
+                    course_correction_counter++;
+                }
+                break;
+            case DRIVE_OFFROAD:
+                if (CLIFF_FRONT_LEFT_SIG > 1200){
+                    correct_curse_to_right();
+                } else if (CLIFF_FRONT_RIGHT_SIG > 1200){
+                    correct_curse_to_left();
+                } else if (CLIFF_LEFT_SIG > 1200 || CLIFF_RIGHT_SIG > 1200){
+                    drive_back_to_lane();
+                }
+                break;
+            default:
+                break;
+
         }
-
-
-//        if(CLIFF_FRONT_LEFT_SIG > CLIFF_FRONT_RIGHT_SIG + 500){
-//            roomba_drive(velocity, 200);
-//        } else if(CLIFF_FRONT_LEFT_SIG + 500 < CLIFF_FRONT_RIGHT_SIG){
-//            roomba_drive(velocity, -200);
-//        } else {
-//            roomba_drive(velocity, radius);
-//        }
 
         if(roomba_check_for_item(CLIFF_LEFT_SIG, CLIFF_RIGHT_SIG)) {
             if(!item_detected_mode) {
@@ -191,10 +274,86 @@ int main(int argc, char **argv)
         else {
             item_detected_mode = false;
         }
-        //enable_all_interrupts();
-        my_msleep(50);
+
+        my_msleep(25);
 
     }
 
     return 0;
+}
+
+
+void update_remote_control_sensors(void){
+    roomba_update_sensor(&infrared_omni, false);
+    roomba_update_sensor(&infrared_right, false);
+    roomba_update_sensor(&infrared_left, false);
+}
+
+void update_cliff_sensors(void){
+    roomba_update_sensor(&cliff_front_left_signal, false);
+    roomba_update_sensor(&cliff_front_right_signal, false);
+    roomba_update_sensor(&cliff_left_signal, false);
+    roomba_update_sensor(&cliff_right_signal, false);
+}
+
+void drive_offroad(void){
+    current_state = DRIVE_OFFROAD;
+    // set velocity to offroad velocity (100) if roomba has no boost
+    if(velocity != VELOCITY_BOOST){
+        velocity = VELOCITY_OFFROAD;
+    }
+    roomba_drive(velocity, radius);
+}
+
+void drive_lane(void){
+    current_state = DRIVE_LANE;
+    // set offroad counter to 0, because we drive on lane
+    offroad_counter = 0;
+    roomba_drive(velocity, radius);
+}
+
+void drive_curve_left(void){
+    course_correction_counter = 0;
+    current_state = DRIVE_CURVE_LEFT;
+    // set offroad counter to 0, because we drive on lane
+    offroad_counter = 0;
+    roomba_drive(velocity, 200);
+}
+
+void drive_curve_right(void){
+    course_correction_counter = 0;
+    current_state = DRIVE_CURVE_RIGHT;
+    // set offroad counter to 0, because we drive on lane
+    offroad_counter = 0;
+    roomba_drive(velocity, -200);
+}
+
+void drive_back_to_lane(void){
+    current_state = DRIVE_BACK_TO_LANE;
+    // set velocity to standard velocity (200) if roomba has no boost
+    if(velocity != VELOCITY_BOOST){
+        velocity = VELOCITY;
+    }
+    // correct curse of roomba on lane
+    roomba_drive(velocity, radius);
+}
+
+void correct_curse_to_left(void){
+    current_state = CORRECT_CURSE_TO_LEFT;
+    // set velocity to standard velocity (200) if roomba has no boost
+    if(velocity != VELOCITY_BOOST){
+        velocity = VELOCITY;
+    }
+    // correct curse of roomba on lane
+    roomba_drive(velocity, 1000);
+}
+
+void correct_curse_to_right(void){
+    current_state = CORRECT_CURSE_TO_RIGHT;
+    // set velocity to standard velocity (200) if roomba has no boost
+    if(velocity != VELOCITY_BOOST){
+        velocity = VELOCITY;
+    }
+    // correct curse of roomba on lane
+    roomba_drive(velocity, -1000);
 }

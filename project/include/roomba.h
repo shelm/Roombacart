@@ -37,6 +37,18 @@ enum item_t{
     speed
 };
 
+/*! enum for all available states
+*/
+enum state_t{
+    DRIVE_OFFROAD,
+    DRIVE_LANE,
+    DRIVE_CURVE_LEFT,
+    DRIVE_CURVE_RIGHT,
+    DRIVE_BACK_TO_LANE,
+    CORRECT_CURSE_TO_LEFT,
+    CORRECT_CURSE_TO_RIGHT
+};
+
 /******************************************************************* Defines */
 
 #define ROOMBA_DELAY_MODECHANGE_MS      20
@@ -179,16 +191,14 @@ enum item_t{
 #define COLOR_GREEN    0x00
 #define COLOR_RED      0xff
 
-
+#define VELOCITY         200   //mm/s
+#define VELOCITY_OFFROAD 100   //mm/s
+#define VELOCITY_BOOST   400   //mm/s
 /******************************************************* Function prototypes */
 
 /*! initializes the rumba
 */
 void init_roomba(void);
-
-/*! initializes the cliff sensors
-*/
-//void init_cliff_sensors(void);
 
 /*! initializes the infrared
 */
@@ -240,7 +250,7 @@ void roomba_stop();
 */
 int32_t roomba_turn_angle(int32_t angle_to_turn, int16_t velocity, int16_t radius, int32_t faktor);
 
-/**
+/*!
  * reads the buttonpackage from the roomba an returns the value
  * */
 uint8_t read_button();
@@ -274,11 +284,10 @@ uint32_t roomba_item_effect_ends();
 /************************************************************** Global const */
 
 /*! initialized sensors with values:
-    package_id,
-	bytes_number (one ore two),
-	is_signed (true, if the value can be negative, false, if cant)
+    - package_id,
+    - bytes_number (one ore two),
+    - is_signed (true, if the value can be negative, false, if cant)
 */
-
 extern const roomba_sensor_type_t cliff_left_signal_sensor;
 extern const roomba_sensor_type_t cliff_front_left_signal_sensor;
 extern const roomba_sensor_type_t cliff_front_right_signal_sensor;
@@ -289,7 +298,7 @@ extern const roomba_sensor_type_t infrared_right_sensor;
 extern const roomba_sensor_type_t infrared_left_sensor;
 
 //length of sensor_arrays
-extern const int8_t sensor_number;
+//extern const int8_t sensor_number;
 
 extern const int16_t radius;
 extern const int16_t radius_counter_clockwise;
@@ -311,6 +320,7 @@ extern char str[5];
 
 extern volatile enum item_t current_item;
 extern volatile enum item_t last_item_used;
+extern volatile enum state_t current_state;
 
 #ifdef __cplusplus
 }
