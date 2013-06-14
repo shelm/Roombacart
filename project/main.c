@@ -39,6 +39,8 @@ void correct_curse_to_left(void);
 
 void correct_curse_to_right(void);
 
+void refresh_current_state(void);
+
 
 /************************************************************** Global const */
 
@@ -58,7 +60,6 @@ char greeting[4] = {'I', 'H', 'I', 'H'};
  *  true if right sensor left line first
  */
 bool_t direction;
-
 bool_t curve_detected = false;
 bool_t item_detected_mode = false;
 
@@ -76,6 +77,9 @@ int course_correction_counter = 0;
 #define INFRARED_OMNI  infrared_omni.value
 #define INFRARED_RIGHT infrared_right.value
 #define INFRARED_LEFT  infrared_left.value
+
+#define LEFT 0
+#define RIGHT 1
 
 /********************************************************** Global functions */
 
@@ -126,6 +130,7 @@ int main(int argc, char **argv)
             break;
         }
 
+        show_number_on_display(offroad_counter, str);
         update_remote_control_sensors();
 
 
@@ -133,20 +138,27 @@ int main(int argc, char **argv)
 		while(INFRARED_OMNI == HARMONY_SIGNAL_TURNLEFT || INFRARED_RIGHT == HARMONY_SIGNAL_TURNLEFT || INFRARED_LEFT == HARMONY_SIGNAL_TURNLEFT) {
 			roomba_drive(velocity, 300);
             update_remote_control_sensors();
-			my_msleep(50);
+            direction = LEFT;
+            should_refresh_state = true;
+			my_msleep(25);
 		}
 
         // drive to right because user wants to
 		while(INFRARED_OMNI == HARMONY_SIGNAL_TURNRIGHT || INFRARED_RIGHT == HARMONY_SIGNAL_TURNRIGHT || INFRARED_LEFT == HARMONY_SIGNAL_TURNRIGHT) {
 			roomba_drive(velocity, -300);
             update_remote_control_sensors();
-			my_msleep(50);
+            direction = RIGHT;
+            should_refresh_state = true;
+			my_msleep(25);
 		}
 
         // use item
 		if(INFRARED_OMNI == HARMONY_SIGNAL_SPOT || INFRARED_RIGHT == HARMONY_SIGNAL_SPOT || INFRARED_LEFT == HARMONY_SIGNAL_SPOT) {
 			roomba_use_item();
 		}
+
+        if(should_refresh_state)
+            refresh_current_state();
 
         // update sensors
 		update_cliff_sensors();
@@ -169,9 +181,9 @@ int main(int argc, char **argv)
                 if(CLIFF_FRONT_LEFT_SIG > 1200) {
                     drive_back_to_lane();
                 } else if (CLIFF_LEFT_SIG < 1200) {
-                    if(offroad_counter > 5) {
+                    if(offroad_counter > 3) {
                         drive_offroad();
-                        offroad_counter = 0;
+                        //offroad_counter = 0;
                     } else {
                         offroad_counter++;
                     }
@@ -181,9 +193,9 @@ int main(int argc, char **argv)
                 if(CLIFF_FRONT_RIGHT_SIG > 1200) {
                     drive_back_to_lane();
                 } else if (CLIFF_RIGHT_SIG < 1200) {
-                    if(offroad_counter > 5) {
+                    if(offroad_counter > 3) {
                         drive_offroad();
-                        offroad_counter = 0;
+                        //offroad_counter = 0;
                     } else {
                         offroad_counter++;
                     }
@@ -192,14 +204,15 @@ int main(int argc, char **argv)
             case DRIVE_BACK_TO_LANE:
 
                 if (CLIFF_FRONT_LEFT_SIG < 1200 && CLIFF_FRONT_RIGHT_SIG > 1200){
-                    direction = false;
+                    direction = LEFT;
                 } else if (CLIFF_FRONT_LEFT_SIG > 1200 && CLIFF_FRONT_RIGHT_SIG < 1200){
-                    direction = true;
+                    direction = RIGHT;
                 }
 
-                if(direction){
+                if(direction == RIGHT){
                     if(CLIFF_FRONT_LEFT_SIG > 1200 && CLIFF_FRONT_RIGHT_SIG > 1200){
                         correct_curse_to_right();
+
                     } else if (CLIFF_FRONT_LEFT_SIG < 1200 && CLIFF_FRONT_RIGHT_SIG < 1200) {
                         drive_curve_left();
                     }
@@ -213,12 +226,12 @@ int main(int argc, char **argv)
                 break;
             case CORRECT_CURSE_TO_LEFT:
                 if (CLIFF_FRONT_LEFT_SIG < 1200 && CLIFF_FRONT_RIGHT_SIG > 1200){
-                    direction = false;
+                    direction = LEFT;
                 } else if (CLIFF_FRONT_LEFT_SIG > 1200 && CLIFF_FRONT_RIGHT_SIG < 1200){
-                    direction = true;
+                    direction = RIGHT;
                 }
                 if (CLIFF_FRONT_LEFT_SIG < 1200 && CLIFF_FRONT_RIGHT_SIG < 1200){
-                    if(direction == false){
+                    if(direction == LEFT){
                         drive_curve_right();
                     } else {
                         drive_curve_left();
@@ -233,12 +246,12 @@ int main(int argc, char **argv)
                 break;
             case CORRECT_CURSE_TO_RIGHT:
                 if (CLIFF_FRONT_LEFT_SIG < 1200 && CLIFF_FRONT_RIGHT_SIG > 1200){
-                    direction = false;
+                    direction = LEFT;
                 } else if (CLIFF_FRONT_LEFT_SIG > 1200 && CLIFF_FRONT_RIGHT_SIG < 1200){
-                    direction = true;
+                    direction = RIGHT;
                 }
                 if (CLIFF_FRONT_LEFT_SIG < 1200 && CLIFF_FRONT_RIGHT_SIG < 1200){
-                    if(direction == false){
+                    if(direction == LEFT){
                         drive_curve_right();
                     } else {
                         drive_curve_left();
@@ -274,9 +287,6 @@ int main(int argc, char **argv)
         else {
             item_detected_mode = false;
         }
-
-        my_msleep(25);
-
     }
 
     return 0;
@@ -284,16 +294,20 @@ int main(int argc, char **argv)
 
 
 void update_remote_control_sensors(void){
+    disable_all_interrupts();
     roomba_update_sensor(&infrared_omni, false);
     roomba_update_sensor(&infrared_right, false);
     roomba_update_sensor(&infrared_left, false);
+    enable_all_interrupts();
 }
 
 void update_cliff_sensors(void){
+    disable_all_interrupts();
     roomba_update_sensor(&cliff_front_left_signal, false);
     roomba_update_sensor(&cliff_front_right_signal, false);
     roomba_update_sensor(&cliff_left_signal, false);
     roomba_update_sensor(&cliff_right_signal, false);
+    enable_all_interrupts();
 }
 
 void drive_offroad(void){
@@ -302,6 +316,7 @@ void drive_offroad(void){
     if(velocity != VELOCITY_BOOST){
         velocity = VELOCITY_OFFROAD;
     }
+    offroad_counter = 0;
     roomba_drive(velocity, radius);
 }
 
@@ -316,16 +331,16 @@ void drive_curve_left(void){
     course_correction_counter = 0;
     current_state = DRIVE_CURVE_LEFT;
     // set offroad counter to 0, because we drive on lane
-    offroad_counter = 0;
-    roomba_drive(velocity, 200);
+    //offroad_counter = 0;
+    roomba_drive(velocity, velocity == VELOCITY ? 200 : 350);
 }
 
 void drive_curve_right(void){
     course_correction_counter = 0;
     current_state = DRIVE_CURVE_RIGHT;
     // set offroad counter to 0, because we drive on lane
-    offroad_counter = 0;
-    roomba_drive(velocity, -200);
+    //offroad_counter = 0;
+    roomba_drive(velocity, velocity == VELOCITY ? -200 : -350);
 }
 
 void drive_back_to_lane(void){
@@ -345,7 +360,7 @@ void correct_curse_to_left(void){
         velocity = VELOCITY;
     }
     // correct curse of roomba on lane
-    roomba_drive(velocity, 1000);
+    roomba_drive(velocity, velocity == VELOCITY ? 1000 : 1750);
 }
 
 void correct_curse_to_right(void){
@@ -355,5 +370,36 @@ void correct_curse_to_right(void){
         velocity = VELOCITY;
     }
     // correct curse of roomba on lane
-    roomba_drive(velocity, -1000);
+    roomba_drive(velocity, velocity == VELOCITY ? -1000 : -1750);
 }
+
+void refresh_current_state(void){
+     switch(current_state){
+        case DRIVE_LANE:
+            drive_lane();
+            break;
+        case DRIVE_CURVE_LEFT:
+            drive_curve_left();
+            break;
+        case DRIVE_CURVE_RIGHT:
+            drive_curve_right();
+            break;
+        case DRIVE_BACK_TO_LANE:
+            drive_back_to_lane();
+            break;
+        case CORRECT_CURSE_TO_LEFT:
+            correct_curse_to_left();
+            break;
+        case CORRECT_CURSE_TO_RIGHT:
+            correct_curse_to_right();
+            break;
+        case DRIVE_OFFROAD:
+            drive_offroad();
+            break;
+        default:
+            break;
+     }
+     should_refresh_state = false;
+}
+
+

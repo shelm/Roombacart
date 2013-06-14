@@ -322,6 +322,8 @@ extern volatile enum item_t current_item;
 extern volatile enum item_t last_item_used;
 extern volatile enum state_t current_state;
 
+extern volatile bool_t should_refresh_state;
+
 #ifdef __cplusplus
 }
 #endif

@@ -89,6 +89,7 @@ const int16_t radius_counter_clockwise = 1;        //  mm
 volatile enum item_t current_item = empty;
 volatile enum item_t last_item_used = empty;
 volatile enum state_t current_state = -1;
+volatile bool_t should_refresh_state = false;
 /********************************************************** Global variables */
 
 roomba_sensor_t cliff_left_signal;
@@ -333,7 +334,7 @@ uint8_t read_button() {
 }
 
 bool_t roomba_check_for_item(int32_t cliff_left_signal_val, int32_t cliff_right_signal_val) {
-    show_number_on_display(cliff_left_signal_val, str);
+    //show_number_on_display(cliff_left_signal_val, str);
     if(cliff_left_signal_val > 2900 || cliff_right_signal_val > 2900)
         return true;
     return false;
@@ -348,10 +349,8 @@ enum item_t roomba_generate_rand_item() {
     return speed;
 }
 
-// PROBLEMS WITH ITEM USAGE
-// ROOMBA SENSORS RETURN STRANGE VALUES AFTER ITEM TIMES OUT
-// ITEM TIMEOUT DOESNT WORK PROPERLY
 void roomba_use_item() {
+    should_refresh_state = true;
     switch(current_item) {
         case speed:
             velocity = VELOCITY_BOOST;
@@ -364,18 +363,20 @@ void roomba_use_item() {
     }
     last_item_used = current_item;
     current_item = empty;
-    roomba_set_led_on(LED_DIRT_DETECT_BLUE, 0,0);
+    roomba_set_led_on(0, 230,255);
 }
 
 uint32_t roomba_item_effect_ends() {
-    roomba_set_led_on(LED_DIRT_DETECT_BLUE^LED_DIRT_DETECT_BLUE, 0,0);
+
     switch(last_item_used) {
         case speed:
             velocity = VELOCITY;
+            roomba_set_led_on(0, 70,255);
             break;
         default:
             break;
     }
+    should_refresh_state = true;
     last_item_used = empty;
     tt_reset();
     irq_disable(IRQ_TIMER_N);
