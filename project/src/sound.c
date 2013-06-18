@@ -8,6 +8,48 @@
 
 /************************************************************** Global const */
 
+roomba_note_t mortal_kombat[] = {
+
+	{NOTE_G, 16},
+	{NOTE_G, 16},
+	{NOTE_B, 16},
+	{NOTE_G, 16},
+	{NOTE_C, 16},
+	{NOTE_G, 16},
+	{NOTE_D+tone_heigth, 16},
+	{NOTE_C, 16},
+	{NOTE_B, 16},
+	{NOTE_B, 16},
+	{NOTE_D+tone_heigth, 16},
+	{NOTE_B, 16},
+	{NOTE_F+tone_heigth, 16},
+	{NOTE_B, 16},
+	{NOTE_D+tone_heigth, 16},
+	{NOTE_B, 16}
+	
+};
+
+roomba_note_t mortal_kombat_part_2[] = {
+
+	{NOTE_F, 16},
+	{NOTE_F, 16},
+	{NOTE_A, 16},
+	{NOTE_F, 16},
+	{NOTE_B, 16},
+	{NOTE_F, 16},
+	{NOTE_C, 16},
+	{NOTE_B, 16},
+	{NOTE_E, 16},
+	{NOTE_E, 16},
+	{NOTE_G, 16},
+	{NOTE_B, 16},
+	{NOTE_G, 16},
+	{NOTE_E, 16},
+	{NOTE_B, 16},
+	{NOTE_A, 16}
+	
+};
+
 roomba_note_t indiana_jones_theme[] = {
 	{NOTE_A_SHARP, 24},
 	{NOTE_C, 8},

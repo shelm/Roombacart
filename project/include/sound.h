@@ -33,6 +33,9 @@ extern roomba_note_t indiana_jones_theme[];
 extern roomba_note_t indiana_jones_theme_part_2[];
 extern roomba_note_t indiana_jones_theme_part_3[];
 extern roomba_note_t item_detected_sound[];
+
+extern roomba_note_t mortal_kombat[];
+extern roomba_note_t mortal_kombat_part_2[];
 /********************************************************** Global variables */
 
 

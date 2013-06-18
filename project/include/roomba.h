@@ -34,7 +34,8 @@ typedef struct {
 */
 enum item_t{
     empty,
-    speed
+    speed,
+    shell
 };
 
 /*! enum for all available states

@@ -15,6 +15,8 @@
 #include <asm/io.h>
 #include <harmony.h>
 
+#include <ir.h>
+
 /******************************************************************* Defines */
 
 
@@ -89,6 +91,9 @@ int course_correction_counter = 0;
 
 int main(int argc, char **argv)
 {
+	ir_sender_setup();
+	ir_sender_on();
+	
     button_wait(0);
     my_msleep(200);
 
@@ -103,22 +108,45 @@ int main(int argc, char **argv)
     init_cliff_signal();
 	init_infrared();
 
-	transmit_song(indiana_jones_theme, 16, 0);
+	transmit_song(mortal_kombat, 16, 0);
 	my_msleep(15);
-	transmit_song(indiana_jones_theme_part_2, 16, 1);
+	transmit_song(mortal_kombat_part_2, 16, 1);
 	my_msleep(15);
 	transmit_song(indiana_jones_theme_part_3, 14, 2);
 	my_msleep(15);
 	transmit_song(item_detected_sound, 4, 3);
+	/*
 	play_song(0);
 	while(check_for_playing_song()){
 		my_msleep(15);
 	}
-	//play_song(1);
+	play_song(1);
 	while(check_for_playing_song()){
 		my_msleep(15);
 	}
+	
+	play_song(0);
+	while(check_for_playing_song()){
+		my_msleep(15);
+	}
+	play_song(1);
+	while(check_for_playing_song()){
+		my_msleep(15);
+	}*/
+	
 	//play_song(2);
+
+	//Dominik Infrared-test
+	/*
+	while(1) {
+		show_number_on_display(INFRARED_OMNI);
+		my_msleep(25);
+		show_number_on_display(INFRARED_RIGHT);
+		my_msleep(25);
+		show_number_on_display(INFRARED_LEFT);
+		my_msleep(25);
+	}*/
+	
 
     button_wait(1);
     drive_lane();
