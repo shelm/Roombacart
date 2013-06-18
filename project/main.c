@@ -27,6 +27,10 @@ void update_remote_control_sensors(void);
 
 void update_cliff_sensors(void);
 
+void user_drives_to_left(void);
+
+void user_drives_to_right(void);
+
 void drive_offroad(void);
 
 void drive_lane(void);
@@ -158,26 +162,18 @@ int main(int argc, char **argv)
             break;
         }
 
-        show_number_on_display(offroad_counter, str);
+        //show_number_on_display(offroad_counter, str);
         update_remote_control_sensors();
 
 
         // drive to left because user wants to
-		while(INFRARED_OMNI == HARMONY_SIGNAL_TURNLEFT || INFRARED_RIGHT == HARMONY_SIGNAL_TURNLEFT || INFRARED_LEFT == HARMONY_SIGNAL_TURNLEFT) {
-			roomba_drive(velocity, 300);
-            update_remote_control_sensors();
-            direction = LEFT;
-            should_refresh_state = true;
-			my_msleep(25);
+		if(INFRARED_OMNI == HARMONY_SIGNAL_TURNLEFT || INFRARED_RIGHT == HARMONY_SIGNAL_TURNLEFT || INFRARED_LEFT == HARMONY_SIGNAL_TURNLEFT) {
+		    user_drives_to_left();
 		}
 
         // drive to right because user wants to
-		while(INFRARED_OMNI == HARMONY_SIGNAL_TURNRIGHT || INFRARED_RIGHT == HARMONY_SIGNAL_TURNRIGHT || INFRARED_LEFT == HARMONY_SIGNAL_TURNRIGHT) {
-			roomba_drive(velocity, -300);
-            update_remote_control_sensors();
-            direction = RIGHT;
-            should_refresh_state = true;
-			my_msleep(25);
+		if(INFRARED_OMNI == HARMONY_SIGNAL_TURNRIGHT || INFRARED_RIGHT == HARMONY_SIGNAL_TURNRIGHT || INFRARED_LEFT == HARMONY_SIGNAL_TURNRIGHT) {
+		    user_drives_to_right();
 		}
 
         // use item
@@ -191,7 +187,36 @@ int main(int argc, char **argv)
         // update sensors
 		update_cliff_sensors();
 
+
         switch(current_state){
+            case USER_DRIVES_TO_LEFT:
+                if(offroad_counter > 5) {
+                    drive_offroad();
+                } else {
+                    offroad_counter++;
+                }
+                if(!(INFRARED_OMNI == HARMONY_SIGNAL_TURNLEFT || INFRARED_RIGHT == HARMONY_SIGNAL_TURNLEFT || INFRARED_LEFT == HARMONY_SIGNAL_TURNLEFT)){
+                    if(CLIFF_FRONT_LEFT_SIG > 1200 || CLIFF_FRONT_RIGHT_SIG > 1200){
+                        drive_lane();
+                    } else {
+                        drive_offroad();
+                    }
+                }
+                break;
+            case USER_DRIVES_TO_RIGHT:
+                if(offroad_counter > 5) {
+                    drive_offroad();
+                } else {
+                    offroad_counter++;
+                }
+                if(!(INFRARED_OMNI == HARMONY_SIGNAL_TURNRIGHT || INFRARED_RIGHT == HARMONY_SIGNAL_TURNRIGHT || INFRARED_LEFT == HARMONY_SIGNAL_TURNRIGHT)){
+                    if(CLIFF_FRONT_LEFT_SIG > 1200 || CLIFF_FRONT_RIGHT_SIG > 1200){
+                        drive_lane();
+                    } else {
+                        drive_offroad();
+                    }
+                }
+                break;
             case DRIVE_LANE:
                 if(CLIFF_FRONT_LEFT_SIG < 1200 && CLIFF_FRONT_RIGHT_SIG < 1200){
                     if(direction){
@@ -209,9 +234,8 @@ int main(int argc, char **argv)
                 if(CLIFF_FRONT_LEFT_SIG > 1200) {
                     drive_back_to_lane();
                 } else if (CLIFF_LEFT_SIG < 1200) {
-                    if(offroad_counter > 3) {
+                    if(offroad_counter > 5) {
                         drive_offroad();
-                        //offroad_counter = 0;
                     } else {
                         offroad_counter++;
                     }
@@ -221,9 +245,8 @@ int main(int argc, char **argv)
                 if(CLIFF_FRONT_RIGHT_SIG > 1200) {
                     drive_back_to_lane();
                 } else if (CLIFF_RIGHT_SIG < 1200) {
-                    if(offroad_counter > 3) {
+                    if(offroad_counter > 5) {
                         drive_offroad();
-                        //offroad_counter = 0;
                     } else {
                         offroad_counter++;
                     }
@@ -336,6 +359,18 @@ void update_cliff_sensors(void){
     roomba_update_sensor(&cliff_left_signal, false);
     roomba_update_sensor(&cliff_right_signal, false);
     enable_all_interrupts();
+}
+
+void user_drives_to_left(void){
+    current_state = USER_DRIVES_TO_LEFT;
+    roomba_drive(velocity, 300);
+    direction = LEFT;
+}
+
+void user_drives_to_right(void){
+    current_state = USER_DRIVES_TO_RIGHT;
+    roomba_drive(velocity, -300);
+    direction = RIGHT;
 }
 
 void drive_offroad(void){

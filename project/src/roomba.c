@@ -336,7 +336,7 @@ uint8_t read_button() {
 }
 
 bool_t roomba_check_for_item(int32_t cliff_left_signal_val, int32_t cliff_right_signal_val) {
-    //show_number_on_display(cliff_left_signal_val, str);
+    show_number_on_display(cliff_left_signal_val, str);
     if(cliff_left_signal_val > 2900 || cliff_right_signal_val > 2900)
         return true;
     return false;
