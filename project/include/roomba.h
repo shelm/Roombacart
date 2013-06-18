@@ -46,7 +46,9 @@ enum state_t{
     DRIVE_CURVE_RIGHT,
     DRIVE_BACK_TO_LANE,
     CORRECT_CURSE_TO_LEFT,
-    CORRECT_CURSE_TO_RIGHT
+    CORRECT_CURSE_TO_RIGHT,
+    USER_DRIVES_TO_LEFT,
+    USER_DRIVES_TO_RIGHT
 };
 
 /******************************************************************* Defines */
