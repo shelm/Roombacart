@@ -141,7 +141,7 @@ int main(int argc, char **argv)
 	//play_song(2);
 
 	//Dominik Infrared-test
-	/*
+	
 	while(1) {
 		show_number_on_display(INFRARED_OMNI);
 		my_msleep(25);
@@ -149,7 +149,7 @@ int main(int argc, char **argv)
 		my_msleep(25);
 		show_number_on_display(INFRARED_LEFT);
 		my_msleep(25);
-	}*/
+	}
 	
 
     button_wait(1);
