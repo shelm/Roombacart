@@ -53,6 +53,9 @@ extern "C" {
 #define IR_DATA_MASK			0x0F
 #define IR_ROOMBA_MASK			0x18
 
+#define IR_ITEM_DATA_MASK		0x03
+#define IR_ROOMBA_ID_MASK		0x30
+
 #define IR_LED_NONE			0x00
 #define IR_LED_LEFT			0x01
 #define IR_LED_CENTER			0x02
@@ -149,6 +152,15 @@ void ir_receive();
 					(ROOMBA_ID&0x03)<<4 | IR_SENDER_ROOMBA | IR_LED_CENTER,	\
 					(ROOMBA_ID&0x03)<<4 | IR_SENDER_ROOMBA | IR_LED_LEFT,	\
 					(ROOMBA_ID&0x03)<<4 | IR_SENDER_ROOMBA | IR_LED_NEAR);
+
+#define ir_sender_set_item(i) ir_sender_set( \
+					(ROOMBA_ID&0x03)<<4 | IR_SENDER_ROOMBA | i,	\
+					(ROOMBA_ID&0x03)<<4 | IR_SENDER_ROOMBA | i,	\
+					(ROOMBA_ID&0x03)<<4 | IR_SENDER_ROOMBA | i,	\
+					(ROOMBA_ID&0x03)<<4 | IR_SENDER_ROOMBA | i);
+
+#define ir_get_roomba_id_from_data(i) ((i&IR_ROOMBA_ID_MASK)>>4)
+#define ir_get_item_id_from_data(i) (i&IR_ITEM_DATA_MASK)
 
 /// get id of roomba if IR-omni-sensor receives a byte from a roomba IR sender
 #define ir_get_roomba()   (ir_roomba_id&0x03)

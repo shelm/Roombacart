@@ -95,10 +95,7 @@ int course_correction_counter = 0;
 
 int main(int argc, char **argv)
 {
-	ir_sender_setup();
-	ir_sender_on();
 	
-    button_wait(0);
     my_msleep(200);
 
     //initialize the roomba
@@ -106,9 +103,8 @@ int main(int argc, char **argv)
     roomba_stop();
     my_msleep(500);
 
-    IOWR32(A_PIO_LBLUE, PIO_DATA, ledb_vals[0]);
     roomba_set_letters_string(greeting, 4);
-
+	
     init_cliff_signal();
 	init_infrared();
 
@@ -141,15 +137,19 @@ int main(int argc, char **argv)
 	//play_song(2);
 
 	//Dominik Infrared-test
+	//ir_sender_setup();
+	//IOWR32(A_IR_SENDER, IR_SENDER_DATA, 0xA0A0A0A0);
 	
+	//ir_sender_set_item(ITEM_ID_SHELL);
+	//ir_sender_on();
+	/*
 	while(1) {
-		show_number_on_display(INFRARED_OMNI);
-		my_msleep(25);
-		show_number_on_display(INFRARED_RIGHT);
-		my_msleep(25);
-		show_number_on_display(INFRARED_LEFT);
-		my_msleep(25);
-	}
+	
+		update_remote_control_sensors();
+		show_number_on_display((INFRARED_LEFT|INFRARED_RIGHT|INFRARED_OMNI));
+		my_msleep(100);
+
+	}*/
 	
 
     button_wait(1);
@@ -161,6 +161,8 @@ int main(int argc, char **argv)
             roomba_stop();
             break;
         }
+
+		current_item = shell;
 
         //show_number_on_display(offroad_counter, str);
         update_remote_control_sensors();
@@ -180,6 +182,16 @@ int main(int argc, char **argv)
 		if(INFRARED_OMNI == HARMONY_SIGNAL_SPOT || INFRARED_RIGHT == HARMONY_SIGNAL_SPOT || INFRARED_LEFT == HARMONY_SIGNAL_SPOT) {
 			roomba_use_item();
 		}
+		if(1/*TODO: insert condition for ignoring harmony signals and infrared signals from own board*/)
+		switch(ir_get_item_id_from_data(INFRARED_LEFT|INFRARED_RIGHT|INFRARED_OMNI)) {
+			case ITEM_ID_SHELL:
+				roomba_got_hit_by_item(shell);
+				break;
+			default:
+				break;
+		}
+		   
+		
 
         if(should_refresh_state)
             refresh_current_state();

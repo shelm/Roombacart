@@ -197,6 +197,8 @@ enum state_t{
 #define VELOCITY         200   //mm/s
 #define VELOCITY_OFFROAD 100   //mm/s
 #define VELOCITY_BOOST   400   //mm/s
+
+#define ITEM_ID_SHELL 0x02
 /******************************************************* Function prototypes */
 
 /*! initializes the rumba
@@ -283,6 +285,9 @@ void roomba_use_item();
 /*! ends the current effect of the last item used
 */
 uint32_t roomba_item_effect_ends();
+/*! handles the effect when the roomba got hit by an item from his opponent
+ */
+void roomba_got_hit_by_item(uint8_t item_id);
 
 /************************************************************** Global const */
 

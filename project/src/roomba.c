@@ -361,7 +361,7 @@ void roomba_use_item() {
             irq_enable(IRQ_TIMER_N );
             break;
         case shell:
-			ir_sender_setup();
+			ir_sender_set(ITEM_ID_SHELL, ITEM_ID_SHELL, ITEM_ID_SHELL, ITEM_ID_SHELL);
 			ir_sender_on();
 			irq_request(IRQ_TIMER_N , roomba_item_effect_ends);
             tt_periodic(ONE_SECOND_TIMER*5);
@@ -383,7 +383,7 @@ uint32_t roomba_item_effect_ends() {
             roomba_set_led_on(0, 70,255);
             break;
         case shell:
-			
+			ir_sender_off();
 			break;
         default:
             break;
@@ -393,4 +393,14 @@ uint32_t roomba_item_effect_ends() {
     tt_reset();
     irq_disable(IRQ_TIMER_N);
 	return 0;
+}
+
+void roomba_got_hit_by_item(uint8_t item_id) {
+	 switch(item_id) {
+        case shell:
+            roomba_drive(velocity, 1);
+            break;
+        default:
+            break;
+    }
 }

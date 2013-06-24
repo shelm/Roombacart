@@ -31,7 +31,7 @@ Modification history:
 #include <board.h>
 #include <tools.h>
 #include <roomba.h>
-
+#include <uart.h>
 #include <asm/io.h>
 
 
