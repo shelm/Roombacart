@@ -140,15 +140,14 @@ int main(int argc, char **argv)
 	//ir_sender_setup();
 	//IOWR32(A_IR_SENDER, IR_SENDER_DATA, 0xA0A0A0A0);
 	
-	//ir_sender_set_item(ITEM_ID_SHELL);
-	//ir_sender_on();
-	/*
-	while(1) {
+	/*ir_sender_set_item(ITEM_ID_SHELL);
+	ir_sender_on();
 	
+	while(1) {
 		update_remote_control_sensors();
-		show_number_on_display((INFRARED_LEFT|INFRARED_RIGHT|INFRARED_OMNI));
+		show_number_on_display((INFRARED_LEFT|INFRARED_OMNI|INFRARED_RIGHT));
 		my_msleep(100);
-
+		show_number_on_display(ir_get_item_id_from_data((INFRARED_LEFT|INFRARED_OMNI|INFRARED_RIGHT)));
 	}*/
 	
 
@@ -182,7 +181,7 @@ int main(int argc, char **argv)
 		if(INFRARED_OMNI == HARMONY_SIGNAL_SPOT || INFRARED_RIGHT == HARMONY_SIGNAL_SPOT || INFRARED_LEFT == HARMONY_SIGNAL_SPOT) {
 			roomba_use_item();
 		}
-		if(1/*TODO: insert condition for ignoring harmony signals and infrared signals from own board*/)
+		if(ir_get_sender_type_from_data(INFRARED_LEFT|INFRARED_OMNI|INFRARED_RIGHT) == IR_SENDER_ROOMBA && ir_get_roomba_id_from_data(INFRARED_LEFT|INFRARED_OMNI|INFRARED_RIGHT) != ROOMBA_ID)
 		switch(ir_get_item_id_from_data(INFRARED_LEFT|INFRARED_RIGHT|INFRARED_OMNI)) {
 			case ITEM_ID_SHELL:
 				roomba_got_hit_by_item(shell);
