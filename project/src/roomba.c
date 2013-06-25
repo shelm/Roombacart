@@ -91,7 +91,11 @@ const int16_t radius_counter_clockwise = 1;        //  mm
 volatile enum item_t current_item = empty;
 volatile enum item_t last_item_used = empty;
 volatile enum state_t current_state = -1;
+volatile enum state_t last_state = -1;
 volatile bool_t should_refresh_state = false;
+
+volatile int16_t timer_array[3] = {5, 5, 3};
+volatile int16_t timer_active_array[3] = {0, 0,0};
 /********************************************************** Global variables */
 
 roomba_sensor_t cliff_left_signal;
@@ -356,17 +360,13 @@ void roomba_use_item() {
     switch(current_item) {
         case speed:
             velocity = VELOCITY_BOOST;
-            irq_request(IRQ_TIMER_N , roomba_item_effect_ends);
-            tt_periodic(ONE_SECOND_TIMER*5);
-            irq_enable(IRQ_TIMER_N );
+            timer_active_array[0] = 1;
             break;
         case shell:
 			ir_sender_set(ITEM_ID_SHELL, ITEM_ID_SHELL, ITEM_ID_SHELL, ITEM_ID_SHELL);
 			ir_sender_on();
-			irq_request(IRQ_TIMER_N , roomba_item_effect_ends);
-            tt_periodic(ONE_SECOND_TIMER*5);
-            irq_enable(IRQ_TIMER_N );
-            break;	
+			timer_active_array[1] = 1;
+            break;
         default:
             break;
     }
@@ -375,8 +375,7 @@ void roomba_use_item() {
     roomba_set_led_on(0, 230,255);
 }
 
-uint32_t roomba_item_effect_ends() {
-
+void roomba_item_effect_ends() {
     switch(last_item_used) {
         case speed:
             velocity = VELOCITY;
@@ -390,17 +389,52 @@ uint32_t roomba_item_effect_ends() {
     }
     should_refresh_state = true;
     last_item_used = empty;
-    tt_reset();
-    irq_disable(IRQ_TIMER_N);
-	return 0;
 }
 
 void roomba_got_hit_by_item(uint8_t item_id) {
 	 switch(item_id) {
         case shell:
-            roomba_drive(velocity, 1);
+            timer_active_array[2] = 1;
             break;
         default:
             break;
     }
+}
+
+void roomba_got_hit_effect_ends(){
+    current_state = last_state;
+    should_refresh_state = true;
+}
+
+void roomba_start_timer(void){
+    irq_request(IRQ_TIMER_N, roomba_check_timer_array);
+    tt_periodic(ONE_SECOND_TIMER);
+    irq_enable(IRQ_TIMER_N);
+}
+
+uint32_t roomba_check_timer_array(){
+    if(timer_array[0] > 0 && timer_active_array[0] == 1){
+        timer_array[0]--;
+    } else if (timer_array[0] == 0 && timer_active_array[0] == 1){
+        timer_active_array[0] = 0;
+        timer_array[0] = 5;
+        roomba_item_effect_ends();
+    }
+    if(timer_array[1] > 0 && timer_active_array[1] == 1){
+        timer_array[1]--;
+    } else if (timer_array[1] == 0 && timer_active_array[1] == 1){
+        timer_active_array[1] = 0;
+        timer_array[1] = 5;
+        roomba_item_effect_ends();
+    }
+    if(timer_array[2] > 0 && timer_active_array[2] == 1){
+        timer_array[2]--;
+    } else if (timer_array[2] == 0 && timer_active_array[2] == 1){
+        timer_active_array[2] = 0;
+        timer_array[2] = 3;
+        roomba_got_hit_effect_ends();
+    }
+    tt_reset();
+    irq_disable(IRQ_TIMER_N);
+    return 1;
 }

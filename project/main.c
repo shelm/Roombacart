@@ -47,6 +47,8 @@ void correct_curse_to_right(void);
 
 void refresh_current_state(void);
 
+void roomba_got_hit(void);
+
 
 /************************************************************** Global const */
 
@@ -95,7 +97,7 @@ int course_correction_counter = 0;
 
 int main(int argc, char **argv)
 {
-	
+
     my_msleep(200);
 
     //initialize the roomba
@@ -104,7 +106,7 @@ int main(int argc, char **argv)
     my_msleep(500);
 
     roomba_set_letters_string(greeting, 4);
-	
+
     init_cliff_signal();
 	init_infrared();
 
@@ -124,7 +126,7 @@ int main(int argc, char **argv)
 	while(check_for_playing_song()){
 		my_msleep(15);
 	}
-	
+
 	play_song(0);
 	while(check_for_playing_song()){
 		my_msleep(15);
@@ -133,27 +135,28 @@ int main(int argc, char **argv)
 	while(check_for_playing_song()){
 		my_msleep(15);
 	}*/
-	
+
 	//play_song(2);
 
 	//Dominik Infrared-test
 	//ir_sender_setup();
 	//IOWR32(A_IR_SENDER, IR_SENDER_DATA, 0xA0A0A0A0);
-	
+
 	//ir_sender_set_item(ITEM_ID_SHELL);
 	//ir_sender_on();
 	/*
 	while(1) {
-	
+
 		update_remote_control_sensors();
 		show_number_on_display((INFRARED_LEFT|INFRARED_RIGHT|INFRARED_OMNI));
 		my_msleep(100);
 
 	}*/
-	
+
 
     button_wait(1);
     drive_lane();
+    roomba_start_timer();
 
     while(true){
 
@@ -162,7 +165,7 @@ int main(int argc, char **argv)
             break;
         }
 
-		current_item = shell;
+		current_item = speed;
 
         //show_number_on_display(offroad_counter, str);
         update_remote_control_sensors();
@@ -170,7 +173,8 @@ int main(int argc, char **argv)
 
         // drive to left because user wants to
 		if(INFRARED_OMNI == HARMONY_SIGNAL_TURNLEFT || INFRARED_RIGHT == HARMONY_SIGNAL_TURNLEFT || INFRARED_LEFT == HARMONY_SIGNAL_TURNLEFT) {
-		    user_drives_to_left();
+		    // user_drives_to_left();
+		    roomba_got_hit();
 		}
 
         // drive to right because user wants to
@@ -190,8 +194,8 @@ int main(int argc, char **argv)
 			default:
 				break;
 		}
-		   
-		
+
+
 
         if(should_refresh_state)
             refresh_current_state();
@@ -201,6 +205,9 @@ int main(int argc, char **argv)
 
 
         switch(current_state){
+            case ROOMBA_GOT_HIT_BY_ITEM:
+
+                break;
             case USER_DRIVES_TO_LEFT:
                 if(offroad_counter > 5) {
                     drive_offroad();
@@ -446,6 +453,13 @@ void correct_curse_to_right(void){
     }
     // correct curse of roomba on lane
     roomba_drive(velocity, velocity == VELOCITY ? -1000 : -1750);
+}
+
+void roomba_got_hit(void){
+    last_state = current_state;
+    current_state = ROOMBA_GOT_HIT_BY_ITEM;
+    roomba_drive(velocity, 1);
+    roomba_got_hit_by_item(shell);
 }
 
 void refresh_current_state(void){
