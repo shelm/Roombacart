@@ -21,8 +21,6 @@
 #include <timer.h> // needed for timer
 #include <irq.h>   // needed for timer
 
-#include <ir.h>
-
 /******************************************************************* Defines */
 
 #define ONE_SECOND_TIMER 75000000
@@ -336,19 +334,41 @@ uint8_t read_button() {
 }
 
 bool_t roomba_check_for_item(int32_t cliff_left_signal_val, int32_t cliff_right_signal_val) {
-    show_number_on_display(cliff_left_signal_val, str);
-    if(cliff_left_signal_val > 2900 || cliff_right_signal_val > 2900)
+    //show_number_on_display(cliff_left_signal_val, str);
+    //if(cliff_left_signal_val > 2900 || cliff_right_signal_val > 2900)
+    if((cliff_left_signal_val > 3000) || (cliff_right_signal_val > 3000))
+        return true;
+    return false;
+}
+
+/*bool_t roomba_check_for_item(int32_t cliff_left_signal_val, int32_t cliff_front_left_signal_val, int32_t cliff_front_right_signal_val, int32_t cliff_right_signal_val) {
+    //show_number_on_display(cliff_left_signal_val, str);
+    if((cliff_left_signal_val > 3000 && !(cliff_front_left_signal_val > 3000)) || (!(cliff_front_right_signal_val > 3000) && cliff_right_signal_val > 3000))
+        return true;
+    return false;
+}*/
+
+/*bool_t roomba_check_for_finish_mark(int32_t cliff_left_signal_val, int32_t cliff_right_signal_val) {
+    //show_number_on_display(cliff_left_signal_val, str);
+    if((cliff_left_signal_val > 2800 && cliff_left_signal_val < 2900) || (cliff_right_signal_val > 2800 && cliff_right_signal_val < 2900))
+        return true;
+    return false;
+}*/
+
+bool_t roomba_check_for_finish_mark(int32_t cliff_left_signal_val, int32_t cliff_front_left_signal_val, int32_t cliff_front_right_signal_val, int32_t cliff_right_signal_val) {
+    //show_number_on_display(cliff_left_signal_val, str);
+    if((cliff_left_signal_val > 3000 && cliff_front_left_signal_val > 3000) || (cliff_front_right_signal_val > 3000 && cliff_right_signal_val > 3000))
         return true;
     return false;
 }
 
 void roomba_pick_up_item() {
-	play_song(3);
+    play_song(3);
     current_item = roomba_generate_rand_item();
 }
 
 enum item_t roomba_generate_rand_item() {
-    return shell;
+    return speed;
 }
 
 void roomba_use_item() {
@@ -360,13 +380,6 @@ void roomba_use_item() {
             tt_periodic(ONE_SECOND_TIMER*5);
             irq_enable(IRQ_TIMER_N );
             break;
-        case shell:
-			ir_sender_setup();
-			ir_sender_on();
-			irq_request(IRQ_TIMER_N , roomba_item_effect_ends);
-            tt_periodic(ONE_SECOND_TIMER*5);
-            irq_enable(IRQ_TIMER_N );
-            break;	
         default:
             break;
     }
@@ -382,9 +395,6 @@ uint32_t roomba_item_effect_ends() {
             velocity = VELOCITY;
             roomba_set_led_on(0, 70,255);
             break;
-        case shell:
-			
-			break;
         default:
             break;
     }
