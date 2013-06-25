@@ -47,6 +47,8 @@ void correct_curse_to_right(void);
 
 void refresh_current_state(void);
 
+void roomba_got_hit(void);
+
 
 /************************************************************** Global const */
 
@@ -140,19 +142,21 @@ int main(int argc, char **argv)
 	//ir_sender_setup();
 	//IOWR32(A_IR_SENDER, IR_SENDER_DATA, 0xA0A0A0A0);
 	
-	/*ir_sender_set_item(ITEM_ID_SHELL);
-	ir_sender_on();
-	
+	//ir_sender_set_item(ITEM_ID_SHELL);
+	//ir_sender_on();
+	/*
 	while(1) {
+	
 		update_remote_control_sensors();
-		show_number_on_display((INFRARED_LEFT|INFRARED_OMNI|INFRARED_RIGHT));
+		show_number_on_display((INFRARED_LEFT|INFRARED_RIGHT|INFRARED_OMNI));
 		my_msleep(100);
-		show_number_on_display(ir_get_item_id_from_data((INFRARED_LEFT|INFRARED_OMNI|INFRARED_RIGHT)));
+
 	}*/
 	
 
     button_wait(1);
     drive_lane();
+    roomba_start_timer();
 
     while(true){
 
@@ -445,6 +449,13 @@ void correct_curse_to_right(void){
     }
     // correct curse of roomba on lane
     roomba_drive(velocity, velocity == VELOCITY ? -1000 : -1750);
+}
+
+void roomba_got_hit(void){
+    last_state = current_state;
+    current_state = ROOMBA_GOT_HIT_BY_ITEM;
+    roomba_drive(velocity, 1);
+    roomba_got_hit_by_item(shell);
 }
 
 void refresh_current_state(void){

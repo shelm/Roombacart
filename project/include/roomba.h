@@ -49,7 +49,8 @@ enum state_t{
     CORRECT_CURSE_TO_LEFT,
     CORRECT_CURSE_TO_RIGHT,
     USER_DRIVES_TO_LEFT,
-    USER_DRIVES_TO_RIGHT
+    USER_DRIVES_TO_RIGHT,
+    ROOMBA_GOT_HIT_BY_ITEM
 };
 
 /******************************************************************* Defines */
@@ -284,10 +285,17 @@ void roomba_use_item();
 
 /*! ends the current effect of the last item used
 */
-uint32_t roomba_item_effect_ends();
+void roomba_item_effect_ends();
 /*! handles the effect when the roomba got hit by an item from his opponent
  */
 void roomba_got_hit_by_item(uint8_t item_id);
+/*! ends the got hit by item effect
+ */
+void roomba_got_hit_effect_ends();
+
+void roomba_start_timer();
+
+uint32_t roomba_check_timer_array();
 
 /************************************************************** Global const */
 
@@ -329,6 +337,19 @@ extern char str[5];
 extern volatile enum item_t current_item;
 extern volatile enum item_t last_item_used;
 extern volatile enum state_t current_state;
+extern volatile enum state_t last_state;
+/*! array for timer usage
+*   0: boost item
+    1: fire shell
+    2: got hit by shell
+*/
+extern volatile int16_t timer_array[3];
+/*! array for activate/deactivate timer usage
+*   0: boost item
+    1: fire shell
+    2: got hit by shell
+*/
+extern volatile int16_t timer_active_array[3];
 
 extern volatile bool_t should_refresh_state;
 
