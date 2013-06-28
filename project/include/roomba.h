@@ -34,8 +34,7 @@ typedef struct {
 */
 enum item_t{
     empty,
-    speed,
-    shell
+    speed
 };
 
 /*! enum for all available states
@@ -270,6 +269,8 @@ int8_t itos(int number, char* result);
 /*! detect whether the roomba drives over an item or not
 */
 bool_t roomba_check_for_item(int32_t cliff_left_signal_val, int32_t cliff_right_signal_val);
+
+bool_t roomba_check_for_finish_mark(int32_t cliff_front_left_signal_val, int32_t cliff_front_right_signal_val);
 
 /*! tells the roomba what to do if an item has been detected
 */
