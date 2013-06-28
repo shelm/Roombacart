@@ -39,6 +39,11 @@ extern roomba_note_t mortal_kombat_part_2[];
 extern roomba_note_t final_lap[];
 extern roomba_note_t final_lap_part_2[];
 
+extern roomba_note_t damage_sound[];
+
+extern roomba_note_t starman_theme[];
+extern roomba_note_t starman_theme_part_2[];
+
 /********************************************************** Global variables */
 
 

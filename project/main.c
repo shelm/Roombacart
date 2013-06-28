@@ -110,15 +110,18 @@ int main(int argc, char **argv)
     init_cliff_signal();
 	init_infrared();
 
-	transmit_song(final_lap, 14, 0);
+	transmit_song(starman_theme, 16, 0);
 	my_msleep(15);
-	transmit_song(final_lap_part_2, 4, 1);
+	transmit_song(starman_theme_part_2, 6, 1);
 	my_msleep(15);
 
-	
-	play_song(0);
-	while(check_for_playing_song()){
-		my_msleep(15);
+	int i = 1;
+	while(1){
+		i++;
+		play_song(i%2);
+		while(check_for_playing_song()){
+			my_msleep(15);
+		}
 	}
 	/*play_song(1);
 	while(check_for_playing_song()){
