@@ -9,19 +9,21 @@
 /************************************************************** Global const */
 
 roomba_note_t mortal_kombat[] = {
-
 	{NOTE_G, 16},
 	{NOTE_G, 16},
 	{NOTE_B, 16},
 	{NOTE_G, 16},
+	
 	{NOTE_C, 16},
 	{NOTE_G, 16},
 	{NOTE_D+tone_heigth, 16},
 	{NOTE_C, 16},
+	
 	{NOTE_B, 16},
 	{NOTE_B, 16},
 	{NOTE_D+tone_heigth, 16},
 	{NOTE_B, 16},
+	
 	{NOTE_F+tone_heigth, 16},
 	{NOTE_B, 16},
 	{NOTE_D+tone_heigth, 16},
@@ -30,24 +32,25 @@ roomba_note_t mortal_kombat[] = {
 };
 
 roomba_note_t mortal_kombat_part_2[] = {
-
 	{NOTE_F, 16},
 	{NOTE_F, 16},
 	{NOTE_A, 16},
 	{NOTE_F, 16},
+	
 	{NOTE_B, 16},
 	{NOTE_F, 16},
 	{NOTE_C, 16},
 	{NOTE_B, 16},
+	
 	{NOTE_E, 16},
 	{NOTE_E, 16},
 	{NOTE_G, 16},
 	{NOTE_B, 16},
+	
 	{NOTE_G, 16},
 	{NOTE_E, 16},
 	{NOTE_B, 16},
 	{NOTE_A, 16}
-	
 };
 
 roomba_note_t indiana_jones_theme[] = {
@@ -55,14 +58,17 @@ roomba_note_t indiana_jones_theme[] = {
 	{NOTE_C, 8},
 	{NOTE_D+tone_heigth, 32},
 	{NOTE_G+tone_heigth, 64},
+	
 	{NOTE_A, 24},
 	{NOTE_A_SHARP, 8},
 	{NOTE_C, 96},
 	{NOTE_D+tone_heigth, 24},
+	
 	{NOTE_E+tone_heigth, 8},
 	{NOTE_F_SHARP+tone_heigth, 32},
 	{NOTE_C+tone_heigth, 64},
 	{NOTE_E+tone_heigth, 24},
+	
 	{NOTE_F_SHARP+tone_heigth, 8},
 	{NOTE_G+tone_heigth, 32},
 	{NOTE_A+tone_heigth, 32},
@@ -74,14 +80,17 @@ roomba_note_t indiana_jones_theme_part_2[] = {
 	{NOTE_C, 8},
 	{NOTE_D+tone_heigth, 32},
 	{NOTE_G+tone_heigth, 64},
+	
 	{NOTE_A+tone_heigth, 24},
 	{NOTE_B+tone_heigth, 8},
 	{NOTE_C+tone_heigth, 96},
 	{NOTE_C, 24},
+	
 	{NOTE_C, 8},
 	{NOTE_B+tone_heigth, 32},
 	{NOTE_A+tone_heigth, 24},
 	{NOTE_D+tone_heigth, 8},
+	
 	{NOTE_B+tone_heigth, 32},
 	{NOTE_A+tone_heigth, 24},
 	{NOTE_D+tone_heigth, 8},
@@ -93,14 +102,17 @@ roomba_note_t indiana_jones_theme_part_3[] = {
 	{NOTE_D+tone_heigth, 8},
 	{NOTE_C+tone_heigth, 32},
 	{NOTE_B+tone_heigth, 24},
+	
 	{NOTE_A+tone_heigth, 8},
 	{NOTE_G+tone_heigth, 64},
 	{NOTE_B, 24},
 	{NOTE_D+tone_heigth, 8},
+	
 	{NOTE_C, 32},
 	{NOTE_A, 24},
 	{NOTE_C, 8},
 	{NOTE_B, 16},
+	
 	{NOTE_D+tone_heigth, 16},
 	{NOTE_G+tone_heigth, 80},
 };
@@ -110,6 +122,82 @@ roomba_note_t item_detected_sound[] = {
     {NOTE_A, 16},
     {NOTE_B, 16},
     {NOTE_C, 16},
+};
+
+roomba_note_t final_lap[] = {
+	{NOTE_G, 8},
+	{NOTE_D+tone_heigth, 8},
+	{PAUSE, 4},
+	{NOTE_D+tone_heigth, 8},
+	
+	{NOTE_D+tone_heigth, 8},
+	{PAUSE, 4},
+	{NOTE_G_SHARP, 8},
+	{NOTE_D_SHARP+tone_heigth, 8},
+	
+	{PAUSE, 4},
+	{NOTE_D_SHARP+tone_heigth, 8},
+	{NOTE_D_SHARP+tone_heigth, 8},
+	{PAUSE, 4},
+	
+	{NOTE_E+tone_heigth, 12},
+	{NOTE_F+tone_heigth, 56},
+	{PAUSE, 8},
+	{NOTE_F+tone_heigth, 8},
+};
+
+roomba_note_t final_lap_part_2[] = {
+	{PAUSE, 8},
+	{NOTE_E+tone_heigth, 56},
+};
+
+roomba_note_t damage_sound[] = {
+	{NOTE_F+tone_heigth, 8},
+	{NOTE_C, 8},
+	{NOTE_F, 8},
+	{PAUSE, 8},
+	
+	{NOTE_F+tone_heigth, 8},
+	{NOTE_C, 8},
+	{NOTE_F, 8},
+	{PAUSE, 8},
+	
+	{NOTE_F+tone_heigth, 8},
+	{NOTE_C, 8},
+	{NOTE_F, 8},
+	{PAUSE, 8},
+};
+
+roomba_note_t starman_theme[] = {
+	{NOTE_C, 16},
+	{NOTE_C, 16},
+	{NOTE_C, 16},
+	{NOTE_D, 8},
+	
+	{NOTE_C, 16},
+	{PAUSE, 4},
+	{NOTE_C, 16},
+	{NOTE_D, 8},
+
+	{NOTE_C, 8},
+	{NOTE_D, 8},
+	{NOTE_C, 16},
+	{NOTE_B, 16},
+	
+	{NOTE_B, 16},
+	{NOTE_B, 16},
+	{NOTE_C-tone_heigth, 8},
+	{NOTE_B, 8},
+};
+
+roomba_note_t starman_theme_part_2[] = {
+	{PAUSE, 4},
+	{NOTE_B, 16},
+	{NOTE_C-tone_heigth, 8},
+	{NOTE_B, 8},
+	
+	{NOTE_C-tone_heigth, 8},
+	{NOTE_B, 16},
 };
 
 /********************************************************** Global variables */
