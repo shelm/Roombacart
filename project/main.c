@@ -15,8 +15,8 @@
 #include <asm/io.h>
 #include <harmony.h>
 
-#include <ir.h>
-
+#include <timer.h> // needed for timer
+#include <irq.h>   // needed for timer
 /******************************************************************* Defines */
 
 
@@ -70,9 +70,14 @@ char greeting[4] = {'I', 'H', 'I', 'H'};
 bool_t direction;
 bool_t curve_detected = false;
 bool_t item_detected_mode = false;
+bool_t finish_mark_detected_mode = false;
 
 int offroad_counter = 0;
 int course_correction_counter = 0;
+int round_counter = 0;
+
+int loop_counter_for_round = 0;
+int loop_counter_for_item = 0;
 
 /******************************************************************** Macros */
 
@@ -97,7 +102,10 @@ int course_correction_counter = 0;
 
 int main(int argc, char **argv)
 {
+	ir_sender_setup();
+	ir_sender_on();
 	
+    button_wait(0);
     my_msleep(200);
 
     //initialize the roomba
@@ -105,8 +113,9 @@ int main(int argc, char **argv)
     roomba_stop();
     my_msleep(500);
 
+    IOWR32(A_PIO_LBLUE, PIO_DATA, ledb_vals[0]);
     roomba_set_letters_string(greeting, 4);
-	
+
     init_cliff_signal();
 	init_infrared();
 
@@ -139,19 +148,15 @@ int main(int argc, char **argv)
 	//play_song(2);
 
 	//Dominik Infrared-test
-	//ir_sender_setup();
-	//IOWR32(A_IR_SENDER, IR_SENDER_DATA, 0xA0A0A0A0);
 	
-	//ir_sender_set_item(ITEM_ID_SHELL);
-	//ir_sender_on();
-	/*
 	while(1) {
-	
-		update_remote_control_sensors();
-		show_number_on_display((INFRARED_LEFT|INFRARED_RIGHT|INFRARED_OMNI));
-		my_msleep(100);
-
-	}*/
+		show_number_on_display(INFRARED_OMNI);
+		my_msleep(25);
+		show_number_on_display(INFRARED_RIGHT);
+		my_msleep(25);
+		show_number_on_display(INFRARED_LEFT);
+		my_msleep(25);
+	}
 	
 
     button_wait(1);
@@ -164,8 +169,6 @@ int main(int argc, char **argv)
             roomba_stop();
             break;
         }
-
-		current_item = shell;
 
         //show_number_on_display(offroad_counter, str);
         update_remote_control_sensors();
@@ -348,10 +351,99 @@ int main(int argc, char **argv)
             if(!item_detected_mode) {
                 roomba_pick_up_item();
                 item_detected_mode = true;
+                loop_counter_for_item = 0;
+            }
+            //necessary to avoid repeated recognize of the item at the same round
+            //main idea:
+            //item can be recongnized only if item_detected_mode = false
+            //is the item rekognized, is item_detected_mode = true
+            //and only if loop_counter_for_item > 5 can loop_counter_for_item be reseted
+            else
+            {
+                if(loop_counter_for_item > 5)
+                {
+                    item_detected_mode = false;
+                    //show_number_on_display(loop_counter_for_item, str);
+                }
+                else
+                {
+                    loop_counter_for_item++;
+                    //show_number_on_display(loop_counter_for_item, str);
+                }
             }
         }
-        else {
-            item_detected_mode = false;
+        else
+        {
+            if(loop_counter_for_item > 5)
+            {
+                item_detected_mode = false;
+                //show_number_on_display(loop_counter_for_item, str);
+            }
+            else
+            {
+                loop_counter_for_item++;
+                //show_number_on_display(loop_counter_for_item, str);
+            }
+        }
+
+        if(roomba_check_for_finish_mark(CLIFF_FRONT_LEFT_SIG, CLIFF_FRONT_RIGHT_SIG))
+        {
+            if(round_counter > 3)
+            {
+                roomba_stop();
+                show_number_on_display(round_counter, str);
+            }
+            //necessary to avoid repeated recognize of the finish mark at the same round
+            else
+            {
+                if(!finish_mark_detected_mode)
+                {
+                    if(round_counter <= 3)
+                    {
+                        round_counter++;
+                        show_number_on_display(round_counter, str);
+                        finish_mark_detected_mode = true;
+                        loop_counter_for_round = 0;
+                    }
+                }
+                else
+                {
+                    if(loop_counter_for_round > 7)
+                    {
+                        finish_mark_detected_mode = false;
+                        //show_number_on_display(loop_counter_for_round, str);
+                    }
+                    else
+                    {
+                        loop_counter_for_round++;
+                        //show_number_on_display(loop_counter_for_round, str);
+                    }
+                }
+            }
+        }
+        else
+        {
+            if(loop_counter_for_item > 5)
+            {
+                item_detected_mode = false;
+                //show_number_on_display(loop_counter_for_item, str);
+            }
+            else
+            {
+                loop_counter_for_item++;
+                //show_number_on_display(loop_counter_for_item, str);
+            }
+
+            if(loop_counter_for_round > 7)
+            {
+                finish_mark_detected_mode = false;
+                //show_number_on_display(loop_counter_for_round, str);
+            }
+            else
+            {
+                loop_counter_for_round++;
+                //show_number_on_display(loop_counter_for_round, str);
+            }
         }
     }
 
