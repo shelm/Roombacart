@@ -133,10 +133,27 @@ int main(int argc, char **argv)
     //play_song(2);
 
     //test
+    //calibration
     /*update_cliff_sensors();
+    show_number_on_display(CLIFF_LEFT_SIG, str);
+    my_msleep(1000);
+    show_number_on_display(CLIFF_RIGHT_SIG, str);
+    my_msleep(1000);
+
+    item_value = ((CLIFF_LEFT_SIG + CLIFF_RIGHT_SIG) / 2) - 100;
+    show_number_on_display(item_value, str);
+
+    button_wait(0);
+    update_cliff_sensors();
     show_number_on_display(CLIFF_FRONT_LEFT_SIG, str);
-    my_msleep(1000);*/
-    //show_number_on_display(CLIFF_FRONT_RIGHT_SIG, str);
+    my_msleep(1000);
+    show_number_on_display(CLIFF_FRONT_RIGHT_SIG, str);
+    my_msleep(1000);
+
+    finish_value = ((CLIFF_FRONT_LEFT_SIG + CLIFF_FRONT_RIGHT_SIG) / 2);
+    show_number_on_display(finish_value, str);*/
+    //end of calibration
+    //end of test
 
     button_wait(1);
     drive_lane();
@@ -391,57 +408,6 @@ int main(int argc, char **argv)
 
         }
 
-
-        if(roomba_check_for_finish_mark(CLIFF_LEFT_SIG, CLIFF_FRONT_LEFT_SIG, CLIFF_FRONT_RIGHT_SIG, CLIFF_RIGHT_SIG))
-        //if(roomba_check_for_finish_mark(CLIFF_LEFT_SIG, CLIFF_RIGHT_SIG))
-        {
-            if(round_counter > 3)
-            {
-                roomba_stop();
-                show_number_on_display(round_counter, str);
-            }
-            //necessary to avoid repeated recognize of the finish mark at the same round
-            else
-            {
-                if(!finish_mark_detected_mode)
-                {
-                    if(round_counter <= 3)
-                    {
-                        round_counter++;
-                        show_number_on_display(round_counter, str);
-                        finish_mark_detected_mode = true;
-                        loop_counter_for_round = 0;
-                    }
-                }
-                else
-                {
-                    if(loop_counter_for_round > 5)
-                    {
-                        finish_mark_detected_mode = false;
-                        //show_number_on_display(loop_counter_for_round, str);
-                    }
-                    else
-                    {
-                        loop_counter_for_round++;
-                        //show_number_on_display(loop_counter_for_round, str);
-                    }
-                }
-            }
-        }
-        else
-        {
-            if(loop_counter_for_round > 5)
-            {
-                finish_mark_detected_mode = false;
-                //show_number_on_display(loop_counter_for_round, str);
-            }
-            else
-            {
-                loop_counter_for_round++;
-                //show_number_on_display(loop_counter_for_round, str);
-            }
-        }
-        //if(roomba_check_for_finish_mark(CLIFF_LEFT_SIG, CLIFF_FRONT_LEFT_SIG, CLIFF_FRONT_RIGHT_SIG, CLIFF_RIGHT_SIG))
         if(roomba_check_for_item(CLIFF_LEFT_SIG, CLIFF_RIGHT_SIG))
         {
             if(!item_detected_mode)
@@ -483,7 +449,65 @@ int main(int argc, char **argv)
             }
         }
 
+        if(roomba_check_for_finish_mark(CLIFF_FRONT_LEFT_SIG, CLIFF_FRONT_RIGHT_SIG))
+        {
+            if(round_counter > 3)
+            {
+                roomba_stop();
+                show_number_on_display(round_counter, str);
+            }
+            //necessary to avoid repeated recognize of the finish mark at the same round
+            else
+            {
+                if(!finish_mark_detected_mode)
+                {
+                    if(round_counter <= 3)
+                    {
+                        round_counter++;
+                        show_number_on_display(round_counter, str);
+                        finish_mark_detected_mode = true;
+                        loop_counter_for_round = 0;
+                    }
+                }
+                else
+                {
+                    if(loop_counter_for_round > 7)
+                    {
+                        finish_mark_detected_mode = false;
+                        //show_number_on_display(loop_counter_for_round, str);
+                    }
+                    else
+                    {
+                        loop_counter_for_round++;
+                        //show_number_on_display(loop_counter_for_round, str);
+                    }
+                }
+            }
+        }
+        else
+        {
+            if(loop_counter_for_item > 5)
+            {
+                item_detected_mode = false;
+                //show_number_on_display(loop_counter_for_item, str);
+            }
+            else
+            {
+                loop_counter_for_item++;
+                //show_number_on_display(loop_counter_for_item, str);
+            }
 
+            if(loop_counter_for_round > 7)
+            {
+                finish_mark_detected_mode = false;
+                //show_number_on_display(loop_counter_for_round, str);
+            }
+            else
+            {
+                loop_counter_for_round++;
+                //show_number_on_display(loop_counter_for_round, str);
+            }
+        }
     }
 
     return 0;

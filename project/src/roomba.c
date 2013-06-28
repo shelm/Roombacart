@@ -90,6 +90,7 @@ volatile enum item_t current_item = empty;
 volatile enum item_t last_item_used = empty;
 volatile enum state_t current_state = -1;
 volatile bool_t should_refresh_state = false;
+
 /********************************************************** Global variables */
 
 roomba_sensor_t cliff_left_signal;
@@ -101,12 +102,10 @@ roomba_sensor_t infrared_omni;
 roomba_sensor_t infrared_right;
 roomba_sensor_t infrared_left;
 
-volatile int16_t velocity = VELOCITY
-;            // mm/s
+volatile int16_t velocity = VELOCITY;     // mm/s
 
 //char array for output
 char str[5];
-
 
 /*************************************************************** Local const */
 
@@ -336,28 +335,16 @@ uint8_t read_button() {
 bool_t roomba_check_for_item(int32_t cliff_left_signal_val, int32_t cliff_right_signal_val) {
     //show_number_on_display(cliff_left_signal_val, str);
     //if(cliff_left_signal_val > 2900 || cliff_right_signal_val > 2900)
-    if((cliff_left_signal_val > 3000) || (cliff_right_signal_val > 3000))
+    if(cliff_left_signal_val > 3000 || cliff_right_signal_val > 3000)
         return true;
     return false;
 }
 
-/*bool_t roomba_check_for_item(int32_t cliff_left_signal_val, int32_t cliff_front_left_signal_val, int32_t cliff_front_right_signal_val, int32_t cliff_right_signal_val) {
+bool_t roomba_check_for_finish_mark(int32_t cliff_front_left_signal_val, int32_t cliff_front_right_signal_val) {
     //show_number_on_display(cliff_left_signal_val, str);
-    if((cliff_left_signal_val > 3000 && !(cliff_front_left_signal_val > 3000)) || (!(cliff_front_right_signal_val > 3000) && cliff_right_signal_val > 3000))
-        return true;
-    return false;
-}*/
-
-/*bool_t roomba_check_for_finish_mark(int32_t cliff_left_signal_val, int32_t cliff_right_signal_val) {
-    //show_number_on_display(cliff_left_signal_val, str);
-    if((cliff_left_signal_val > 2800 && cliff_left_signal_val < 2900) || (cliff_right_signal_val > 2800 && cliff_right_signal_val < 2900))
-        return true;
-    return false;
-}*/
-
-bool_t roomba_check_for_finish_mark(int32_t cliff_left_signal_val, int32_t cliff_front_left_signal_val, int32_t cliff_front_right_signal_val, int32_t cliff_right_signal_val) {
-    //show_number_on_display(cliff_left_signal_val, str);
-    if((cliff_left_signal_val > 3000 && cliff_front_left_signal_val > 3000) || (cliff_front_right_signal_val > 3000 && cliff_right_signal_val > 3000))
+     if((cliff_front_left_signal_val > 3000 && cliff_front_right_signal_val > 3000) ||
+       (cliff_front_left_signal_val > 3000 && cliff_front_right_signal_val < 1200) ||
+       (cliff_front_left_signal_val < 1200 && cliff_front_right_signal_val > 3000))
         return true;
     return false;
 }
