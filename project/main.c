@@ -104,7 +104,7 @@ int main(int argc, char **argv)
 {
 	ir_sender_setup();
 	ir_sender_on();
-	
+
     button_wait(0);
     my_msleep(200);
 
@@ -115,7 +115,7 @@ int main(int argc, char **argv)
 
     IOWR32(A_PIO_LBLUE, PIO_DATA, ledb_vals[0]);
     roomba_set_letters_string(greeting, 4);
-	
+
     init_cliff_signal();
 	init_infrared();
 
@@ -135,7 +135,7 @@ int main(int argc, char **argv)
 	while(check_for_playing_song()){
 		my_msleep(15);
 	}
-	
+
 	play_song(0);
 	while(check_for_playing_song()){
 		my_msleep(15);
@@ -144,13 +144,13 @@ int main(int argc, char **argv)
 	while(check_for_playing_song()){
 		my_msleep(15);
 	}*/
-	
+
 	//play_song(2);
 
 	//Dominik Infrared-test
 	//ir_sender_setup();
 	//IOWR32(A_IR_SENDER, IR_SENDER_DATA, 0xA0A0A0A0);
-	
+
 	//ir_sender_set_item(ITEM_ID_SHELL);
 	//ir_sender_on();
 	/*
@@ -363,9 +363,11 @@ int main(int argc, char **argv)
         }
 
         if(roomba_check_for_item(CLIFF_LEFT_SIG, CLIFF_RIGHT_SIG)) {
+
             if(!item_detected_mode) {
-                roomba_pick_up_item();
                 item_detected_mode = true;
+                show_number_on_display(item_detected_mode, str);
+                roomba_pick_up_item();
                 loop_counter_for_item = 0;
             }
             //necessary to avoid repeated recognize of the item at the same round
@@ -375,7 +377,7 @@ int main(int argc, char **argv)
             //and only if loop_counter_for_item > 5 can loop_counter_for_item be reseted
             else
             {
-                if(loop_counter_for_item > 5)
+                if(loop_counter_for_item > 7)
                 {
                     item_detected_mode = false;
                     //show_number_on_display(loop_counter_for_item, str);
@@ -389,7 +391,7 @@ int main(int argc, char **argv)
         }
         else
         {
-            if(loop_counter_for_item > 5)
+            if(loop_counter_for_item > 7)
             {
                 item_detected_mode = false;
                 //show_number_on_display(loop_counter_for_item, str);
@@ -403,23 +405,16 @@ int main(int argc, char **argv)
 
         if(roomba_check_for_finish_mark(CLIFF_FRONT_LEFT_SIG, CLIFF_FRONT_RIGHT_SIG))
         {
-            if(round_counter > 3)
-            {
-                roomba_stop();
-                show_number_on_display(round_counter, str);
-            }
+
             //necessary to avoid repeated recognize of the finish mark at the same round
-            else
+            if(round_counter < 3)
             {
                 if(!finish_mark_detected_mode)
                 {
-                    if(round_counter <= 3)
-                    {
-                        round_counter++;
-                        show_number_on_display(round_counter, str);
-                        finish_mark_detected_mode = true;
-                        loop_counter_for_round = 0;
-                    }
+                    round_counter++;
+                    show_number_on_display(round_counter, str);
+                    finish_mark_detected_mode = true;
+                    loop_counter_for_round = 0;
                 }
                 else
                 {
@@ -435,10 +430,15 @@ int main(int argc, char **argv)
                     }
                 }
             }
+            else
+            {
+                roomba_stop();
+                show_number_on_display(round_counter, str);
+            }
         }
         else
         {
-            if(loop_counter_for_item > 5)
+            /*if(loop_counter_for_item > 7)
             {
                 item_detected_mode = false;
                 //show_number_on_display(loop_counter_for_item, str);
@@ -447,7 +447,7 @@ int main(int argc, char **argv)
             {
                 loop_counter_for_item++;
                 //show_number_on_display(loop_counter_for_item, str);
-            }
+            }*/
 
             if(loop_counter_for_round > 7)
             {
