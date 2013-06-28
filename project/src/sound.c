@@ -112,6 +112,35 @@ roomba_note_t item_detected_sound[] = {
     {NOTE_C, 16},
 };
 
+roomba_note_t final_lap[] = {
+	
+	{NOTE_G, 8},
+	{NOTE_D+tone_heigth, 8},
+	{PAUSE, 8},
+	{NOTE_D+tone_heigth, 8},
+	{NOTE_D+tone_heigth, 8},
+	{PAUSE, 8},
+
+	{NOTE_G_SHARP, 8},
+	{NOTE_D_SHARP+tone_heigth, 8},
+	{PAUSE, 8},
+	{NOTE_D_SHARP+tone_heigth, 8},
+	{NOTE_D_SHARP+tone_heigth, 8},
+	
+	{PAUSE, 8},
+	{NOTE_F+tone_heigth, 8},
+	{NOTE_F+tone_heigth, 56},
+	
+	
+};
+
+roomba_note_t final_lap_part_2[] = {
+	{PAUSE, 8},
+	{NOTE_F+tone_heigth, 8},
+	{PAUSE, 8},
+	{NOTE_E+tone_heigth, 56},
+};
+
 /********************************************************** Global variables */
 
 

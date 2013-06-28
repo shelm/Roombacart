@@ -18,8 +18,7 @@
 #define NOTE_B			83
 #define NOTE_C			84
 #define NOTE_C_SHARP	85
-
-
+#define PAUSE			0
 
 /****************************************************************** Typedefs */
 
@@ -36,6 +35,10 @@ extern roomba_note_t item_detected_sound[];
 
 extern roomba_note_t mortal_kombat[];
 extern roomba_note_t mortal_kombat_part_2[];
+
+extern roomba_note_t final_lap[];
+extern roomba_note_t final_lap_part_2[];
+
 /********************************************************** Global variables */
 
 

@@ -110,23 +110,21 @@ int main(int argc, char **argv)
     init_cliff_signal();
 	init_infrared();
 
-	transmit_song(mortal_kombat, 16, 0);
+	transmit_song(final_lap, 14, 0);
 	my_msleep(15);
-	transmit_song(mortal_kombat_part_2, 16, 1);
+	transmit_song(final_lap_part_2, 4, 1);
 	my_msleep(15);
-	transmit_song(indiana_jones_theme_part_3, 14, 2);
-	my_msleep(15);
-	transmit_song(item_detected_sound, 4, 3);
-	/*
+
+	
 	play_song(0);
 	while(check_for_playing_song()){
 		my_msleep(15);
 	}
-	play_song(1);
+	/*play_song(1);
 	while(check_for_playing_song()){
 		my_msleep(15);
-	}
-	
+	}*/
+	/*
 	play_song(0);
 	while(check_for_playing_song()){
 		my_msleep(15);
@@ -144,14 +142,12 @@ int main(int argc, char **argv)
 	
 	//ir_sender_set_item(ITEM_ID_SHELL);
 	//ir_sender_on();
-	/*
-	while(1) {
 	
+	while(1) {
 		update_remote_control_sensors();
-		show_number_on_display((INFRARED_LEFT|INFRARED_RIGHT|INFRARED_OMNI));
+		show_number_on_display(INFRARED_OMNI);
 		my_msleep(100);
-
-	}*/
+	}
 	
 
     button_wait(1);
