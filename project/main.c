@@ -97,7 +97,7 @@ int course_correction_counter = 0;
 
 int main(int argc, char **argv)
 {
-	
+
     my_msleep(200);
 
     //initialize the roomba
@@ -106,7 +106,7 @@ int main(int argc, char **argv)
     my_msleep(500);
 
     roomba_set_letters_string(greeting, 4);
-	
+
     init_cliff_signal();
 	init_infrared();
 
@@ -126,7 +126,7 @@ int main(int argc, char **argv)
 	while(check_for_playing_song()){
 		my_msleep(15);
 	}
-	
+
 	play_song(0);
 	while(check_for_playing_song()){
 		my_msleep(15);
@@ -135,24 +135,24 @@ int main(int argc, char **argv)
 	while(check_for_playing_song()){
 		my_msleep(15);
 	}*/
-	
+
 	//play_song(2);
 
 	//Dominik Infrared-test
 	//ir_sender_setup();
 	//IOWR32(A_IR_SENDER, IR_SENDER_DATA, 0xA0A0A0A0);
-	
+
 	//ir_sender_set_item(ITEM_ID_SHELL);
 	//ir_sender_on();
 	/*
 	while(1) {
-	
+
 		update_remote_control_sensors();
 		show_number_on_display((INFRARED_LEFT|INFRARED_RIGHT|INFRARED_OMNI));
 		my_msleep(100);
 
 	}*/
-	
+
 
     button_wait(1);
     drive_lane();
@@ -193,8 +193,8 @@ int main(int argc, char **argv)
 			default:
 				break;
 		}
-		   
-		
+
+
 
         if(should_refresh_state)
             refresh_current_state();
@@ -205,10 +205,12 @@ int main(int argc, char **argv)
 
         switch(current_state){
             case USER_DRIVES_TO_LEFT:
-                if(offroad_counter > 5) {
-                    drive_offroad();
-                } else {
-                    offroad_counter++;
+                if(CLIFF_FRONT_LEFT_SIG < 1200 && CLIFF_FRONT_RIGHT_SIG < 1200 && CLIFF_LEFT_SIG < 1200 && CLIFF_RIGHT_SIG){
+                    if(offroad_counter > 5) {
+                        drive_offroad();
+                    } else {
+                        offroad_counter++;
+                    }
                 }
                 if(!(INFRARED_OMNI == HARMONY_SIGNAL_TURNLEFT || INFRARED_RIGHT == HARMONY_SIGNAL_TURNLEFT || INFRARED_LEFT == HARMONY_SIGNAL_TURNLEFT)){
                     if(CLIFF_FRONT_LEFT_SIG > 1200 || CLIFF_FRONT_RIGHT_SIG > 1200){
@@ -219,10 +221,12 @@ int main(int argc, char **argv)
                 }
                 break;
             case USER_DRIVES_TO_RIGHT:
-                if(offroad_counter > 5) {
-                    drive_offroad();
-                } else {
-                    offroad_counter++;
+                if(CLIFF_FRONT_LEFT_SIG < 1200 && CLIFF_FRONT_RIGHT_SIG < 1200 && CLIFF_LEFT_SIG < 1200 && CLIFF_RIGHT_SIG){
+                    if(offroad_counter > 5) {
+                        drive_offroad();
+                    } else {
+                        offroad_counter++;
+                    }
                 }
                 if(!(INFRARED_OMNI == HARMONY_SIGNAL_TURNRIGHT || INFRARED_RIGHT == HARMONY_SIGNAL_TURNRIGHT || INFRARED_LEFT == HARMONY_SIGNAL_TURNRIGHT)){
                     if(CLIFF_FRONT_LEFT_SIG > 1200 || CLIFF_FRONT_RIGHT_SIG > 1200){
@@ -248,23 +252,29 @@ int main(int argc, char **argv)
             case DRIVE_CURVE_LEFT:
                 if(CLIFF_FRONT_LEFT_SIG > 1200) {
                     drive_back_to_lane();
+                    offroad_counter = 0;
                 } else if (CLIFF_LEFT_SIG < 1200) {
-                    if(offroad_counter > 5) {
+                    if(offroad_counter > 15) {
                         drive_offroad();
                     } else {
                         offroad_counter++;
                     }
+                } else {
+                    offroad_counter = 0;
                 }
                 break;
             case DRIVE_CURVE_RIGHT:
                 if(CLIFF_FRONT_RIGHT_SIG > 1200) {
                     drive_back_to_lane();
+                    offroad_counter = 0;
                 } else if (CLIFF_RIGHT_SIG < 1200) {
-                    if(offroad_counter > 5) {
+                    if(offroad_counter > 15) {
                         drive_offroad();
                     } else {
                         offroad_counter++;
                     }
+                } else {
+                    offroad_counter = 0;
                 }
                 break;
             case DRIVE_BACK_TO_LANE:
@@ -422,6 +432,7 @@ void drive_curve_right(void){
 }
 
 void drive_back_to_lane(void){
+    offroad_counter = 0;
     current_state = DRIVE_BACK_TO_LANE;
     // set velocity to standard velocity (200) if roomba has no boost
     if(velocity != VELOCITY_BOOST){
