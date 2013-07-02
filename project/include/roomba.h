@@ -35,7 +35,8 @@ typedef struct {
 enum item_t{
     empty,
     speed,
-    shell
+    shell,
+    last
 };
 
 /*! enum for all available states
@@ -299,6 +300,10 @@ void roomba_start_timer(void);
 
 uint32_t roomba_check_timer_array(void);
 
+/*! Returns a random value
+ */
+uint16_t my_rand(void);
+
 void roomba_show_item(void);
 /************************************************************** Global const */
 
@@ -345,14 +350,20 @@ extern volatile enum state_t last_state;
 *   0: boost item
     1: fire shell
     2: got hit by shell
+    3: random item id
 */
-extern volatile int16_t timer_array[3];
+extern volatile int16_t timer_array[4];
 /*! array for activate/deactivate timer usage
 *   0: boost item
     1: fire shell
     2: got hit by shell
+    3: random item id
 */
-extern volatile int16_t timer_active_array[3];
+extern volatile int16_t timer_active_array[4];
+
+/*! The seed for my_rand()
+ */
+extern volatile uint16_t random_seed;
 
 extern volatile bool_t should_refresh_state;
 

@@ -94,8 +94,11 @@ volatile enum state_t current_state = -1;
 volatile enum state_t last_state = -1;
 volatile bool_t should_refresh_state = false;
 
-volatile int16_t timer_array[3] = {5, 5, 3};
-volatile int16_t timer_active_array[3] = {0, 0,0};
+volatile int16_t timer_array[4] = {5, 5, 3, 0};
+volatile int16_t timer_active_array[4] = {0, 0, 0, 0};
+
+volatile uint16_t random_item = 1;
+
 /********************************************************** Global variables */
 
 roomba_sensor_t cliff_left_signal;
@@ -109,6 +112,7 @@ roomba_sensor_t infrared_left;
 
 volatile int16_t velocity = VELOCITY;    // mm/s
 
+volatile uint16_t random_seed = 0;
 //char array for output
 char str[5];
 char speed_str[4] = {' ', 'D', 'P', 'S'};
@@ -361,7 +365,11 @@ void roomba_pick_up_item() {
 }
 
 enum item_t roomba_generate_rand_item() {
-    return shell;
+    /*int8_t my_number = my_rand();
+    show_number_on_display(my_number, str);
+    my_msleep(500);
+    return my_number;*/
+    return (my_rand()%(last-1))+1;
 }
 
 void roomba_use_item() {
@@ -443,9 +451,23 @@ uint32_t roomba_check_timer_array(){
         timer_array[2] = 3;
         roomba_got_hit_effect_ends();
     }
+
+    if(timer_array[3] < 100){
+         timer_array[3]++;
+    }
+    else{
+        timer_array[3] = 0;
+    }
+
     tt_reset();
     irq_disable(IRQ_TIMER_N);
     return 1;
+}
+
+uint16_t my_rand(void){
+
+  return timer_array[3];
+
 }
 
 void roomba_show_item(){
