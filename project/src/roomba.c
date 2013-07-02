@@ -96,6 +96,9 @@ volatile bool_t should_refresh_state = false;
 
 volatile int16_t timer_array[3] = {5, 5, 3};
 volatile int16_t timer_active_array[3] = {0, 0,0};
+
+volatile uint16_t random_item = 0;
+
 /********************************************************** Global variables */
 
 roomba_sensor_t cliff_left_signal;
@@ -362,7 +365,7 @@ void roomba_pick_up_item() {
 }
 
 enum item_t roomba_generate_rand_item() {
-    return shell;
+    return (my_rand()%(last-1))+1;
 }
 
 void roomba_use_item() {
@@ -447,4 +450,8 @@ uint32_t roomba_check_timer_array(){
     tt_reset();
     irq_disable(IRQ_TIMER_N);
     return 1;
+}
+
+uint16_t my_rand(void){
+return random_seed = random_seed * 1103515245 + 12345;
 }
