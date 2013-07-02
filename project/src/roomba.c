@@ -107,12 +107,12 @@ roomba_sensor_t infrared_omni;
 roomba_sensor_t infrared_right;
 roomba_sensor_t infrared_left;
 
-volatile int16_t velocity = VELOCITY
-;            // mm/s
+volatile int16_t velocity = VELOCITY;    // mm/s
 
 //char array for output
 char str[5];
-
+char speed_str[4] = {' ', 'D', 'P', 'S'};
+char shell_str[4] = {' ', 'L', 'H', 'S'};
 
 /*************************************************************** Local const */
 
@@ -446,4 +446,17 @@ uint32_t roomba_check_timer_array(){
     tt_reset();
     irq_disable(IRQ_TIMER_N);
     return 1;
+}
+
+void roomba_show_item(){
+     switch(current_item) {
+        case speed:
+            roomba_set_letters_string(speed_str, 4);
+            break;
+        case shell:
+			roomba_set_letters_string(shell_str, 4);
+            break;
+        default:
+            break;
+    }
 }

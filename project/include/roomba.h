@@ -275,30 +275,31 @@ bool_t roomba_check_for_finish_mark(int32_t cliff_front_left_signal_val, int32_t
 
 /*! tells the roomba what to do if an item has been detected
 */
-void roomba_pick_up_item();
+void roomba_pick_up_item(void);
 
 /*! generates a random item
 */
-enum item_t roomba_generate_rand_item();
+enum item_t roomba_generate_rand_item(void);
 
 /*! uses the current item
 */
-void roomba_use_item();
+void roomba_use_item(void);
 
 /*! ends the current effect of the last item used
 */
-void roomba_item_effect_ends();
+void roomba_item_effect_ends(void);
 /*! handles the effect when the roomba got hit by an item from his opponent
  */
 void roomba_got_hit_by_item(uint8_t item_id);
 /*! ends the got hit by item effect
  */
-void roomba_got_hit_effect_ends();
+void roomba_got_hit_effect_ends(void);
 
-void roomba_start_timer();
+void roomba_start_timer(void);
 
-uint32_t roomba_check_timer_array();
+uint32_t roomba_check_timer_array(void);
 
+void roomba_show_item(void);
 /************************************************************** Global const */
 
 /*! initialized sensors with values:
@@ -354,6 +355,9 @@ extern volatile int16_t timer_array[3];
 extern volatile int16_t timer_active_array[3];
 
 extern volatile bool_t should_refresh_state;
+
+extern char speed_str[4];
+extern char shell_str[4];
 
 #ifdef __cplusplus
 }
