@@ -123,16 +123,20 @@ int main(int argc, char **argv)
 	my_msleep(15);
 	transmit_song(starman_theme_part_2, 6, 1);
 	my_msleep(15);
+	transmit_song(damage_sound, 12, 3);
+	my_msleep(15);
 
 	/*int i = 1;
 	while(1){
+		
 		i++;
 		play_song(i%2);
 		while(check_for_playing_song()){
 			my_msleep(15);
 		}
-	}*/
-	/*play_song(1);
+		//play_song(3);
+	}
+	play_song(3);
 	while(check_for_playing_song()){
 		my_msleep(15);
 	}*/

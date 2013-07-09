@@ -116,6 +116,7 @@ volatile int16_t velocity = VELOCITY
 //char array for output
 char str[5];
 
+volatile uint16_t rseed = 0;
 
 /*************************************************************** Local const */
 
@@ -453,5 +454,5 @@ uint32_t roomba_check_timer_array(){
 }
 
 uint16_t my_rand(void){
-return random_seed = random_seed * 1103515245 + 12345;
+return rseed = rseed * 1103515245 + 12345;
 }

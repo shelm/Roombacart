@@ -360,7 +360,7 @@ extern volatile int16_t timer_active_array[3];
 
 /*! The seed for my_rand() 
  */
-volatile uint16_t random_seed = 0;
+extern volatile uint16_t rseed;
 
 extern volatile bool_t should_refresh_state;
 
