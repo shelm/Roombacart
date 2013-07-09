@@ -159,9 +159,9 @@ void ir_receive();
 					(ROOMBA_ID&0x03)<<4 | IR_SENDER_ROOMBA | i,	\
 					(ROOMBA_ID&0x03)<<4 | IR_SENDER_ROOMBA | i);
 
-#define ir_get_roomba_id_from_data(i) ((i & IR_ROOMBA_ID_MASK)>>4)
-#define ir_get_item_id_from_data(i) (i & IR_ITEM_DATA_MASK)
-#define ir_get_sender_type_from_data(i) (i & IR_SENDER_MASK)
+#define ir_get_roomba_id_from_data(i) (((i) & IR_ROOMBA_ID_MASK)>>4)
+#define ir_get_item_id_from_data(i) ((i) & IR_ITEM_DATA_MASK)
+#define ir_get_sender_type_from_data(i) ((i) & IR_SENDER_MASK)
 
 /// get id of roomba if IR-omni-sensor receives a byte from a roomba IR sender
 #define ir_get_roomba()   (ir_roomba_id&0x03)

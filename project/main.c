@@ -61,7 +61,7 @@ void roomba_got_hit(void);
 
 /*********************************************************** Local variables */
 
-char greeting[4] = {'I', 'H', 'I', 'H'};
+char greeting_str[4] = {'I', 'H', 'I', 'H'};
 
 /*
  *  false if left sensor left line first
@@ -103,7 +103,7 @@ int loop_counter_for_item = 0;
 int main(int argc, char **argv)
 {
 	ir_sender_setup();
-	ir_sender_on();
+	//ir_sender_on();
 	
     button_wait(0);
     my_msleep(200);
@@ -114,76 +114,43 @@ int main(int argc, char **argv)
     my_msleep(500);
 
     IOWR32(A_PIO_LBLUE, PIO_DATA, ledb_vals[0]);
-    roomba_set_letters_string(greeting, 4);
-	
+    roomba_set_letters_string(greeting_str, 4);
+
     init_cliff_signal();
 	init_infrared();
 
-	transmit_song(starman_theme, 16, 0);
-	my_msleep(15);
-	transmit_song(starman_theme_part_2, 6, 1);
-	my_msleep(15);
-	transmit_song(damage_sound, 12, 3);
-	my_msleep(15);
+    transmit_song(damage_sound, 12, 0);
+    my_msleep(15);
+    transmit_song(starman_theme, 16, 1);
+    my_msleep(15);
+    transmit_song(starman_theme_part_2, 6, 2);
+    my_msleep(15);
+    transmit_song(item_detected_sound, 4, 3);
 
-	/*int i = 1;
-	while(1){
-		
-		i++;
-		play_song(i%2);
-		while(check_for_playing_song()){
-			my_msleep(15);
-		}
-		//play_song(3);
-	}
-	play_song(3);
-	while(check_for_playing_song()){
-		my_msleep(15);
-	}*/
-	/*
-	play_song(0);
-	while(check_for_playing_song()){
-		my_msleep(15);
-	}
-	play_song(1);
-	while(check_for_playing_song()){
-		my_msleep(15);
-	}*/
+	ir_sender_set_item(IS_FOCUSED_ID);
+	ir_sender_on();
 	
-	//play_song(2);
-
-	//Dominik Infrared-test
-	//ir_sender_setup();
-	//IOWR32(A_IR_SENDER, IR_SENDER_DATA, 0xA0A0A0A0);
+	//while(1);
 	
-	//ir_sender_set_item(ITEM_ID_SHELL);
-	//ir_sender_on();
-	/*
-	while(1) {
-	
-		update_remote_control_sensors();
-		show_number_on_display((INFRARED_LEFT|INFRARED_RIGHT|INFRARED_OMNI));
-		my_msleep(100);
-
-	}*/
-	
-
     button_wait(1);
-    drive_lane();
+    //drive_lane();
     roomba_start_timer();
 
     while(true){
 
-        if(button_pressed(0)){
+        if(button_pressed(0))
+        {
             roomba_stop();
             break;
         }
 
-		current_item = shell;
-
+		if(!check_for_active_item()) {
+			ir_sender_set_item(IS_FOCUSED_ID);
+			ir_sender_on();
+		}
+			
         //show_number_on_display(offroad_counter, str);
         update_remote_control_sensors();
-
 
         // drive to left because user wants to
 		if(INFRARED_OMNI == HARMONY_SIGNAL_TURNLEFT || INFRARED_RIGHT == HARMONY_SIGNAL_TURNLEFT || INFRARED_LEFT == HARMONY_SIGNAL_TURNLEFT) {
@@ -199,16 +166,24 @@ int main(int argc, char **argv)
 		if(INFRARED_OMNI == HARMONY_SIGNAL_SPOT || INFRARED_RIGHT == HARMONY_SIGNAL_SPOT || INFRARED_LEFT == HARMONY_SIGNAL_SPOT) {
 			roomba_use_item();
 		}
-		if(ir_get_sender_type_from_data(INFRARED_LEFT|INFRARED_OMNI|INFRARED_RIGHT) == IR_SENDER_ROOMBA && ir_get_roomba_id_from_data(INFRARED_LEFT|INFRARED_OMNI|INFRARED_RIGHT) != ROOMBA_ID)
-		switch(ir_get_item_id_from_data(INFRARED_LEFT|INFRARED_RIGHT|INFRARED_OMNI)) {
-			case ITEM_ID_SHELL:
-				roomba_got_hit_by_item(shell);
-				break;
-			default:
-				break;
-		}
-		   
 		
+		show_number_on_display(ir_get_sender_type_from_data(INFRARED_LEFT|INFRARED_OMNI|INFRARED_RIGHT), str);
+		
+		if(ir_get_sender_type_from_data(INFRARED_LEFT|INFRARED_OMNI|INFRARED_RIGHT) == IR_SENDER_ROOMBA && ir_get_roomba_id_from_data(INFRARED_LEFT|INFRARED_OMNI|INFRARED_RIGHT) != ROOMBA_ID){
+			show_number_on_display(777,str);
+			switch(ir_get_item_id_from_data(INFRARED_LEFT|INFRARED_RIGHT|INFRARED_OMNI)) {
+				case ITEM_ID_SHELL:
+					roomba_got_hit_by_item(shell);
+					break;
+				case IS_FOCUSED_ID:
+					roomba_show_is_focused();
+					break;
+				default:
+					break;
+			}
+		}
+
+
 
         if(should_refresh_state)
             refresh_current_state();
@@ -368,34 +343,21 @@ int main(int argc, char **argv)
 
         }
 
-        if(roomba_check_for_item(CLIFF_LEFT_SIG, CLIFF_RIGHT_SIG)) {
-            if(!item_detected_mode) {
-                roomba_pick_up_item();
-                item_detected_mode = true;
-                loop_counter_for_item = 0;
-            }
+        if(roomba_check_for_item(CLIFF_LEFT_SIG, CLIFF_RIGHT_SIG) && !item_detected_mode)
+        {
+            item_detected_mode = true;
+            roomba_pick_up_item();
+            roomba_show_item();
+            loop_counter_for_item = 0;
+        }
+        else
+        {
             //necessary to avoid repeated recognize of the item at the same round
             //main idea:
             //item can be recongnized only if item_detected_mode = false
             //is the item rekognized, is item_detected_mode = true
-            //and only if loop_counter_for_item > 5 can loop_counter_for_item be reseted
-            else
-            {
-                if(loop_counter_for_item > 5)
-                {
-                    item_detected_mode = false;
-                    //show_number_on_display(loop_counter_for_item, str);
-                }
-                else
-                {
-                    loop_counter_for_item++;
-                    //show_number_on_display(loop_counter_for_item, str);
-                }
-            }
-        }
-        else
-        {
-            if(loop_counter_for_item > 5)
+            //and only if loop_counter_for_item > 7 can loop_counter_for_item be reseted
+            if(loop_counter_for_item > 20)
             {
                 item_detected_mode = false;
                 //show_number_on_display(loop_counter_for_item, str);
@@ -407,53 +369,39 @@ int main(int argc, char **argv)
             }
         }
 
-        if(roomba_check_for_finish_mark(CLIFF_FRONT_LEFT_SIG, CLIFF_FRONT_RIGHT_SIG))
+        if(roomba_check_for_finish_mark(CLIFF_FRONT_LEFT_SIG, CLIFF_FRONT_RIGHT_SIG) && !finish_mark_detected_mode)
         {
-            if(round_counter > 3)
+            //necessary to avoid repeated recognize of the finish mark at the same round
+            if(round_counter < 3)
             {
-                roomba_stop();
+
+                round_counter++;
                 show_number_on_display(round_counter, str);
+                finish_mark_detected_mode = true;
+                loop_counter_for_round = 0;
+
             }
             //necessary to avoid repeated recognize of the finish mark at the same round
             else
             {
-                if(!finish_mark_detected_mode)
+                roomba_stop();
+                show_number_on_display(round_counter, str);
+
+                play_song(0);
+                while(check_for_playing_song())
                 {
-                    if(round_counter <= 3)
-                    {
-                        round_counter++;
-                        show_number_on_display(round_counter, str);
-                        finish_mark_detected_mode = true;
-                        loop_counter_for_round = 0;
-                    }
+                    my_msleep(15);
                 }
-                else
+                play_song(1);
+                while(check_for_playing_song())
                 {
-                    if(loop_counter_for_round > 7)
-                    {
-                        finish_mark_detected_mode = false;
-                        //show_number_on_display(loop_counter_for_round, str);
-                    }
-                    else
-                    {
-                        loop_counter_for_round++;
-                        //show_number_on_display(loop_counter_for_round, str);
-                    }
+                    my_msleep(15);
                 }
             }
         }
         else
         {
-            if(loop_counter_for_item > 5)
-            {
-                item_detected_mode = false;
-                //show_number_on_display(loop_counter_for_item, str);
-            }
-            else
-            {
-                loop_counter_for_item++;
-                //show_number_on_display(loop_counter_for_item, str);
-            }
+
 
             if(loop_counter_for_round > 7)
             {
