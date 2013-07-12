@@ -316,7 +316,7 @@ uint8_t read_button() {
 }
 
 bool_t roomba_check_for_item(int32_t cliff_left_signal_val, int32_t cliff_right_signal_val) {
-    //show_number_on_display(cliff_left_signal_val, str);
+    //er_on_display(cliff_left_signal_val, str);
     if(cliff_left_signal_val > 2900 || cliff_right_signal_val > 2900)
         return true;
     return false;
@@ -337,40 +337,36 @@ void roomba_pick_up_item() {
 }
 
 enum item_t roomba_generate_rand_item() {
-    /*int8_t my_number = my_rand();
-    show_number_on_display(my_number, str);
-    my_msleep(500);
-    return my_number;*/
     return (my_rand()%(last-1))+1;
 }
 
 void roomba_use_item() {
-    should_refresh_state = true;
-    ir_sender_on();
-    switch(current_item) {
-        case speed:
-            velocity = VELOCITY_BOOST;
-            timer_active_array[0] = 1;
-            break;
-        case shell:
-			ir_sender_set(ITEM_ID_SHELL, ITEM_ID_SHELL, ITEM_ID_SHELL, ITEM_ID_SHELL);
-			ir_sender_on();
-			timer_active_array[1] = 1;
-            break;
-        default:
-            break;
-    }
-    last_item_used = current_item;
-    current_item = empty;
-    roomba_set_led_on(0, 230,255);
+        should_refresh_state = true;
+        ir_sender_on();
+        switch(current_item) {
+            case speed:
+                velocity = VELOCITY_BOOST;
+                timer_active_array[0] = 1;
+                break;
+            case shell:
+                ir_sender_set_item(ITEM_ID_SHELL);
+                ir_sender_on();
+                timer_active_array[1] = 1;
+                break;
+            default:
+                break;
+        }
+        if(current_item != empty){
+            last_item_used = current_item;
+            current_item = empty;
+        }
+        roomba_set_led_on(0, 125,125);
 }
 
 void roomba_item_effect_ends() {
-
     switch(last_item_used) {
         case speed:
             velocity = VELOCITY;
-            roomba_set_led_on(0, 70,255);
             break;
         case shell:
 			ir_sender_off();
@@ -378,6 +374,7 @@ void roomba_item_effect_ends() {
         default:
             break;
     }
+    roomba_set_led_on(0, 0, 255);
     should_refresh_state = true;
     last_item_used = empty;
 }
@@ -385,6 +382,9 @@ void roomba_item_effect_ends() {
 void roomba_got_hit_by_item(uint8_t item_id) {
 	 switch(item_id) {
         case shell:
+            last_state = current_state;
+            current_state = ROOMBA_GOT_HIT_BY_ITEM;
+            roomba_drive(velocity, 1);
             timer_active_array[2] = 1;
             break;
         default:
@@ -404,7 +404,6 @@ void roomba_start_timer(void){
 }
 
 uint32_t roomba_check_timer_array(){
-
     if(timer_array[0] > 0 && timer_active_array[0] == 1){
 		if(!check_for_playing_song()) {
 			play_song(1);
@@ -444,13 +443,13 @@ uint32_t roomba_check_timer_array(){
 }
 
 uint16_t my_rand(void){
-	
+
   return timer_array[3];
-  
+
 }
 
 void roomba_show_item(){
-	
+
      switch(current_item) {
         case speed:
             roomba_set_letters_string(speed_str, 4);
@@ -461,15 +460,11 @@ void roomba_show_item(){
         default:
             break;
     }
-    
+
 }
 
 void roomba_show_is_focused() {
-	
 	roomba_set_led_on(0,128,128);
-	my_msleep(100);
-	roomba_set_led_on(0,0,0);
-	
 }
 
 uint8_t check_for_active_item() {

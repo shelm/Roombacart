@@ -47,8 +47,6 @@ void correct_curse_to_right(void);
 
 void refresh_current_state(void);
 
-void roomba_got_hit(void);
-
 
 /************************************************************** Global const */
 
@@ -146,13 +144,10 @@ int main(int argc, char **argv)
             break;
         }
 
-		if(!check_for_active_item()) {
-			ir_sender_set_item(IS_FOCUSED_ID);
-			ir_sender_on();
-		}
 
         //show_number_on_display(offroad_counter, str);
         update_remote_control_sensors();
+
 
         // drive to left because user wants to
 		if(INFRARED_OMNI == HARMONY_SIGNAL_TURNLEFT || INFRARED_RIGHT == HARMONY_SIGNAL_TURNLEFT || INFRARED_LEFT == HARMONY_SIGNAL_TURNLEFT) {
@@ -164,10 +159,24 @@ int main(int argc, char **argv)
 		    user_drives_to_right();
 		}
 
-        // use item
-		if(INFRARED_OMNI == HARMONY_SIGNAL_SPOT || INFRARED_RIGHT == HARMONY_SIGNAL_SPOT || INFRARED_LEFT == HARMONY_SIGNAL_SPOT) {
-			roomba_use_item();
+        //actions that should only happen when no item is in use
+        if(!check_for_active_item()) {
+
+			if(current_item == shell) {
+                ir_sender_set_item(IS_FOCUSED_ID);
+                ir_sender_on();
+			}
+			else
+                ir_sender_off();
+
+			roomba_set_led_on(0, 0, 255);
+			// use item
+            if(INFRARED_OMNI == HARMONY_SIGNAL_SPOT || INFRARED_RIGHT == HARMONY_SIGNAL_SPOT || INFRARED_LEFT == HARMONY_SIGNAL_SPOT) {
+                roomba_use_item();
+            }
 		}
+
+        show_number_on_display((INFRARED_LEFT|INFRARED_OMNI|INFRARED_RIGHT));
 
 		if(ir_get_sender_type_from_data(INFRARED_LEFT|INFRARED_OMNI|INFRARED_RIGHT) == IR_SENDER_ROOMBA && ir_get_roomba_id_from_data(INFRARED_LEFT|INFRARED_OMNI|INFRARED_RIGHT) != ROOMBA_ID){
 			switch(ir_get_item_id_from_data(INFRARED_LEFT|INFRARED_RIGHT|INFRARED_OMNI)) {
@@ -371,27 +380,23 @@ int main(int argc, char **argv)
         if(roomba_check_for_finish_mark(CLIFF_FRONT_LEFT_SIG, CLIFF_FRONT_RIGHT_SIG) && !finish_mark_detected_mode) {
             //necessary to avoid repeated recognize of the finish mark at the same round
             if(round_counter < LAPNUMBER) {
-				
+
 				//play final lap sound
 				if(round_counter == LAPNUMBER -1) {
-					
+
 					//transmit and play final lap sound
 					transmit_song(final_lap, 16, 0);
 					my_msleep(15);
-					transmit_song(final_lap_part_2, 2, 1);
-					my_msleep(15);
+
 					play_song(0);
-					while(check_for_playing_song()) 
+					while(check_for_playing_song())
 						my_msleep(15);
-					play_song(1);
-					
+
 					//restore original sound for later usage
 					transmit_song(damage_sound, 12, 0);
 					my_msleep(15);
-					transmit_song(starman_theme, 16, 1);
-					my_msleep(15);
 				}
-				
+
                 round_counter++;
                 show_number_on_display(round_counter, str);
                 finish_mark_detected_mode = true;
@@ -400,14 +405,14 @@ int main(int argc, char **argv)
             }
             //necessary to avoid repeated recognize of the finish mark at the same round
             else {
-				
+
 				transmit_song(indiana_jones_theme, 16, 0);
 				my_msleep(15);
 				transmit_song(indiana_jones_theme_part_2, 16, 1);
 				my_msleep(15);
 				transmit_song(indiana_jones_theme_part_3, 14, 2);
 				my_msleep(15);
-				
+
                 roomba_stop();
                 show_number_on_display(round_counter, str);
 
@@ -420,6 +425,7 @@ int main(int argc, char **argv)
                     my_msleep(15);
                 }
                 play_song(2);
+                exit(0);
             }
         }
         else {
@@ -530,13 +536,6 @@ void correct_curse_to_right(void){
     }
     // correct curse of roomba on lane
     roomba_drive(velocity, velocity == VELOCITY ? -1000 : -1750);
-}
-
-void roomba_got_hit(void){
-    last_state = current_state;
-    current_state = ROOMBA_GOT_HIT_BY_ITEM;
-    roomba_drive(velocity, 1);
-    roomba_got_hit_by_item(shell);
 }
 
 void refresh_current_state(void){

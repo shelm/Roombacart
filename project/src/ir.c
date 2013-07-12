@@ -67,7 +67,7 @@ static volatile uint16_t ir_timer_leds[12] = {0,0,0,0,0,0,0,0,0,0,0,0};
 #ifdef HAVE_IR
 
 void ir_sender_set(unsigned char left, unsigned char center, unsigned char right, unsigned char near) {
-	IOWR32(A_IR_SENDER, IR_SENDER_DATA,near << 24 | right << 16 | center << 8 | left);
+	IOWR32(A_IR_SENDER, IR_SENDER_DATA, near << 24 | right << 16 | center << 8 | left);
 }
 
 void ir_sender_on() {
@@ -83,7 +83,7 @@ void ir_receive() {
 
 	/* check all sensors */
 	for(s=0; s<IR_NUM_SENSORS; s++) {
-	
+
 		/* select appropriate sensor id */
 		switch(s) {
 			case IR_RECEIVER_OMNI:	sensor_id = SENSOR_IR_OMNI; break;
@@ -101,10 +101,10 @@ void ir_receive() {
 		ir_leds = 0;
 		ir_id = 0;
 		ir_remote = 0;
-		
+
 		if(ir_raw != 0) {
 			/* something received */
-			
+
 			if((ir_raw & IR_SENDER_MASK) == IR_SENDER_ROOMBA) {
 				/* roomba ir leds on back */
 				ir_id = (ir_raw & IR_ROOMBA_MASK)>>3;
@@ -114,7 +114,7 @@ void ir_receive() {
 				ir_remote = ir_raw & IR_DATA_MASK;
 			}
 		}
-	
+
 		/* update state of all IR leds */
 		for(i=0; i<IR_NUM_LEDS; i++) {
 			if(ir_leds & (1<<i)) {
@@ -131,7 +131,7 @@ void ir_receive() {
 				}
 			}
 		}
-		
+
 		/* set remote command if received */
 		if(ir_remote != 0)
 			ir_remote_command = ir_remote;
