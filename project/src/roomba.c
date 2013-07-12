@@ -389,15 +389,12 @@ void roomba_use_item() {
             break;
     }
     last_item_used = current_item;
-    
-    show_number_on_display(last_item_used, str);
-    
     current_item = empty;
     roomba_set_led_on(0, 230,255);
 }
 
 void roomba_item_effect_ends() {
-	
+
     switch(last_item_used) {
         case speed:
             velocity = VELOCITY;
@@ -435,12 +432,12 @@ void roomba_start_timer(void){
 }
 
 uint32_t roomba_check_timer_array(){
-	
+
     if(timer_array[0] > 0 && timer_active_array[0] == 1){
 		if(!check_for_playing_song()) {
 			play_song(1);
 		}
-        timer_array[0]--;        
+        timer_array[0]--;
     } else if (timer_array[0] == 0 && timer_active_array[0] == 1){
         timer_active_array[0] = 0;
         timer_array[0] = 5;

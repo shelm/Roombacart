@@ -104,7 +104,7 @@ int main(int argc, char **argv)
 {
 	ir_sender_setup();
 	//ir_sender_on();
-	
+
     button_wait(0);
     my_msleep(200);
 
@@ -129,11 +129,11 @@ int main(int argc, char **argv)
 
 	ir_sender_set_item(IS_FOCUSED_ID);
 	ir_sender_on();
-	
+
 	//while(1);
-	
+
     button_wait(1);
-    //drive_lane();
+    drive_lane();
     roomba_start_timer();
 
     while(true){
@@ -148,7 +148,7 @@ int main(int argc, char **argv)
 			ir_sender_set_item(IS_FOCUSED_ID);
 			ir_sender_on();
 		}
-			
+
         //show_number_on_display(offroad_counter, str);
         update_remote_control_sensors();
 
@@ -166,11 +166,8 @@ int main(int argc, char **argv)
 		if(INFRARED_OMNI == HARMONY_SIGNAL_SPOT || INFRARED_RIGHT == HARMONY_SIGNAL_SPOT || INFRARED_LEFT == HARMONY_SIGNAL_SPOT) {
 			roomba_use_item();
 		}
-		
-		show_number_on_display(ir_get_sender_type_from_data(INFRARED_LEFT|INFRARED_OMNI|INFRARED_RIGHT), str);
-		
+
 		if(ir_get_sender_type_from_data(INFRARED_LEFT|INFRARED_OMNI|INFRARED_RIGHT) == IR_SENDER_ROOMBA && ir_get_roomba_id_from_data(INFRARED_LEFT|INFRARED_OMNI|INFRARED_RIGHT) != ROOMBA_ID){
-			show_number_on_display(777,str);
 			switch(ir_get_item_id_from_data(INFRARED_LEFT|INFRARED_RIGHT|INFRARED_OMNI)) {
 				case ITEM_ID_SHELL:
 					roomba_got_hit_by_item(shell);

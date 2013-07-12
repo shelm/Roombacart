@@ -78,7 +78,7 @@ extern "C" {
 #define SENSOR_IR_LEFT			52
 #define SENSOR_IR_RIGHT			53
 
-#define ROOMBA_ID 			0x2 // 2 Bits available
+#define ROOMBA_ID 			0x1 // 2 Bits available
 
 
 /****************************************************************** Typedefs */
@@ -138,7 +138,7 @@ void ir_receive();
 /******************************************************************** Macros */
 
 /// setup IR sender LEDs
-/* 
+/*
  *  each led sends a single byte which consists of 3 parts: sender type, sender
  *  id and led id:
  *  byte being send by led: IIRRLLLL:
