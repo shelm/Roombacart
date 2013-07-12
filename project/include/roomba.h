@@ -249,15 +249,6 @@ void roomba_drive(int16_t velocity, int16_t radius);
 */
 void roomba_stop();
 
-//umschreiben
-/*! turns roomba
-    input values:
-	angle_to_turn - angle at which roomba should turn
-	sensor_array - array with angle-sensor
-	sensor_number - number of sensors in sensor-array
-*/
-int32_t roomba_turn_angle(int32_t angle_to_turn, int16_t velocity, int16_t radius, int32_t faktor);
-
 /*!
  * reads the buttonpackage from the roomba an returns the value
  * */

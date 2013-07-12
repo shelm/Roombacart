@@ -94,6 +94,8 @@ int loop_counter_for_item = 0;
 #define LEFT 0
 #define RIGHT 1
 
+#define LAPNUMBER 3
+
 /********************************************************** Global functions */
 
 
@@ -366,12 +368,30 @@ int main(int argc, char **argv)
             }
         }
 
-        if(roomba_check_for_finish_mark(CLIFF_FRONT_LEFT_SIG, CLIFF_FRONT_RIGHT_SIG) && !finish_mark_detected_mode)
-        {
+        if(roomba_check_for_finish_mark(CLIFF_FRONT_LEFT_SIG, CLIFF_FRONT_RIGHT_SIG) && !finish_mark_detected_mode) {
             //necessary to avoid repeated recognize of the finish mark at the same round
-            if(round_counter < 3)
-            {
-
+            if(round_counter < LAPNUMBER) {
+				
+				//play final lap sound
+				if(round_counter == LAPNUMBER -1) {
+					
+					//transmit and play final lap sound
+					transmit_song(final_lap, 16, 0);
+					my_msleep(15);
+					transmit_song(final_lap_part_2, 2, 1);
+					my_msleep(15);
+					play_song(0);
+					while(check_for_playing_song()) 
+						my_msleep(15);
+					play_song(1);
+					
+					//restore original sound for later usage
+					transmit_song(damage_sound, 12, 0);
+					my_msleep(15);
+					transmit_song(starman_theme, 16, 1);
+					my_msleep(15);
+				}
+				
                 round_counter++;
                 show_number_on_display(round_counter, str);
                 finish_mark_detected_mode = true;
@@ -379,34 +399,36 @@ int main(int argc, char **argv)
 
             }
             //necessary to avoid repeated recognize of the finish mark at the same round
-            else
-            {
+            else {
+				
+				transmit_song(indiana_jones_theme, 16, 0);
+				my_msleep(15);
+				transmit_song(indiana_jones_theme_part_2, 16, 1);
+				my_msleep(15);
+				transmit_song(indiana_jones_theme_part_3, 14, 2);
+				my_msleep(15);
+				
                 roomba_stop();
                 show_number_on_display(round_counter, str);
 
                 play_song(0);
-                while(check_for_playing_song())
-                {
+                while(check_for_playing_song()) {
                     my_msleep(15);
                 }
                 play_song(1);
-                while(check_for_playing_song())
-                {
+                while(check_for_playing_song()) {
                     my_msleep(15);
                 }
+                play_song(2);
             }
         }
-        else
-        {
+        else {
 
-
-            if(loop_counter_for_round > 7)
-            {
+            if(loop_counter_for_round > 7) {
                 finish_mark_detected_mode = false;
                 //show_number_on_display(loop_counter_for_round, str);
             }
-            else
-            {
+            else {
                 loop_counter_for_round++;
                 //show_number_on_display(loop_counter_for_round, str);
             }
@@ -417,7 +439,7 @@ int main(int argc, char **argv)
 }
 
 
-void update_remote_control_sensors(void){
+void update_remote_control_sensors(void) {
     disable_all_interrupts();
     roomba_update_sensor(&infrared_omni, false);
     roomba_update_sensor(&infrared_right, false);
@@ -425,7 +447,7 @@ void update_remote_control_sensors(void){
     enable_all_interrupts();
 }
 
-void update_cliff_sensors(void){
+void update_cliff_sensors(void) {
     disable_all_interrupts();
     roomba_update_sensor(&cliff_front_left_signal, false);
     roomba_update_sensor(&cliff_front_right_signal, false);

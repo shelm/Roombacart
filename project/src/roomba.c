@@ -277,8 +277,7 @@ int8_t itos(int number, char* result)
     }
 }
 
-void show_number_on_display(int32_t number, char* str) //const char* str
-{
+void show_number_on_display(int32_t number, char* str) {
     if(number < 0)
     {
 
@@ -290,8 +289,7 @@ void show_number_on_display(int32_t number, char* str) //const char* str
     my_msleep(500);
 }
 
-void roomba_drive(int16_t velocity, int16_t radius)
-{
+void roomba_drive(int16_t velocity, int16_t radius) {
     //two-bytes velocity and radius value must be share in two one-bytes values
     int8_t velocity_high_byte = velocity >> 8;
     int8_t velocity_low_byte = velocity;
@@ -309,32 +307,6 @@ void roomba_drive(int16_t velocity, int16_t radius)
 void roomba_stop()
 {
     roomba_drive(0, 0);
-}
-
-//Umschreiben, damit man auf die ausseren Sachen reagieren koennte
-int32_t roomba_turn_angle(int32_t angle_to_turn, int16_t velocity, int16_t radius, int32_t faktor)
-{
-//    int32_t roombas_angle = ((faktor * (angle_to_turn << 3)) >> 3);
-//    int32_t roombas_turned_angle = 0;
-//
-//    roomba_drive(velocity, radius);
-//
-//    do
-//    {
-//        my_msleep(500);
-//
-//        roomba_request_sensors(sensor_array_to_turn, sensor_number);
-//        roomba_read_sensors(sensor_array_to_turn, sensor_number);
-//
-//        roombas_turned_angle += sensor_array_to_turn[0].value;
-//
-//        my_msleep(50);
-//
-//    }
-//    while(ABS_T(roombas_turned_angle) < ABS_T(roombas_angle));
-//
-//    return  (((roombas_turned_angle << 3) / faktor) >> 3);
-return 0;
 }
 
 uint8_t read_button() {
@@ -472,12 +444,13 @@ uint32_t roomba_check_timer_array(){
 }
 
 uint16_t my_rand(void){
-
+	
   return timer_array[3];
-
+  
 }
 
 void roomba_show_item(){
+	
      switch(current_item) {
         case speed:
             roomba_set_letters_string(speed_str, 4);
@@ -488,12 +461,15 @@ void roomba_show_item(){
         default:
             break;
     }
+    
 }
 
 void roomba_show_is_focused() {
+	
 	roomba_set_led_on(0,128,128);
 	my_msleep(100);
 	roomba_set_led_on(0,0,0);
+	
 }
 
 uint8_t check_for_active_item() {
