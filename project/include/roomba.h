@@ -225,14 +225,16 @@ void roomba_set_led_on(uint8_t led_bits, uint8_t clean_power_color, uint8_t clea
 */
 void roomba_init_sensor(roomba_sensor_t *sensor, const roomba_sensor_type_t* type);
 
+/*! requests sensor from type roomba_sensor_type_t 
+*/
 void roomba_request_sensor(roomba_sensor_t *sensor);
 
 /*! reads the value of the sensor
 */
 void roomba_read_sensor(roomba_sensor_t *sensor, bool_t accumulate_value);
 
-/*! reads the values of the specific number of the sensors (sensor_number)
-    input value number defined, how much sensors there are in the sensor array
+/*! updates sensor;
+    calls roomba_request_sensor and roomba_read_sensor)
 */
 int32_t roomba_update_sensor(roomba_sensor_t *sensor, bool_t accumulate_value);
 
@@ -251,7 +253,7 @@ void roomba_stop();
 
 /*!
  * reads the buttonpackage from the roomba an returns the value
- * */
+ * /
 uint8_t read_button();
 
 /*! function converts the resulting number in the decimal string (char array)
@@ -264,6 +266,8 @@ int8_t itos(int number, char* result);
 */
 bool_t roomba_check_for_item(int32_t cliff_left_signal_val, int32_t cliff_right_signal_val);
 
+/*! detect whether the roomba drives over an finish mark or not
+*/
 bool_t roomba_check_for_finish_mark(int32_t cliff_front_left_signal_val, int32_t cliff_front_right_signal_val);
 
 /*! tells the roomba what to do if an item has been detected
@@ -281,24 +285,32 @@ void roomba_use_item(void);
 /*! ends the current effect of the last item used
 */
 void roomba_item_effect_ends(void);
+
 /*! handles the effect when the roomba got hit by an item from his opponent
  */
 void roomba_got_hit_by_item(uint8_t item_id);
+
 /*! ends the got hit by item effect
  */
 void roomba_got_hit_effect_ends(void);
 
+/*!starts timer
+*/
 void roomba_start_timer(void);
 
+/*!checks  for the specific values of the timers
+*/
 uint32_t roomba_check_timer_array(void);
 
-/*! Returns a random value
+/*! returns a random value
  */ 
 uint16_t my_rand(void);
 
+/*! shows the received item on the display
+*/
 void roomba_show_item(void);
 
-/*! Indicates if the roomba is in aim range of another roomba 
+/*! indicates if the roomba is in aim range of another roomba 
  */
 void roomba_show_is_focused();
 
@@ -322,8 +334,6 @@ extern const roomba_sensor_type_t infrared_omni_sensor;
 extern const roomba_sensor_type_t infrared_right_sensor;
 extern const roomba_sensor_type_t infrared_left_sensor;
 
-//length of sensor_arrays
-//extern const int8_t sensor_number;
 
 extern const int16_t radius;
 extern const int16_t radius_counter_clockwise;
@@ -340,7 +350,8 @@ extern roomba_sensor_t infrared_left;
 
 extern volatile int16_t velocity;
 
-//char array for output
+/*!char array for text output
+*/
 extern char str[5];
 
 extern volatile enum item_t current_item;
@@ -354,6 +365,7 @@ extern volatile enum state_t last_state;
     3: random item id
 */
 extern volatile int16_t timer_array[4];
+
 /*! array for activate/deactivate timer usage
 *   0: boost item
     1: fire shell

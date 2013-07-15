@@ -31,7 +31,7 @@
 
 /************************************************************** Global const */
 
-/*! initializing of the five sensors from typ roomba_sensor_type_t with the constant values
+/*! initializing of the sensors from typ roomba_sensor_type_t with the constant values
 */
 const roomba_sensor_type_t cliff_left_signal_sensor =
 {
@@ -82,8 +82,6 @@ const roomba_sensor_type_t infrared_left_sensor =
     0x01,
     false
 };
-
-//const int8_t sensor_number = 1;
 
 const int16_t radius = 32767;                      //  mm
 const int16_t radius_counter_clockwise = 1;        //  mm

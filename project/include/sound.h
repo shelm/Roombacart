@@ -3,8 +3,7 @@
 
 
 /******************************************************************* Defines */
-/** Notes */
-
+/*! Notes */
 #define tone_heigth		12
 #define NOTE_D			74
 #define NOTE_D_SHARP 	75
@@ -21,13 +20,16 @@
 #define PAUSE			0
 
 /****************************************************************** Typedefs */
-
+/*! struct for representing music note
+*/
 typedef struct  {
 	uint8_t note;
 	uint8_t duration;
 } roomba_note_t;
 /************************************************************** Global const */
 
+/*! melodies that consist of sequences of notes
+*/
 extern roomba_note_t indiana_jones_theme[];
 extern roomba_note_t indiana_jones_theme_part_2[];
 extern roomba_note_t indiana_jones_theme_part_3[];
@@ -48,9 +50,16 @@ extern roomba_note_t starman_theme_part_2[];
 
 
 /************************************************ Global function prototypes */
-
+/*! transmits melody to the roomba
+*/
 void transmit_song(roomba_note_t *music_sheet, uint8_t song_length, uint8_t song_number);
+
+/*! plays the melody on the roomba
+*/
 void play_song(uint8_t song_number);
+
+/*! checks whether the song is playing
+*/
 uint8_t check_for_playing_song();
 
 /*************************************************** Global inline functions */

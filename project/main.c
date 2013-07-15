@@ -22,31 +22,56 @@
 
 /******************************************************* Function prototypes */
 
-
+/*! updates sensors of remote control
+*/
 void update_remote_control_sensors(void);
 
+/*! updates cliff sensors that are used to line and item detection
+*/
 void update_cliff_sensors(void);
 
+/*! makes required changes (sets direction and the current_state) by the user driving to left
+*/
 void user_drives_to_left(void);
 
+/*! makes required changes (sets direction and the current_state) by the user driving to right
+*/
 void user_drives_to_right(void);
 
+/*! makes required changes (sets current_state, offroad_velocity, offroad_counter) by the driving offroad
+*/
 void drive_offroad(void);
 
+/*! makes required changes (sets current_state, offroad_counter) by the driving along the lane
+*/
 void drive_lane(void);
 
+/*! makes required changes (sets current_state, course_correction_counter) by the driving left curve
+*/
 void drive_curve_left(void);
 
+/*! makes required changes (sets current_state, course_correction_counter) by the driving right curve
+*/
 void drive_curve_right(void);
 
+/*! makes required changes (sets current_state, offroad_counter, velocity) by the driving back to the lane
+*/
 void drive_back_to_lane(void);
 
+/*! makes required changes (sets current_state, velocity) by the correcting curse to left
+*/
 void correct_curse_to_left(void);
 
+/*! makes required changes (sets current_state, velocity) by the correcting curse to right
+*/
 void correct_curse_to_right(void);
 
+/*! depending on the state calls the required function
+*/
 void refresh_current_state(void);
 
+/*! sets all counters to the start value
+*/
 void reset_counters(void);
 /************************************************************** Global const */
 
