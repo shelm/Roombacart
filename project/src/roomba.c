@@ -137,7 +137,7 @@ void init_roomba()
 {
     uart_write_byte(CMD_START);
     my_msleep(ROOMBA_DELAY_MODECHANGE_MS);
-
+    my_msleep(200);
     uart_write_byte(CMD_FULL);
     my_msleep(ROOMBA_DELAY_MODECHANGE_MS);
 }
